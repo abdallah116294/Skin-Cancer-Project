@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/config/routes/app_routes.dart';
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -10,6 +9,7 @@ class MyApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       onGenerateRoute: AppRoutes.onGenerateRoute,
+      // home: TryClip(),
     );
   }
 }
