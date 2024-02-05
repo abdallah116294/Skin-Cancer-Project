@@ -73,19 +73,22 @@ class OnBoardingScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.pushNamed(context, Routes.choseUserRoutes);
                   },
-                  child: Container(
-                    width: 358,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        gradient: LinearGradient(colors: AppColor.btnGradient)),
-                    child: const Center(
-                      child: Text(
-                        StringManager.getStarted,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 358,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          gradient: LinearGradient(colors: AppColor.btnGradient)),
+                      child: const Center(
+                        child: Text(
+                          StringManager.getStarted,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 20),
+                        ),
                       ),
                     ),
                   ),
