@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/utils/assets_path.dart';
@@ -38,8 +39,8 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Column(
         children: [
-          const SizedBox(
-            height: 150,
+           SizedBox(
+            height: 150.h,
           ),
           Lottie.asset(AssetsManager.cancerSplash),
         ],
