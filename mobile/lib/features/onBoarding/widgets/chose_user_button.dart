@@ -38,7 +38,7 @@ class ChoseUserButton extends StatelessWidget {
                 child: Text(
                   user,
                   style: TextStyle(
-                      color: Colors.black,
+                      color: Colors.white,
                       fontSize: 26.sp,
                       fontWeight: FontWeight.w500),
                 ),

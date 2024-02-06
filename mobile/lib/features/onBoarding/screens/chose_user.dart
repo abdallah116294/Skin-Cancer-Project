@@ -16,71 +16,83 @@ class ChoseUser extends StatefulWidget {
 class _ChoseUserState extends State<ChoseUser> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: AppColor.choseColor,
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight)),
-        child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back_ios)),
-          ),
-          body: Column(
-            children: [
-              SizedBox(
-                height: 20.h,
+    return Scaffold(
+      body: Stack(children: [
+        Container(
+          decoration: BoxDecoration(
+          gradient: LinearGradient(
+              colors: AppColor.choseColor,
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight)
               ),
-              Center(
-                child: Text(
-                  StringManager.welcomeMessage,
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 26.sp),
-                ),
-              ),
-              Text(
-                StringManager.choseUser,
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w400),
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: ChoseUserButton(
-                  imagePathe: AssetsManager.patient_user,
-                  user: StringManager.patient,
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, Routes.choseAuthFunScreenRoutes);
-                  },
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: ChoseUserButton(
-                  imagePathe: AssetsManager.doctor_user,
-                  user: StringManager.doctor,
-                  onTap: () {
-                    Navigator.pushNamed(
-                        context, Routes.choseAuthFunScreenRoutes);
-                  },
-                ),
-              ),
-            ],
-          ),
         ),
-      ),
+          Positioned(
+              top: 22,
+              left: 0,
+              right: 0,
+              child: AppBar(
+                backgroundColor: Colors.transparent, 
+                   leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(Icons.arrow_back_ios),color: const Color(0xff6069C0),),
+                elevation: 0, // remove app bar shadow
+              ),
+            ),
+        Positioned(
+          top: 90,
+          left: 0,
+              right: 0,
+          child: Column(
+        children: [
+          SizedBox(
+            height: 20.h,
+          ),
+          Center(
+            child: Text(
+              StringManager.welcomeMessage,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 26.sp),
+            ),
+          ),
+          Text(
+            StringManager.choseUser,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: 20.sp,
+                fontWeight: FontWeight.w400),
+          ),
+          Align(
+            alignment: Alignment.topLeft,
+            child: ChoseUserButton(
+              imagePathe: AssetsManager.patient_user,
+              user: StringManager.patient,
+              onTap: () {
+                Navigator.pushNamed(
+                    context, Routes.choseAuthFunScreenRoutes);
+              },
+            ),
+          ),
+          SizedBox(
+            height: 20.h,
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: ChoseUserButton(
+              imagePathe: AssetsManager.doctor_user,
+              user: StringManager.doctor,
+              onTap: () {
+                Navigator.pushNamed(
+                    context, Routes.choseAuthFunScreenRoutes);
+              },
+            ),
+          ),
+        ],
+      ),)
+      ],),
     );
   }
 }

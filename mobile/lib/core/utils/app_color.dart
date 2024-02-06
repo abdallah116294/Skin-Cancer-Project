@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static List<Color> onBoardingColor = const [
-    Color.fromRGBO(255, 114, 182, .63),
-    Color.fromRGBO(244, 146, 182, .6),
-    Color.fromRGBO(151, 225, 212, .57),
-    Color.fromRGBO(131, 89, 227, .62),
+  static List<Color> ellipse3 = const [
+    Color.fromRGBO(255, 114, 182, .9),
+    Color.fromRGBO(244, 146, 182, .85),
+    Color.fromRGBO(151, 225, 212, .81),
+    Color.fromRGBO(131, 89, 227, .89),
   ];
   static const Color textonBoardingColo = Colors.black;
   static const Color onBoarding2 = Color.fromRGBO(167, 174, 249, 1);

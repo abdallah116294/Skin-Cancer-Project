@@ -19,4 +19,13 @@ class StringManager {
       "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\tprovided for you!";
   static const String ortext = "Or";
   static const String donetHaveAccount = "Don’t have an account? ";
+  static const String doneDaliog = "Yup ! Welcome Back";
+  static const String forgetPassword = "Forget your password ?";
+  static const String forgetPasssword2 =
+      "Please enter your Email or your phone\n"
+      "number, we will send you confirmation code.";
+  static const String sendCode = "Send code";
+  static const String checkemail = "Please check your email";
+  static const String testmail = "We’ve sent a code to ****@gmail.com";
+  static const String verify = "Verify";
 }
