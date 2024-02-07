@@ -25,7 +25,7 @@ class DailogAlertFun{
                    SizedBox(height: 16.h,),
                    Text(daliogContent,style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),),
                  SizedBox(height: 30.h,),
-                 CustomButton(buttonName: "Go to Home",buttoncolor: AppColor.buttonColor,height: 52.h,width: 166,white: false,onTap:onTap,textColor: Colors.white,)  
+                 CustomButton(buttonName: actionName,buttoncolor: AppColor.buttonColor,height: 52.h,width: 166,white: false,onTap:onTap,textColor: Colors.white,)  
             
             ]
             ),

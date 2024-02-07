@@ -1,7 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
 import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
+import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_auth_fun_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_user.dart';
@@ -16,6 +16,7 @@ class Routes {
   static const String singInScreenRoutes = "/SingInScreen";
   static const String forgetPasswordScreenRoutes = "/ForgetPasswordScreen";
   static const String oTPCodeScreenRoutes = "/OTPCodeScreen";
+  static const String restPasswordScreenRoutes = "/RestPasswordScreen";
 }
 
 class AppRoutes {
@@ -36,7 +37,9 @@ class AppRoutes {
       case Routes.forgetPasswordScreenRoutes:
         return MaterialPageRoute(builder: (context) => ForgetPasswordScreen());
       case Routes.oTPCodeScreenRoutes:
-        return MaterialPageRoute(builder: (context)=>OTPCodeScreen());
+        return MaterialPageRoute(builder: (context) => OTPCodeScreen());
+      case Routes.restPasswordScreenRoutes:
+        return MaterialPageRoute(builder: (context)=>RestPasswordScreen());
     }
   }
 }

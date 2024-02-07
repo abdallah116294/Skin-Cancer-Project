@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
@@ -74,9 +75,9 @@ class OTPCodeScreen extends StatelessWidget {
                   Text(
                     StringManager.testmail,
                     style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 15.sp,
-                        ),
+                      color: Colors.black,
+                      fontSize: 15.sp,
+                    ),
                   ),
                   SizedBox(
                     height: 20.h,
@@ -124,19 +125,34 @@ class OTPCodeScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 18),
                     child: Row(
                       children: [
-                        Text("didn’t receive a code ?",style: TextStyle(color: Colors.black,fontSize: 18.sp),),
-                        Text("Resend",style: TextStyle(color: Colors.black,fontSize: 18.sp,fontWeight: FontWeight.bold),),
+                        Text(
+                          "didn’t receive a code ?",
+                          style:
+                              TextStyle(color: Colors.black, fontSize: 18.sp),
+                        ),
+                        Text(
+                          "Resend",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.bold),
+                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 30.h,),
+                  SizedBox(
+                    height: 30.h,
+                  ),
                   CustomButton(
                       buttoncolor: AppColor.buttonColor,
                       width: 358.w,
                       height: 61.h,
                       buttonName: StringManager.verify,
                       onTap: () {
-                        if (_formKey.currentState!.validate()) {}
+                        if (_formKey.currentState!.validate()) {
+                          Navigator.of(context)
+                              .pushNamed(Routes.restPasswordScreenRoutes);
+                        }
                       },
                       textColor: Colors.white,
                       white: false)

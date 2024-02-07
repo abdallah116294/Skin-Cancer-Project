@@ -28,4 +28,6 @@ class StringManager {
   static const String checkemail = "Please check your email";
   static const String testmail = "We’ve sent a code to ****@gmail.com";
   static const String verify = "Verify";
+  static const String restPassword = "Reset password";
+  static const String restpassword2 = "please type password you’ll  remember";
 }
