@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "NrQSZPCKJf+LacGUOpLm1yf30JdbVshJ3XaTa2jQdJk=",
+  "Source": "SkinCancer.Api",
+  "BasePath": "_content/SkinCancer.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

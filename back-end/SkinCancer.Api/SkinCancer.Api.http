@@ -1,0 +1,6 @@
+@SkinCancer.Api_HostAddress = http://localhost:5115
+
+GET {{SkinCancer.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
