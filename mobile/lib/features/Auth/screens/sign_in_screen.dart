@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/utils/string_manager.dart';
@@ -135,10 +136,14 @@ class _SingInScreenState extends State<SingInScreen> {
                                             TextInputType.emailAddress,
                                       ),
                                     ),
-                                     Padding(
-                                       padding: const EdgeInsets.all(5.0),
-                                       child: Align(alignment:Alignment.bottomLeft,child: BlocProvider.of<AuthCubit>(context).showErrorText()),
-                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: BlocProvider.of<AuthCubit>(
+                                                  context)
+                                              .showErrorText()),
+                                    ),
                                     SizedBox(
                                       height: 10.h,
                                     ),
@@ -165,10 +170,14 @@ class _SingInScreenState extends State<SingInScreen> {
                                             TextInputType.visiblePassword,
                                       ),
                                     ),
-                                     Padding(
-                                       padding: const EdgeInsets.all(5.0),
-                                       child: Align(alignment:Alignment.bottomLeft,child: BlocProvider.of<AuthCubit>(context).showErrorText()),
-                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: BlocProvider.of<AuthCubit>(
+                                                  context)
+                                              .showErrorText()),
+                                    ),
                                     SizedBox(
                                       height: 20.h,
                                     ),
@@ -225,12 +234,17 @@ class _SingInScreenState extends State<SingInScreen> {
                                               fontSize: 16.sp,
                                               fontWeight: FontWeight.w500),
                                         ),
-                                        Text(
-                                          StringManager.signUp,
-                                          style: TextStyle(
-                                              color: AppColor.signUptext,
-                                              fontSize: 18.sp,
-                                              fontWeight: FontWeight.w500),
+                                        InkWell(
+                                          onTap: () {
+                                            context.pushNamed(Routes.signUpScreenRoutes);
+                                          },
+                                          child: Text(
+                                            StringManager.signUp,
+                                            style: TextStyle(
+                                                color: AppColor.signUptext,
+                                                fontSize: 18.sp,
+                                                fontWeight: FontWeight.w500),
+                                          ),
                                         )
                                       ],
                                     )

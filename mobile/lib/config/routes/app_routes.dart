@@ -3,6 +3,7 @@ import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
 import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
 import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
+import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_auth_fun_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_user.dart';
 import 'package:mobile/features/onBoarding/screens/on_boarding_screen.dart';
@@ -17,6 +18,7 @@ class Routes {
   static const String forgetPasswordScreenRoutes = "/ForgetPasswordScreen";
   static const String oTPCodeScreenRoutes = "/OTPCodeScreen";
   static const String restPasswordScreenRoutes = "/RestPasswordScreen";
+  static const String signUpScreenRoutes = "/SignupScreen";
 }
 
 class AppRoutes {
@@ -39,7 +41,9 @@ class AppRoutes {
       case Routes.oTPCodeScreenRoutes:
         return MaterialPageRoute(builder: (context) => OTPCodeScreen());
       case Routes.restPasswordScreenRoutes:
-        return MaterialPageRoute(builder: (context)=>RestPasswordScreen());
+        return MaterialPageRoute(builder: (context) => RestPasswordScreen());
+      case Routes.signUpScreenRoutes:
+        return MaterialPageRoute(builder: (context)=>SignupScreen());
     }
   }
 }
