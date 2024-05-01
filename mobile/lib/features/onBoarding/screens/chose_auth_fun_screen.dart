@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/utils/string_manager.dart';
@@ -74,7 +75,9 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 width: 317.w,
                 height: 61.h,
                 buttonName: StringManager.signUp,
-                onTap: () {},
+                onTap: () {
+                  context.pushNamed(Routes.signUpScreenRoutes);
+                },
                 textColor: AppColor.buttonColor,
                 white: true,
               )
