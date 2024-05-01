@@ -13,10 +13,26 @@ class LoginUserIsLoadingState extends AuthState {}
 
 class LoginUserIsSuccessSetate extends AuthState {
   final UserModel userModel;
+
   const LoginUserIsSuccessSetate({required this.userModel});
 }
 
 class LoginUserIsErrorState extends AuthState {
   final String error;
+
   const LoginUserIsErrorState({required this.error});
+}
+
+class RegisterUserIsLoadingState extends AuthState {}
+
+class RegisterUserIsSuccessSetate extends AuthState {
+  final String message;
+
+  const RegisterUserIsSuccessSetate({required this.message});
+}
+
+class RegisterUserIsErrorState extends AuthState {
+  final String error;
+
+  const RegisterUserIsErrorState({required this.error});
 }
