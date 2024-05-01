@@ -9,7 +9,9 @@ import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
 
 class AuthRepoImpl implements AuthRepo {
   final ApiConsumer apiConsumer;
+
   AuthRepoImpl({required this.apiConsumer});
+
   @override
   Future<Either<String, UserModel>> loginUser(
       String email, String password) async {
@@ -23,6 +25,32 @@ class AuthRepoImpl implements AuthRepo {
       String logineror = error.toString();
       log('repo error$logineror');
       return Left(logineror);
+    }
+  }
+
+  @override
+  Future<Either<String, String>> registerUser(
+      {required String email,
+      required String password,
+      required String firstname,
+      required String lastname,
+      required String phoneNumber,
+      required String userName}) async {
+    try {
+      final response = await apiConsumer.post(
+        ApiConstant.registerEndPoint,
+        body: {
+          "firstName": firstname,
+          "lastName": lastname,
+          "phoneNumber": phoneNumber,
+          "email": email,
+          "userName": userName,
+          "password": password
+        },
+      );
+      return Right(response);
+    } on ServerException catch (error) {
+      return Left(error.toString());
     }
   }
 }
