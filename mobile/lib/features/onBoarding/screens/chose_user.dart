@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/utils/string_manager.dart';
@@ -71,8 +72,12 @@ class _ChoseUserState extends State<ChoseUser> {
               imagePathe: AssetsManager.patient_user,
               user: StringManager.patient,
               onTap: () {
-                Navigator.pushNamed(
-                    context, Routes.choseAuthFunScreenRoutes);
+                //add two user role as arrguments with navigator
+                context.pushNamed(Routes.choseAuthFunScreenRoutes,arguments:{
+                  "role1":"Patient"
+                });
+                // Navigator.pushNamed(
+                //     context, Routes.choseAuthFunScreenRoutes);
               },
             ),
           ),
@@ -85,8 +90,9 @@ class _ChoseUserState extends State<ChoseUser> {
               imagePathe: AssetsManager.doctor_user,
               user: StringManager.doctor,
               onTap: () {
-                Navigator.pushNamed(
-                    context, Routes.choseAuthFunScreenRoutes);
+                context.pushNamed(Routes.choseAuthFunScreenRoutes,arguments:{
+                  "role2":"Doctor"
+                });
               },
             ),
           ),

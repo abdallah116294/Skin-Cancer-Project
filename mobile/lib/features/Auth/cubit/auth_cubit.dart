@@ -6,6 +6,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/core/widgets/error_text_widgte.dart';
+import 'package:mobile/features/Auth/data/model/add_role_respons.dart';
 import 'package:mobile/features/Auth/data/model/user_model.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
 
@@ -62,7 +63,14 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-
+ Future<void>addRole(String roleName,String userName)async{
+  try{
+     Either<String,AddRoleRespons>response=await authRepo.addRole(roleName, userName);
+     emit(response.fold((l) => AddRoleErrorState(error: extractErrorMessage(l)), (r) =>AddRoleSuccesState(respons: r) ));
+  }catch(error){
+    emit(AddRoleErrorState(error: extractErrorMessage(error.toString())));
+  }
+ }
   String extractErrorMessage(String errorString) {
     // Split the errorString by newline characters
     List<String> lines = errorString.split('\n');

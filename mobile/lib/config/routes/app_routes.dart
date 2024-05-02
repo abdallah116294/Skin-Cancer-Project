@@ -33,7 +33,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const ChoseUser());
       case Routes.choseAuthFunScreenRoutes:
         return MaterialPageRoute(
-            builder: (context) => const ChoseAuthFunScreen());
+            builder: (context) =>  ChoseAuthFunScreen(roles: routeSettings.arguments as Map<String,String> ,));
       case Routes.singInScreenRoutes:
         return MaterialPageRoute(builder: (context) => const SingInScreen());
       case Routes.forgetPasswordScreenRoutes:
@@ -43,7 +43,7 @@ class AppRoutes {
       case Routes.restPasswordScreenRoutes:
         return MaterialPageRoute(builder: (context) => RestPasswordScreen());
       case Routes.signUpScreenRoutes:
-        return MaterialPageRoute(builder: (context)=>SignupScreen());
+        return MaterialPageRoute(builder: (context)=>SignupScreen(roles: routeSettings.arguments as Map<String,String>,));
     }
   }
 }

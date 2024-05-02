@@ -17,7 +17,8 @@ import 'package:mobile/injection_container.dart' as di;
 import '../cubit/auth_cubit.dart';
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+  final Map<String, String> roles;
+  const SignupScreen({super.key, required this.roles});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -81,8 +82,13 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (state is RegisterUserIsLoadingState) {
                     log("Loading state ");
                   } else if (state is RegisterUserIsSuccessSetate) {
+                    
                     log(state.message.toString());
                   } else if (state is RegisterUserIsErrorState) {
+                    log(state.error);
+                  } else if (state is AddRoleSuccesState) {
+                    log(state.respons.userName);
+                  } else if (state is AddRoleErrorState) {
                     log(state.error);
                   }
                 },
@@ -247,7 +253,26 @@ class _SignupScreenState extends State<SignupScreen> {
                                                         .split("@")[0],
                                                     password:
                                                         passwordController.text,
-                                                  );
+                                                  )
+                                                  .then((value) {
+                                                if (widget.roles
+                                                    .containsKey('role1')) {
+                                                  ///navigator to different screen
+                                                } else if (widget.roles
+                                                    .containsKey("role2")) {
+                                                  // log(widget.roles.);
+                                                  //add roles as Doctor
+                                                  log(widget.roles['role2']
+                                                      .toString());
+                                                  context
+                                                      .read<AuthCubit>()
+                                                      .addRole(
+                                                          "Doctor",
+                                                          emailController.text
+                                                              .split('@')[0]);
+                                                  //then navigator to different scree
+                                                }
+                                              });
                                             }
                                           },
                                           textColor: Colors.white,

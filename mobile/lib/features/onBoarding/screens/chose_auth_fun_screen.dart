@@ -8,7 +8,8 @@ import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 
 class ChoseAuthFunScreen extends StatelessWidget {
-  const ChoseAuthFunScreen({super.key});
+  final Map<String, String> roles;
+  ChoseAuthFunScreen({super.key, required this.roles});
 
   @override
   Widget build(BuildContext context) {
@@ -76,7 +77,7 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 height: 61.h,
                 buttonName: StringManager.signUp,
                 onTap: () {
-                  context.pushNamed(Routes.signUpScreenRoutes);
+                  context.pushNamed(Routes.signUpScreenRoutes,arguments: roles);
                 },
                 textColor: AppColor.buttonColor,
                 white: true,
