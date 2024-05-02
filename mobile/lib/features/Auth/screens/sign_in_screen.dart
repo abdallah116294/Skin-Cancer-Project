@@ -281,7 +281,7 @@ class _SingInScreenState extends State<SingInScreen> {
                   log('loading');
                 } else if (state is LoginUserIsSuccessSetate) {
                   DailogAlertFun.showMyDialog(
-                      daliogContent: state.userModel.email,
+                      daliogContent: state.userModel.roles[1],
                       actionName: "Go to Home",
                       context: context,
                       onTap: () {});
