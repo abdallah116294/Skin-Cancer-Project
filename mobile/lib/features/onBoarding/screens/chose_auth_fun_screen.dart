@@ -5,10 +5,18 @@ import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
+import 'package:mobile/features/Auth/presentation/screens/signup_screen.dart';
 
-class ChoseAuthFunScreen extends StatelessWidget {
-  const ChoseAuthFunScreen({super.key});
+import '../../Auth/presentation/screens/sign_in_screen.dart';
 
+class ChoseAuthFunScreen extends StatefulWidget {
+  ChoseAuthFunScreen({super.key, required this.num});
+  var num;
+  @override
+  State<ChoseAuthFunScreen> createState() => _ChoseAuthFunScreenState();
+}
+
+class _ChoseAuthFunScreenState extends State<ChoseAuthFunScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -62,7 +70,7 @@ class ChoseAuthFunScreen extends StatelessWidget {
                   height: 61.h,
                   buttonName: StringManager.signIn,
                   onTap: () {
-                    Navigator.of(context).pushNamed(Routes.singInScreenRoutes);
+                    Navigator.pushNamed(context, Routes.singInScreenRoutes,arguments:widget.num );
                   },
                   textColor: Colors.white,
                   white: false),
@@ -74,7 +82,9 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 width: 317.w,
                 height: 61.h,
                 buttonName: StringManager.signUp,
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed(Routes.signUpScreenRoutes,arguments:widget.num );
+                },
                 textColor: AppColor.buttonColor,
                 white: true,
               )

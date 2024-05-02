@@ -4,6 +4,7 @@ import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/utils/string_manager.dart';
+import 'package:mobile/features/onBoarding/screens/chose_user.dart';
 import 'package:mobile/features/onBoarding/widgets/custom_paint.dart';
 
 class OnBoardingScreen extends StatelessWidget {
@@ -41,7 +42,8 @@ class OnBoardingScreen extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                Navigator.pushNamed(context, Routes.choseUserRoutes);
+             //   Navigator.pushNamed(context, Routes.choseUserRoutes);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ChoseUser()));
               },
               child: Container(
                 width: 358,

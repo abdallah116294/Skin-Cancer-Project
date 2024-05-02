@@ -456,3 +456,20 @@ class Ellips7 extends CustomClipper<Path> {
   @override
  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
+class Ellips8 extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path_1 = Path();
+    path_1.moveTo(size.width,size.height*0.5000000);
+    path_1.cubicTo(size.width,size.height*0.7761410,size.width*0.9513988,size.height,size.width*0.6129017,size.height);
+    path_1.cubicTo(size.width*0.2744064,size.height,0,size.height*0.7761410,0,size.height*0.5000000);
+    path_1.cubicTo(0,size.height*0.2238577,size.width*0.2744064,0,size.width*0.6129017,0);
+    path_1.cubicTo(size.width*0.9513988,0,size.width,size.height*0.2238577,size.width,size.height*0.5000000);
+    path_1.close();
+    return path_1;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+

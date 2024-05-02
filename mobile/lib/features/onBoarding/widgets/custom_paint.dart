@@ -63,3 +63,41 @@ class Ellipse3 extends CustomPainter {
     return true;
   }
 }
+
+
+//Copy this CustomPainter code to the Bottom of the File
+class GifCustomPaint extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+
+    Path path_0 = Path();
+    path_0.moveTo(size.width,size.height*0.5000000);
+    path_0.cubicTo(size.width,size.height*0.7761410,size.width*0.9513988,size.height,size.width*0.6129017,size.height);
+    path_0.cubicTo(size.width*0.2744064,size.height,0,size.height*0.7761410,0,size.height*0.5000000);
+    path_0.cubicTo(0,size.height*0.2238577,size.width*0.2744064,0,size.width*0.6129017,0);
+    path_0.cubicTo(size.width*0.9513988,0,size.width,size.height*0.2238577,size.width,size.height*0.5000000);
+    path_0.close();
+
+    Paint paint_0_fill = Paint()..style=PaintingStyle.fill;
+    paint_0_fill.color = Color(0xffF6D1D1).withOpacity(1.0);
+    canvas.drawPath(path_0,paint_0_fill);
+
+    Path path_1 = Path();
+    path_1.moveTo(size.width,size.height*0.5000000);
+    path_1.cubicTo(size.width,size.height*0.7761410,size.width*0.9513988,size.height,size.width*0.6129017,size.height);
+    path_1.cubicTo(size.width*0.2744064,size.height,0,size.height*0.7761410,0,size.height*0.5000000);
+    path_1.cubicTo(0,size.height*0.2238577,size.width*0.2744064,0,size.width*0.6129017,0);
+    path_1.cubicTo(size.width*0.9513988,0,size.width,size.height*0.2238577,size.width,size.height*0.5000000);
+    path_1.close();
+
+    Paint paint_1_fill = Paint()..style=PaintingStyle.fill;
+    paint_1_fill.color = Color(0xffC5CAFB).withOpacity(1.0);
+    canvas.drawPath(path_1,paint_1_fill);
+
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return true;
+  }
+}

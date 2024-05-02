@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
+import 'package:video_player/video_player.dart';
 
 class DailogAlertFun{
   static Future<void> showMyDialog({required  String daliogContent ,required  String  actionName,required BuildContext context,required VoidCallback onTap}) async {
@@ -36,4 +37,26 @@ class DailogAlertFun{
     },
   );
 }
+}
+class DailogAlertFun2{
+  static Future<void> showMyDialog({required BuildContext context,required VideoPlayerController controller }) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: Scaffold(
+            body: Center(
+            child: controller.value.isInitialized
+            ? AspectRatio(
+            aspectRatio: controller.value.aspectRatio,
+            child: VideoPlayer(controller),
+                  )
+            : Container(),
+                  ),
+          )
+        );
+      },
+    );
+  }
 }

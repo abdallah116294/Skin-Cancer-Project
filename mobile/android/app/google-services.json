@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "993615950310",
+    "project_id": "skinyapp",
+    "storage_bucket": "skinyapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:993615950310:android:1ae1071b73123e003da627",
+        "android_client_info": {
+          "package_name": "com.example.mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCxlHpE3uwcijXz6-_4ffntZ4rbHIQBDps"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

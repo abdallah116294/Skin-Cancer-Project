@@ -24,6 +24,16 @@ class AppColor {
   static Color error = Colors.red;
   static Color hintText = const Color.fromRGBO(124, 124, 124, 1);
   static Color signUptext = const Color.fromRGBO(218, 128, 215, 1);
+  static Color containerColor=const Color(0xffD6D9F4);
+  static Color nameColor=const Color(0xff939393);
+  static Color containerColor2=const Color(0xffC5CAFB);
+  static Color doctorTextColor=const Color(0xff6069C0);
+  static Color starColor=const Color(0xff1938D7);
+  static Color navBarItemColor=const Color(0xffDB9DD9);
+  static const IconData medical_services_outlined = IconData(0xf1be, fontFamily: 'MaterialIcons');
+  static const IconData location_pin = IconData(0xe3ac, fontFamily: 'MaterialIcons');
+
+
 }
 //rgba(167, 174, 249, 1)
 //background: linear-gradient(96.64deg, #67ACA4 -13.03%, #ABA1E9 55.21%);
