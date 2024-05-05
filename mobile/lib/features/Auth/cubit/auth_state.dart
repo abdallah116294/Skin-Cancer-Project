@@ -44,5 +44,6 @@ class AddRoleSuccesState extends AuthState {
 
 class AddRoleErrorState extends AuthState {
   final String error;
-  const AddRoleErrorState({required this.error}); 
+  const AddRoleErrorState({required this.error});
+
 }

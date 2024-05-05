@@ -1,9 +1,8 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -37,10 +36,11 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
-           SizedBox(
-            height: 150.h,
+           verticalSpacing(
+             150
           ),
           Lottie.asset(AssetsManager.cancerSplash),
         ],
