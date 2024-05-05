@@ -59,7 +59,7 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 height: 25.h,
               ),
               CustomButton(
-                  buttoncolor: AppColor.buttonColor,
+                  buttoncolor: AppColor.primaryColor,
                   width: 317.w,
                   height: 61.h,
                   buttonName: StringManager.signIn,
@@ -79,7 +79,7 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 onTap: () {
                   context.pushNamed(Routes.signUpScreenRoutes,arguments: roles);
                 },
-                textColor: AppColor.buttonColor,
+                textColor: AppColor.primaryColor,
                 white: true,
               )
             ],

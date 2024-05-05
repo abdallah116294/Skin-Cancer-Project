@@ -20,15 +20,20 @@ class DoubleText extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          firstText,
-          style:  TextStyles.font16GreyW400
+            firstText,
+            style:  TextStyles.font16BlackW400.copyWith(
+              color: Colors.black.withOpacity(.5)
+            )
         ),
+
         InkWell(
+
           onTap: onTap,
           child: Text(
-            secondText,
-            style:  TextStyles.font18PinkW500 ),
-          ),
+              maxLines: 2,
+              secondText,
+              style:  TextStyles.font18PrimaryW500 ),
+        ),
 
       ],
     );

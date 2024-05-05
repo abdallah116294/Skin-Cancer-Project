@@ -9,6 +9,15 @@ class TextStyles {
     fontSize: 20.sp,
     fontWeight: FontWeight.w700,
   );
+  static TextStyle font26BlackW700 = TextStyle(
+    color: Colors.black,
+    fontSize: 26.sp,
+    fontWeight: FontWeight.w700,
+  );  static TextStyle font24PrimaryW700 = TextStyle(
+    color: AppColor.primaryColor,
+    fontSize: 26.sp,
+    fontWeight: FontWeight.w700,
+  );
   static TextStyle font20whiteW700 = TextStyle(
     fontSize: 20.sp,
     color: Colors.white,
@@ -16,12 +25,12 @@ class TextStyles {
   );
   static TextStyle font22MoveW700 = TextStyle(
     fontSize: 22.sp,
-    color: AppColor.buttonColor,
+    color: AppColor.primaryColor,
     fontWeight: FontWeight.w700,
   );
   static TextStyle font20MoveW700 = TextStyle(
     fontSize: 20.sp,
-    color: AppColor.buttonColor,
+    color: AppColor.primaryColor,
     fontWeight: FontWeight.w700,
   );
   static TextStyle font20GreyW700 = TextStyle(
@@ -34,13 +43,12 @@ class TextStyles {
     fontSize: 15.sp,
     fontWeight: FontWeight.w400,
   );
-  static TextStyle font16GreyW400 = TextStyle(
-    color: Colors.grey,
-    fontSize: 16.sp,
+  static TextStyle font16BlackW400 = TextStyle(
+    color:  Colors.black,    fontSize: 16.sp,
     fontWeight: FontWeight.w500,
   );
-  static TextStyle font18PinkW500 = TextStyle(
-    color: AppColor.signUptext,
+  static TextStyle font18PrimaryW500 = TextStyle(
+    color: AppColor.primaryColor,
     fontSize: 18.sp,
     fontWeight: FontWeight.w500,
   );
@@ -64,13 +72,7 @@ class TextStyles {
     color: Colors.black,
   );
   static TextStyle font15BlackW500 = TextStyle(
-      fontSize: 15.sp,
-      fontWeight: FontWeight.w500,
-      color: Colors.black
-  );
+      fontSize: 15.sp, fontWeight: FontWeight.w500, color: Colors.black);
   static TextStyle font12BlackW400 = TextStyle(
-      fontSize: 12.sp,
-      fontWeight: FontWeight.w400,
-      color: Colors.black
-  );
+      fontSize: 12.sp, fontWeight: FontWeight.w400, color: Colors.black);
 }

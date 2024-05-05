@@ -1,4 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <sitemanifest>
-  <IisApp path="D:\AWork\GraduationProjectSkinCancer\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\" />
+  <IisApp path="D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\" />
 </sitemanifest>

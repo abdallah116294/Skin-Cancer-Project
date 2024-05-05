@@ -1,5 +1,3 @@
-import 'dart:developer';
-import 'dart:math';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -9,6 +7,8 @@ import 'package:mobile/core/widgets/error_text_widgte.dart';
 import 'package:mobile/features/Auth/data/model/add_role_respons.dart';
 import 'package:mobile/features/Auth/data/model/user_model.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
+
+import '../data/model/add_role_response.dart';
 
 part 'auth_state.dart';
 
@@ -91,4 +91,16 @@ class AuthCubit extends Cubit<AuthState> {
   Widget showErrorText() {
     return ErrorTextWidget(errormessage: autherror);
   }
+
+
+
+  Future<void>addRole(String roleName,String userName)async{
+    try{
+      Either<String,AddRoleRespons>response=await authRepo.addRole(roleName, userName);
+      emit(response.fold((l) => AddRoleErrorState(error: extractErrorMessage(l)), (r) =>AddRoleSuccesState(respons: r) ));
+    }catch(error){
+      emit(AddRoleErrorState(error: extractErrorMessage(error.toString())));
+    }
+  }
+
 }
