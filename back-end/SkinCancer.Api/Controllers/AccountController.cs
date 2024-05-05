@@ -13,6 +13,9 @@ using System.ComponentModel.DataAnnotations;
 using SkinCancer.Services.AuthServices;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Microsoft.AspNetCore.DataProtection;
+using System.Security.Claims;
+using System.Net.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace SkinCancer.Api.Controllers
 {
@@ -27,9 +30,10 @@ namespace SkinCancer.Api.Controllers
         private readonly IDataProtector protector;
         public AccountController(IAuthService authService,
                                  UserManager<ApplicationUser> userManager,
-                                 IEmailSender emailSender ,
+                                 IEmailSender emailSender,
                                  IHttpContextAccessor httpContext,
-                                 IDataProtectionProvider dataProtection)
+                                 IDataProtectionProvider dataProtection
+                                )
         {
             this.authService = authService;
             this.userManager = userManager;
@@ -75,13 +79,13 @@ namespace SkinCancer.Api.Controllers
                 await emailSender.SendEmailAsync(model.Email, "Confirm your email",
                     $"Please confirm your account by <a href='{encodedUrl}'>clicking here</a>.");
 
-
                 return Ok("Please Confirm Your Account");
 
             }
             catch
             {
                 var user = await userManager.FindByEmailAsync(model.Email);
+
                 var deleteResult = await userManager.DeleteAsync(user);
 
                 if (!deleteResult.Succeeded)
@@ -136,35 +140,58 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpPost("ForgetPassword")]
-        public async Task<IActionResult> ForgetPassword([EmailAddress, Required] string email)
+        public async Task<IActionResult> ForgetPassword(string email)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await authService.ForgetPassword(email);
+            var user = await userManager.FindByEmailAsync(email);
+            var callBackUrl = await GenerateResetPasswordUrl(user.Id);
+
+            var result = await authService.ForgetPassword(email , callBackUrl);
+
             if (!result.IsSucceeded)
             {
                 return BadRequest(result.Message);
             }
+            
+            //httpContext.HttpContext.Response.Cookies.Append("UserId",user.Id);
+            Response.Cookies.Append("UserId",user.Id, new CookieOptions
+            {
+                Secure = true,
+                HttpOnly = true,
+                Expires = DateTime.UtcNow.AddMinutes(10).ToLocalTime()
+
+            });
 
             string userId = result.Message;
-            var callBackUrl = await GenerateResetPasswordUrl(userId);
-            var encodedUrl = HtmlEncoder.Default.Encode(callBackUrl);
 
-            await emailSender.SendEmailAsync(email, "Reset Password",
-                $"To Reset Password <a href='{encodedUrl}'>clicking here</a>.");
+            //var encodedUrl = HtmlEncoder.Default.Encode(callBackUrl);
+
+            await emailSender.SendEmailAsync(email, callBackUrl, "Confirm Code Please");
 
             return Ok("Check Your Email To Reset Password");
 
         }
 
-        [HttpPost("ResetPassword/{userId}/{code}")]
-        public async Task<IActionResult> ResetPassword(
-            string userId, string code, string newPassword)
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordDto dto)
         {
-            var result = await authService.ResetPasswordAsync(userId, code, newPassword);
+           
+           var userId =  Request.Cookies["UserId"];
+            
+            if (string.IsNullOrEmpty(userId))
+                return BadRequest("Send Code Again!");
+
+            if (userId == null)
+            {
+                return BadRequest("User ID not found");
+            }
+
+            var result = await authService.ResetPasswordAsync(userId, dto.Code, dto.newPassword);
+
             if (!result.IsSucceeded)
             {
                 return BadRequest(result.Message);
@@ -200,10 +227,10 @@ namespace SkinCancer.Api.Controllers
         {
             var user = await userManager.FindByEmailAsync(email);
             var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = /*WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));*/
-                    protector.Protect(code);
+            code = protector.Protect(code);
 
             var request = httpContext.HttpContext.Request;
+
             var callbackUrl = request.Scheme + "://" + request.Host +
                                     Url.Action("ConfirmEmail", "Account",
                                     new { userId = user.Id, code = code});
@@ -213,17 +240,12 @@ namespace SkinCancer.Api.Controllers
         private async Task<string> GenerateResetPasswordUrl(string userId)
         {
             var user = await userManager.FindByIdAsync(userId);
-            var code = await userManager.GeneratePasswordResetTokenAsync(user);
 
-            code = /*WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));*/
-                    protector.Protect(code);
-
-            var request = httpContext.HttpContext.Request;
-            var callbackUrl = request.Scheme + "://" + request.Host +
-                                    Url.Action("ResetPassword", "Account",
-                                    new { userId = userId, code = code });
-
-            return callbackUrl;
+            var random = new Random();
+            
+            var code = random.Next(0, 1000000).ToString("D6");
+            
+            return code;
         }
     }
 }

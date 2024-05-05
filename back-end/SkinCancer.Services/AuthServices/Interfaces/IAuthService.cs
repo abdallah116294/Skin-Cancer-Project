@@ -17,7 +17,7 @@ namespace SkinCancer.Services.AuthServices.Interfaces
 
         public Task<ProcessResult> EmailConfirmationAsync(string UserId, string code);
 
-        public Task<ProcessResult> ForgetPassword(string email);
+        public Task<ProcessResult> ForgetPassword(string email , string code);
 
         public Task<ProcessResult> ResetPasswordAsync(string UserId, string code , string newPassword);
 
