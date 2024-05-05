@@ -13,6 +13,7 @@ class AppButton extends StatelessWidget {
   final TextStyle? textOfButtonStyle;
   VoidCallback onTap;
   bool white;
+  final Gradient? gradient;
 
   AppButton({
     super.key,
@@ -24,7 +25,7 @@ class AppButton extends StatelessWidget {
     required this.textColor,
     required this.white,
     this.borderRadius,
-    this.textOfButtonStyle,
+    this.textOfButtonStyle, this.gradient,
   });
 
   @override
@@ -35,8 +36,9 @@ class AppButton extends StatelessWidget {
         width: width.w,
         height: height.h,
         decoration: BoxDecoration(
+          gradient: gradient,
           border: Border.all(
-            color: white ? AppColor.buttonColor : Colors.white,
+            color: white ? AppColor.primaryColor : Colors.white,
           ),
           borderRadius: BorderRadius.circular(borderRadius ?? 20.r),
           color: buttonColor,

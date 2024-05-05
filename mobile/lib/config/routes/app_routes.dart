@@ -35,15 +35,23 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (context) => const ChoseAuthFunScreen());
       case Routes.singInScreenRoutes:
-        return MaterialPageRoute(builder: (context) => const SingInScreen());
+        return MaterialPageRoute(
+            builder: (context) => SingInScreen(
+                  roles: routeSettings.arguments as Map<String, String>,
+                ));
       case Routes.forgetPasswordScreenRoutes:
         return MaterialPageRoute(builder: (context) => ForgetPasswordScreen());
       case Routes.oTPCodeScreenRoutes:
         return MaterialPageRoute(builder: (context) => OTPCodeScreen());
       case Routes.restPasswordScreenRoutes:
-        return MaterialPageRoute(builder: (context) => RestPasswordScreen());
+        return MaterialPageRoute(
+            builder: (context) =>
+                RestPasswordScreen(routeSettings.arguments as String));
       case Routes.signUpScreenRoutes:
-        return MaterialPageRoute(builder: (context)=>SignupScreen());
+        return MaterialPageRoute(
+            builder: (context) => SignupScreen(
+                  role: routeSettings.arguments as Map<String, String>,
+                ));
     }
   }
 }

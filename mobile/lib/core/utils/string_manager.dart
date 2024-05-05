@@ -9,8 +9,7 @@ class StringManager {
       "\t\t\t\tFor Skin Cancer prevention.\n";
   static const String getStarted = "Get Started";
   static const String welcomeMessage = "Welcome to our app!";
-  static const String choseUser = '\tSelect\n'
-      'You will log in as';
+  static const String choseUser = 'Select your section';
   static const String patient = "Patient";
   static const String doctor = "Doctor";
   static const String signIn = "Sign In";
