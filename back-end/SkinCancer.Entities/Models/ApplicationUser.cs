@@ -17,5 +17,7 @@ namespace SkinCancer.Entities.Models
         [Required, MinLength(3), MaxLength(30)]
         public string LastName { get; set; } = string.Empty;
 
+        public string? Code { get; set; }
+
     }
 }
