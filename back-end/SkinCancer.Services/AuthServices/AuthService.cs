@@ -103,7 +103,7 @@ namespace SkinCancer.Services.AuthServices
             return processResult;
         }
 
-        public async Task<ProcessResult> ForgetPassword(string email)
+        public async Task<ProcessResult> ForgetPassword(string email, string code)
         {
             if (string.IsNullOrEmpty(email))
             {
@@ -111,6 +111,10 @@ namespace SkinCancer.Services.AuthServices
             }
 
             var user = await userManager.FindByEmailAsync(email);
+
+            user.Code = protector.Protect(code);
+            
+            await userManager.UpdateAsync(user);
 
             if (user == null)
             {
@@ -132,28 +136,35 @@ namespace SkinCancer.Services.AuthServices
 
         public async Task<ProcessResult> ResetPasswordAsync(string UserId, string code, string newPassword)
         {
-            if (string.IsNullOrEmpty(UserId) || string.IsNullOrEmpty(newPassword) ) {
-                return new ProcessResult { Message = "Password Or User Id can't be Empty" };
-            }
 
             var user = await userManager.FindByIdAsync(UserId);
-            if (user == null)
-            {
-                return new ProcessResult { Message = "No User With This ID" };
-            }
 
-            code =/* Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));*/
-                    protector.Unprotect(code);
+            var unProtected = protector.Unprotect(user.Code);
+            
+            if (unProtected!= code)
+                return new ProcessResult { Message = "Code InCorrect!" };
 
-            var result = await userManager.ResetPasswordAsync(user,code,newPassword);
+            if (string.IsNullOrEmpty(newPassword))
+                return new ProcessResult { Message = "Write Valid Password" };
 
-            var processResult = new ProcessResult();
-            processResult.Message = result.Succeeded ? "Password Reset Successfully" :
-                                                        "Unable to Reset Password";
-            processResult.IsSucceeded = result.Succeeded;
+            var removeResult = await userManager.RemovePasswordAsync(user);
 
-            return processResult;
-        }
+            if (!removeResult.Succeeded)
+                return new ProcessResult { Message = string.Join(", ", removeResult.Errors.Select(er => er.Description)) };
+
+            var changePassword = await userManager.AddPasswordAsync(user, newPassword);
+
+            if (!changePassword.Succeeded)
+                return new ProcessResult { Message = string.Join(", ", changePassword.Errors.Select(er => er.Description)) };
+
+            var updateUser = await userManager.UpdateAsync(user);
+
+            if (!updateUser.Succeeded)
+                return new ProcessResult { Message = string.Join(", ", updateUser.Errors.Select(er => er.Description)) };
+
+
+            return new ProcessResult { IsSucceeded = true, Message = "Password Updated Successfully" };
+        } 
 
         // Done
         // Login for User and get token 
@@ -235,7 +246,7 @@ namespace SkinCancer.Services.AuthServices
                 new Claim(JwtRegisteredClaimNames.Sub , user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti , Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email , user.Email),
-                new Claim(ClaimTypes.NameIdentifier , user.Id),
+                new Claim(ClaimTypes.PrimarySid , user.Id),
             }
             .Union(userClaims).Union(roleClaim);
 

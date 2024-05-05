@@ -33,7 +33,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => const ChoseUser());
       case Routes.choseAuthFunScreenRoutes:
         return MaterialPageRoute(
-            builder: (context) => const ChoseAuthFunScreen());
+            builder: (context) =>  ChoseAuthFunScreen(roles: routeSettings.arguments as Map<String,String> ,));
       case Routes.singInScreenRoutes:
         return MaterialPageRoute(
             builder: (context) => SingInScreen(
@@ -51,7 +51,7 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (context) => SignupScreen(
                   role: routeSettings.arguments as Map<String, String>,
-                ));
+                )); 
     }
   }
 }

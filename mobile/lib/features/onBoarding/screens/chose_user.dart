@@ -42,6 +42,7 @@ class _ChoseUserState extends State<ChoseUser> {
               user: StringManager.patient,
               onTap: () {
                 //add two user role as arrguments with navigator
+
                 context.pushNamed(Routes.singInScreenRoutes,
                     arguments: {"role1": "Patient"});
                 // Navigator.pushNamed(
@@ -55,6 +56,7 @@ class _ChoseUserState extends State<ChoseUser> {
               onTap: () {
                 context.pushNamed(Routes.singInScreenRoutes,
                     arguments: {"role2": "Doctor"});
+
               },
             ),
           ],

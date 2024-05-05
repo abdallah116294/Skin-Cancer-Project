@@ -39,12 +39,11 @@ class RegisterUserIsErrorState extends AuthState {
 
 class AddRoleSuccesState extends AuthState {
   final AddRoleRespons respons;
-
   const AddRoleSuccesState({required this.respons});
 }
 
 class AddRoleErrorState extends AuthState {
   final String error;
-
   const AddRoleErrorState({required this.error});
+
 }

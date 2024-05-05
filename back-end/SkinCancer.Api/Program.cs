@@ -10,6 +10,7 @@ using SkinCancer.Services.AuthServices;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Services.DataServices;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace SkinCancer.Api
 {
     public class Program
@@ -24,6 +25,8 @@ namespace SkinCancer.Api
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+/*            builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+*/           
             builder.Services.AddDataProtection();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()

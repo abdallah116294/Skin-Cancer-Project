@@ -19,6 +19,7 @@ import 'package:mobile/injection_container.dart' as di;
 import '../cubit/auth_cubit.dart';
 
 class SignupScreen extends StatefulWidget {
+
   final Map<String, String> role;
 
   const SignupScreen({super.key, required this.role});
@@ -58,6 +59,10 @@ class _SignupScreenState extends State<SignupScreen> {
                     }
                     log(state.message.toString());
                   } else if (state is RegisterUserIsErrorState) {
+                    log(state.error);
+                  } else if (state is AddRoleSuccesState) {
+                    log(state.respons.userName);
+                  } else if (state is AddRoleErrorState) {
                     log(state.error);
                   }
                 },
@@ -185,6 +190,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                         passwordController.text,
                                                   )
                                                   .then((value) {
+
                                                 if (widget.role
                                                     .containsKey("role1")) {
                                                 } else if (widget.role
@@ -194,6 +200,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       .addRole(
                                                           "Doctor",
                                                           emailController.text
+
                                                               .split("@")[0]);
                                                 }
                                               });

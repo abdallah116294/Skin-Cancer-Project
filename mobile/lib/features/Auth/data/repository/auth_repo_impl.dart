@@ -66,5 +66,4 @@ class AuthRepoImpl implements AuthRepo {
     } on ServerException catch (error) {
       return Left(error.toString());
     }
-  }
 }
