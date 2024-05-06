@@ -45,5 +45,27 @@ class AddRoleSuccesState extends AuthState {
 class AddRoleErrorState extends AuthState {
   final String error;
   const AddRoleErrorState({required this.error});
+}
 
+class ForgetPasswordIsLoadingState extends AuthState {}
+
+class ForgetPaswordIsSuccessState extends AuthState {
+  final String messge;
+  const ForgetPaswordIsSuccessState({required this.messge});
+}
+
+class ForgetPasswordIsErrorState extends AuthState {
+  final String error;
+  const ForgetPasswordIsErrorState({required this.error});
+}
+
+class ResetPasswordIsLoadingState extends AuthState {}
+
+class ResetPasswordIsErrorState extends AuthState {
+  final message;
+  ResetPasswordIsErrorState({required this.message});
+}
+class ResetPasswordIsSuccessState extends AuthState {
+  final message;
+  ResetPasswordIsSuccessState({required this.message});
 }
