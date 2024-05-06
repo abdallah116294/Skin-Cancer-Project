@@ -1,3 +1,4 @@
+import 'dart:async';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -57,19 +58,51 @@ class AuthCubit extends Cubit<AuthState> {
         emit(RegisterUserIsErrorState(error: extractErrorMessage(left)));
       }, (r) => emit(RegisterUserIsSuccessSetate(message: r)));
     } catch (error) {
+      autherror = extractErrorMessage(error.toString());
       emit(RegisterUserIsErrorState(
           error: extractErrorMessage(error.toString())));
     }
   }
 
- Future<void>addRole(String roleName,String userName)async{
-  try{
-     Either<String,AddRoleRespons>response=await authRepo.addRole(roleName, userName);
-     emit(response.fold((l) => AddRoleErrorState(error: extractErrorMessage(l)), (r) =>AddRoleSuccesState(respons: r) ));
-  }catch(error){
-    emit(AddRoleErrorState(error: extractErrorMessage(error.toString())));
+  Future<void> addRole(String roleName, String userName) async {
+    try {
+      Either<String, AddRoleRespons> response =
+          await authRepo.addRole(roleName, userName);
+      emit(response.fold(
+          (l) => AddRoleErrorState(error: extractErrorMessage(l)),
+          (r) => AddRoleSuccesState(respons: r)));
+    } catch (error) {
+      emit(AddRoleErrorState(error: extractErrorMessage(error.toString())));
+    }
   }
- }
+
+  Future<void> forgetPasssword(String emil) async {
+    emit(ForgetPasswordIsLoadingState());
+    try {
+      Either<String, String> response = await authRepo.forgetPasssword(emil);
+      emit(response.fold(
+          (l) => ForgetPasswordIsErrorState(error: extractErrorMessage(l)),
+          (r) => ForgetPaswordIsSuccessState(messge: extractErrorMessage(r))));
+    } catch (error) {
+      emit(ForgetPasswordIsErrorState(
+          error: extractErrorMessage(error.toString())));
+    }
+  }
+
+  Future<void> resetPassword(String code, String newPassword) async {
+    emit(ResetPasswordIsLoadingState());
+    try {
+      Either<String, String> response =
+          await authRepo.resetPassword(code, newPassword);
+      emit(response.fold(
+          (l) => ResetPasswordIsErrorState(message: extractErrorMessage(l)),
+          (r) => ResetPasswordIsSuccessState(message: extractErrorMessage(r))));
+    } catch (error) {
+      emit(ResetPasswordIsErrorState(
+          message: extractErrorMessage(error.toString())));
+    }
+  }
+
   String extractErrorMessage(String errorString) {
     // Split the errorString by newline characters
     List<String> lines = errorString.split('\n');
@@ -90,5 +123,4 @@ class AuthCubit extends Cubit<AuthState> {
   Widget showErrorText() {
     return ErrorTextWidget(errormessage: autherror);
   }
-
 }

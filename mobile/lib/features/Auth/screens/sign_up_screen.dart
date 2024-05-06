@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/helper/exetentions.dart';
@@ -19,7 +20,6 @@ import 'package:mobile/injection_container.dart' as di;
 import '../cubit/auth_cubit.dart';
 
 class SignupScreen extends StatefulWidget {
-
   final Map<String, String> role;
 
   const SignupScreen({super.key, required this.role});
@@ -50,17 +50,28 @@ class _SignupScreenState extends State<SignupScreen> {
                   if (state is RegisterUserIsLoadingState) {
                     log("Loading state ");
                   } else if (state is RegisterUserIsSuccessSetate) {
-                    if (state is AddRoleSuccesState) {
-                      DailogAlertFun.showMyDialog(
+                    log(state.message.toString());
+                  } else if (state is RegisterUserIsErrorState) {
+                    DailogAlertFun.showMyDialog(
+                        daliogContent: state.error.toString(),
+                        actionName: "Go back",
+                        context: context,
+                        onTap: () {});
+                    log(state.error);
+                  } else if (state is AddRoleSuccesState) {
+                         if(widget.role.containsKey('role1')){
+                       DailogAlertFun.showMyDialog(
                           daliogContent: "Please check your email",
                           actionName: "Go Home",
                           context: context,
                           onTap: () {});
-                    }
-                    log(state.message.toString());
-                  } else if (state is RegisterUserIsErrorState) {
-                    log(state.error);
-                  } else if (state is AddRoleSuccesState) {
+                     }else if(widget.role.containsKey('role2')){
+                       DailogAlertFun.showMyDialog(
+                          daliogContent: "Please Doctor check your email",
+                          actionName: "Go Home",
+                          context: context,
+                          onTap: () {});
+                     }
                     log(state.respons.userName);
                   } else if (state is AddRoleErrorState) {
                     log(state.error);
@@ -109,7 +120,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                     },
                                     textInputType: TextInputType.emailAddress,
                                   ),
-                                  verticalSpacing(20),
+                                  verticalSpacing(3),
+                                  verticalSpacing(17),
                                   CustomTextFormFiled(
                                     controller: phoneNumController,
                                     inputFiled: "Enter your phone number",
@@ -165,12 +177,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                           onTap: () {
                                             if (_formKey.currentState!
                                                 .validate()) {
-                                              log(nameController.text
-                                                  .split(" ")[0]);
-                                              log(nameController.text
-                                                  .split(" ")[1]);
-                                              log(emailController.text
-                                                  .split("@")[0]);
                                               context
                                                   .read<AuthCubit>()
                                                   .userRegister(
@@ -190,7 +196,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                                         passwordController.text,
                                                   )
                                                   .then((value) {
-
                                                 if (widget.role
                                                     .containsKey("role1")) {
                                                 } else if (widget.role
@@ -200,7 +205,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                                       .addRole(
                                                           "Doctor",
                                                           emailController.text
-
                                                               .split("@")[0]);
                                                 }
                                               });
