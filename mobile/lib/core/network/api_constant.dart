@@ -4,4 +4,6 @@ class ApiConstant {
   static const String registerEndPoint = '/api/Account/Register';
   static const String confirmEmailEndPoint = "/api/Account/ConfirmEmail";
   static const String addRoleEndPoint = "/api/Account/AddRole";
+  static const String forgetPasswordEndPoint = '/api/Account/ForgetPassword';
+  static const String resetPasswordEndPoint = '/api/Account/ResetPassword';
 }

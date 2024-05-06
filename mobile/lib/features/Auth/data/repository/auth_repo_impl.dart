@@ -67,4 +67,32 @@ class AuthRepoImpl implements AuthRepo {
       return Left(error.toString());
     }
   }
+
+  @override
+  Future<Either<String, String>> forgetPasssword(String email) async {
+    try {
+      final encodeEmail = Uri.encodeComponent(email);
+      final response = await apiConsumer.post(
+        ApiConstant.forgetPasswordEndPoint + "?email=$encodeEmail",
+      );
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, String>> resetPassword(
+      String code, String newPassword) async {
+    try {
+      final response = await apiConsumer.post(ApiConstant.resetPasswordEndPoint,queryParameters: {
+        "code":code,
+        "newPassword":newPassword,
+      });
+      return Right(response);
+    } on ServerException catch (e) {
+      return Left(e.toString());
+    }
+  }
 }
+//http://skincancerdetectionapiv2.runasp.net/api/Account/ResetPassword?Code=014870&newPassword=Ahmed%40123
