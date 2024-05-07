@@ -1,11 +1,5 @@
 ﻿using SkinCancer.Entities.Models;
 using SkinCancer.Entities.UserDtos;
-using SkinCancer.Entities.AuthModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 
 namespace SkinCancer.Entities.MappingProfiles
