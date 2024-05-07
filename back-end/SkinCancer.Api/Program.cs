@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using System;
 using SkinCancer.Entities.Models;
 using SkinCancer.Services.AuthServices.Interfaces;
 using SkinCancer.Services.AuthServices;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Services.DataServices;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 namespace SkinCancer.Api
 {
     public class Program

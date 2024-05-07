@@ -129,14 +129,9 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Code",
-        "Type": "System.String",
-        "IsRequired": false
-      },
-      {
-        "Name": "newPassword",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "dto",
+        "Type": "SkinCancer.Entities.UserDtos.ResetPasswordDto",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": []
