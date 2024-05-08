@@ -3,14 +3,19 @@
   "WorkspaceRootPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{08038740-31F4-4A2C-81E1-D1E80EB953F2}|..\\SkinCancer.Services\\SkinCancer.Services.csproj|d:\\awork\\skincancermyrepository\\back-end\\skincancer.services\\authservices\\emailsender.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{00C65314-D9D7-4A33-9D68-3539DEEC3316}|SkinCancer.Api.csproj|d:\\awork\\skincancermyrepository\\back-end\\skincancer.api\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{00C65314-D9D7-4A33-9D68-3539DEEC3316}|SkinCancer.Api.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{08038740-31F4-4A2C-81E1-D1E80EB953F2}|..\\SkinCancer.Services\\SkinCancer.Services.csproj|d:\\awork\\skincancermyrepository\\back-end\\skincancer.services\\dataservices\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{00C65314-D9D7-4A33-9D68-3539DEEC3316}|SkinCancer.Api.csproj|d:\\awork\\skincancermyrepository\\back-end\\skincancer.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{00C65314-D9D7-4A33-9D68-3539DEEC3316}|SkinCancer.Api.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00C65314-D9D7-4A33-9D68-3539DEEC3316}|SkinCancer.Api.csproj|d:\\awork\\skincancermyrepository\\back-end\\skincancer.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00C65314-D9D7-4A33-9D68-3539DEEC3316}|SkinCancer.Api.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{08038740-31F4-4A2C-81E1-D1E80EB953F2}|..\\SkinCancer.Services\\SkinCancer.Services.csproj|d:\\awork\\skincancermyrepository\\back-end\\skincancer.services\\authservices\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -20,7 +25,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -28,41 +33,54 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "EmailSender.cs",
-              "DocumentMoniker": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\AuthServices\\EmailSender.cs",
-              "RelativeDocumentMoniker": "..\\SkinCancer.Services\\AuthServices\\EmailSender.cs",
-              "ToolTip": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\AuthServices\\EmailSender.cs*",
-              "RelativeToolTip": "..\\SkinCancer.Services\\AuthServices\\EmailSender.cs*",
-              "ViewState": "AQIAAAYAAAAAAAAAAAAAABEAAAA1AAAA",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAABQAAABNAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-07T03:00:03.789Z",
+              "WhenOpened": "2024-05-08T09:07:28.22Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "AccountController.cs",
               "DocumentMoniker": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\Controllers\\AccountController.cs",
               "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
               "ToolTip": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\Controllers\\AccountController.cs",
               "RelativeToolTip": "Controllers\\AccountController.cs",
-              "ViewState": "AQIAADoAAAAAAAAAAAAAADUAAABFAAAA",
+              "ViewState": "AQIAAJEAAAAAAAAAAIAxwJkAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-07T01:24:45.713Z",
+              "WhenOpened": "2024-05-08T09:05:45.086Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ApplicationDbContext.cs",
-              "DocumentMoniker": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\DataServices\\ApplicationDbContext.cs",
-              "RelativeDocumentMoniker": "..\\SkinCancer.Services\\DataServices\\ApplicationDbContext.cs",
-              "ToolTip": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\DataServices\\ApplicationDbContext.cs",
-              "RelativeToolTip": "..\\SkinCancer.Services\\DataServices\\ApplicationDbContext.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAAAAAA",
+              "DocumentIndex": 3,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\AuthServices\\AuthService.cs",
+              "RelativeDocumentMoniker": "..\\SkinCancer.Services\\AuthServices\\AuthService.cs",
+              "ToolTip": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\AuthServices\\AuthService.cs",
+              "RelativeToolTip": "..\\SkinCancer.Services\\AuthServices\\AuthService.cs",
+              "ViewState": "AQIAAJgAAAAAAAAAAIAxwKcAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-05-07T02:52:26.757Z",
+              "WhenOpened": "2024-05-08T09:05:45.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAcwA0AAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-05-08T09:05:50.969Z",
               "EditorCaption": ""
             }
           ]

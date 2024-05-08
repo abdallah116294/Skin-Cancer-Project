@@ -18,7 +18,7 @@ namespace SkinCancer.Api
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(
-                  builder.Configuration.GetConnectionString("DefultConnection")
+                  builder.Configuration.GetConnectionString("defaultconnection")
                 ));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

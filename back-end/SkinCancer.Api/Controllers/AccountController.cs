@@ -150,13 +150,7 @@ namespace SkinCancer.Api.Controllers
             }
             
             //httpContext.HttpContext.Response.Cookies.Append("UserId",user.Id);
-            Response.Cookies.Append("UserId",user.Id, new CookieOptions
-            {
-                Secure = true,
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddMinutes(10).ToLocalTime()
-
-            });
+            Response.Cookies.Append("UserId",user.Id);
 
             string userId = result.Message;
 
