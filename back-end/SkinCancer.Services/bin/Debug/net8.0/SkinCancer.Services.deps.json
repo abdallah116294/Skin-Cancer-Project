@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v8.0": {
       "SkinCancer.Services/1.0.0": {
         "dependencies": {
+          "AutoMapper": "13.0.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.3",
           "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "8.0.3",
           "Microsoft.EntityFrameworkCore": "8.0.3",
@@ -16,6 +17,7 @@
           "Microsoft.EntityFrameworkCore.Tools": "8.0.3",
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.2",
           "SkinCancer.Entities": "1.0.0",
+          "SkinCancer.Repositories": "1.0.0",
           "System.IdentityModel.Tokens.Jwt": "7.5.1"
         },
         "runtime": {
@@ -1950,6 +1952,14 @@
         "runtime": {
           "SkinCancer.Entities.dll": {}
         }
+      },
+      "SkinCancer.Repositories/1.0.0": {
+        "dependencies": {
+          "SkinCancer.Entities": "1.0.0"
+        },
+        "runtime": {
+          "SkinCancer.Repositories.dll": {}
+        }
       }
     }
   },
@@ -3094,6 +3104,11 @@
       "hashPath": "system.windows.extensions.7.0.0.nupkg.sha512"
     },
     "SkinCancer.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "SkinCancer.Repositories/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

@@ -35,7 +35,6 @@ namespace SkinCancer.Api.Controllers
         }
 
 
-
         [HttpGet("ConfirmEmail")]
         public async Task<IActionResult> ConfirmEmail([FromQuery]ConfirmDto dto)
         {
@@ -48,7 +47,6 @@ namespace SkinCancer.Api.Controllers
 
             return Ok(result.Message);
         }
-
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterModel model)
@@ -234,6 +232,5 @@ namespace SkinCancer.Api.Controllers
             return code.ToString();
         }
 
-        // code = 671048‏
     }
 }

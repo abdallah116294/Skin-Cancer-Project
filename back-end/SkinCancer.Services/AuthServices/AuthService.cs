@@ -65,7 +65,7 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { IsSucceeded = false, Message = errorMessage };
             }
 
-            await userManager.AddToRoleAsync(user, "PATIENT");
+            await userManager.AddToRoleAsync(user, "Patient");
 
             return new ProcessResult { IsSucceeded = true, Message = "Added Successfully" };
         }

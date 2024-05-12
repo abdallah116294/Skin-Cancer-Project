@@ -226,7 +226,9 @@ D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\Microsoft.Data.SqlClient.SNI.dll
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Entities.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Repositories.dll
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Services.dll
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Entities.pdb
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Services.pdb
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Repositories.pdb
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\PubTmp\Out\SkinCancer.Api.deps.json

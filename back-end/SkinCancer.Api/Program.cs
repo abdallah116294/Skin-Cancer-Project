@@ -8,7 +8,11 @@ using SkinCancer.Services.AuthServices.Interfaces;
 using SkinCancer.Services.AuthServices;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using SkinCancer.Services.DataServices;
+using SkinCancer.Entities;
+using SkinCancer.Repositories.Interface;
+using SkinCancer.Services.DoctorServices;
+using SkinCancer.Repositories.Repository;
+using SkinCancer.Services.ClinicServices;
 namespace SkinCancer.Api
 {
     public class Program
@@ -18,9 +22,20 @@ namespace SkinCancer.Api
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(
-                  builder.Configuration.GetConnectionString("defaultconnection")
+                  builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
+            builder.Services.AddLogging(cfg =>
+            {
+                cfg.AddDebug();
+                cfg.AddConsole();
+            });
 
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IDoctorService, DoctorService>();
+            builder.Services.AddTransient<IClinicService, ClinicService>();
+            builder.Services.AddScoped<IClinicRepository , ClinicRepository>();
+           // builder.Services.AddScoped<IAppointmentClinicService , AppointmentClinicService>();
+                                       
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 /*            builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
