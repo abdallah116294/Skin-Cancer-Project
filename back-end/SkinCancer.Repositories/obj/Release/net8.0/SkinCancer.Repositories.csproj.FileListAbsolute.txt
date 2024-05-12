@@ -1,0 +1,16 @@
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\bin\Release\net8.0\SkinCancer.Repositories.deps.json
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\bin\Release\net8.0\SkinCancer.Repositories.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\bin\Release\net8.0\SkinCancer.Repositories.pdb
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\bin\Release\net8.0\SkinCancer.Entities.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\bin\Release\net8.0\SkinCancer.Entities.pdb
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.csproj.AssemblyReference.cache
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.GeneratedMSBuildEditorConfig.editorconfig
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.AssemblyInfoInputs.cache
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.AssemblyInfo.cs
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.csproj.CoreCompileInputs.cache
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.sourcelink.json
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCanc.74490321.Up2Date
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\refint\SkinCancer.Repositories.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\SkinCancer.Repositories.pdb
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Repositories\obj\Release\net8.0\ref\SkinCancer.Repositories.dll

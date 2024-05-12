@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SkinCancer.Entities.Models;
+using System.Reflection.Emit;
 
-namespace SkinCancer.Services.DataServices
+namespace SkinCancer.Entities
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
@@ -16,6 +18,13 @@ namespace SkinCancer.Services.DataServices
             base.OnModelCreating(builder);
 
 
+            builder.Ignore<IdentityUser>();
+            builder.Ignore<IdentityRole>();
+
+
         }
+
+        public DbSet<Clinic> Clinics { get; set; }
+        public DbSet<Appointment> Appointments { get; set; }
     }
 }
