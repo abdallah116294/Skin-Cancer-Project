@@ -9,10 +9,18 @@ import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/features/onBoarding/widgets/clipper.dart';
 import 'package:pinput/pinput.dart';
 
-class OTPCodeScreen extends StatelessWidget {
+import '../../../core/cach_helper/cach_helper.dart';
+
+class OTPCodeScreen extends StatefulWidget {
   OTPCodeScreen({super.key});
 
+  @override
+  State<OTPCodeScreen> createState() => _OTPCodeScreenState();
+}
+
+class _OTPCodeScreenState extends State<OTPCodeScreen> {
   final otpController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override

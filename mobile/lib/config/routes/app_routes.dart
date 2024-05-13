@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
 import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
 import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
@@ -15,11 +16,13 @@ import 'package:mobile/features/onBoarding/screens/on_boarding_screen.dart';
 import 'package:mobile/features/profile/profile_screen.dart';
 import 'package:mobile/features/splash/splash_screen.dart';
 
+import '../../features/Auth/cubit/auth_cubit.dart';
 import '../../features/bottom_nav/bottom_nav.dart';
 import '../../features/disease_info/screens/facts_statistics.dart';
 import '../../features/disease_info/screens/prevention.dart';
 import '../../features/disease_info/screens/risk_factors.dart';
 import '../../features/disease_info/screens/what_is_cancer.dart';
+import 'package:mobile/injection_container.dart' as di;
 
 class Routes {
   static const String SplashScreenRoutes = "/SplashScreen";
@@ -70,8 +73,13 @@ class AppRoutes {
         return MaterialPageRoute(builder: (context) => OTPCodeScreen());
       case Routes.restPasswordScreenRoutes:
         return MaterialPageRoute(
-            builder: (context) =>
-                RestPasswordScreen(routeSettings.arguments as String));
+          builder: (context) => BlocProvider(
+            create: (context) => di.sl<AuthCubit>(),
+            child: RestPasswordScreen(
+              routeSettings.arguments as String ,
+            ),
+          ),
+        );
       case Routes.signUpScreenRoutes:
         return MaterialPageRoute(
             builder: (context) => SignupScreen(
