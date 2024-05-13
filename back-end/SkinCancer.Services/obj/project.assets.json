@@ -2832,6 +2832,19 @@
         "runtime": {
           "bin/placeholder/SkinCancer.Entities.dll": {}
         }
+      },
+      "SkinCancer.Repositories/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "SkinCancer.Entities": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SkinCancer.Repositories.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SkinCancer.Repositories.dll": {}
+        }
       }
     }
   },
@@ -7799,10 +7812,16 @@
       "type": "project",
       "path": "../SkinCancer.Entities/SkinCancer.Entities.csproj",
       "msbuildProject": "../SkinCancer.Entities/SkinCancer.Entities.csproj"
+    },
+    "SkinCancer.Repositories/1.0.0": {
+      "type": "project",
+      "path": "../SkinCancer.Repositories/SkinCancer.Repositories.csproj",
+      "msbuildProject": "../SkinCancer.Repositories/SkinCancer.Repositories.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net8.0": [
+      "AutoMapper >= 13.0.1",
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.3",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 8.0.3",
       "Microsoft.EntityFrameworkCore >= 8.0.3",
@@ -7811,6 +7830,7 @@
       "Microsoft.EntityFrameworkCore.Tools >= 8.0.3",
       "Microsoft.VisualStudio.Web.CodeGeneration.Design >= 8.0.2",
       "SkinCancer.Entities >= 1.0.0",
+      "SkinCancer.Repositories >= 1.0.0",
       "System.IdentityModel.Tokens.Jwt >= 7.5.1"
     ]
   },
@@ -7849,6 +7869,9 @@
           "projectReferences": {
             "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Entities\\SkinCancer.Entities.csproj": {
               "projectPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Entities\\SkinCancer.Entities.csproj"
+            },
+            "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Repositories\\SkinCancer.Repositories.csproj": {
+              "projectPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Repositories\\SkinCancer.Repositories.csproj"
             }
           }
         }
@@ -7868,6 +7891,10 @@
       "net8.0": {
         "targetAlias": "net8.0",
         "dependencies": {
+          "AutoMapper": {
+            "target": "Package",
+            "version": "[13.0.1, )"
+          },
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
             "version": "[8.0.3, )"

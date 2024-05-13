@@ -1,21 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SkinCancer.Entities.Models;
 using SkinCancer.Services.AuthServices.Interfaces;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Entities.UserDtos;
-using Microsoft.AspNetCore.WebUtilities;
-using System.Text;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel.DataAnnotations;
-using SkinCancer.Services.AuthServices;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using Microsoft.AspNetCore.DataProtection;
-using System.Security.Claims;
-using System.Net.Http;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace SkinCancer.Api.Controllers
 {
@@ -39,9 +31,8 @@ namespace SkinCancer.Api.Controllers
             this.userManager = userManager;
             this.emailSender = emailSender;
             this.httpContext = httpContext;
-            protector = dataProtection.CreateProtector("12345");
+            protector = dataProtection.CreateProtector("75DD1BB4-17AF-4504-B4FF-96BD6DF6E935");
         }
-
 
 
         [HttpGet("ConfirmEmail")]
@@ -56,7 +47,6 @@ namespace SkinCancer.Api.Controllers
 
             return Ok(result.Message);
         }
-
 
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterModel model)
@@ -158,13 +148,7 @@ namespace SkinCancer.Api.Controllers
             }
             
             //httpContext.HttpContext.Response.Cookies.Append("UserId",user.Id);
-            Response.Cookies.Append("UserId",user.Id, new CookieOptions
-            {
-                Secure = true,
-                HttpOnly = true,
-                Expires = DateTime.UtcNow.AddMinutes(10).ToLocalTime()
-
-            });
+            Response.Cookies.Append("UserId",user.Id);
 
             string userId = result.Message;
 
@@ -177,7 +161,7 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordDto dto)
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
            
            var userId =  Request.Cookies["UserId"];
@@ -245,7 +229,8 @@ namespace SkinCancer.Api.Controllers
             
             var code = random.Next(0, 1000000).ToString("D6");
             
-            return code;
+            return code.ToString();
         }
+
     }
 }

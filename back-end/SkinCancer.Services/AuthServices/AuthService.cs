@@ -2,22 +2,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using SkinCancer.Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Services.AuthServices.Interfaces;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.UserDtos;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.IdentityModel.Tokens;
 namespace SkinCancer.Services.AuthServices
 {
     public class AuthService : IAuthService
@@ -39,7 +32,7 @@ namespace SkinCancer.Services.AuthServices
             this.configuration = configuration;
             this.mapper = mapper;
             this.emailSender = emailSender;
-            protector = dataProtection.CreateProtector("12345");
+            protector = dataProtection.CreateProtector("75DD1BB4-17AF-4504-B4FF-96BD6DF6E935");
         }
 
         // Done
@@ -51,20 +44,21 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { Message = "This Email is Already Exists" };
             }
 
-            if (await userManager.FindByNameAsync(model.UserName) != null){
+            if (await userManager.FindByNameAsync(model.UserName) != null)
+            {
                 return new ProcessResult { Message = "This UserName Already Exitss" };
             }
             // Instead of assign each attribute in model to user attributes
             ApplicationUser user = mapper.Map<ApplicationUser>(model);
 
             // Adding user (AppUser) + model.Password to call HashedPassword
-            var result = await userManager.CreateAsync(user,model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
                 string errorMessage = "";
 
-                foreach(var itemError in result.Errors)
+                foreach (var itemError in result.Errors)
                 {
                     errorMessage += $"{itemError.Description} , ";
                 }
@@ -138,10 +132,17 @@ namespace SkinCancer.Services.AuthServices
         {
 
             var user = await userManager.FindByIdAsync(UserId);
-
+//773265‏
+// 282816‏
             var unProtected = protector.Unprotect(user.Code);
-            
-            if (unProtected!= code)
+            //998427‏ 
+            // there is a character added into the code so we have to check if there is something was 
+            // added or not
+
+            code = code.Length > 6 ? code.Substring(0, 6) : code;
+
+           
+            if (unProtected != code)
                 return new ProcessResult { Message = "Code InCorrect!" };
 
             if (string.IsNullOrEmpty(newPassword))
@@ -163,7 +164,8 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { Message = string.Join(", ", updateUser.Errors.Select(er => er.Description)) };
 
 
-            return new ProcessResult { IsSucceeded = true, Message = "Password Updated Successfully" };
+            return new ProcessResult { IsSucceeded = true,
+                Message = $"Password Updated Successfully" };
         } 
 
         // Done

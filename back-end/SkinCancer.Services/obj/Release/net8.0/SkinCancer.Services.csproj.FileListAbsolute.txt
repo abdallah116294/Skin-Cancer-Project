@@ -51,3 +51,5 @@ D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Services\obj\Release\net8.0\
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Services\obj\Release\net8.0\SkinCancer.Services.pdb
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Services\obj\Release\net8.0\SkinCancer.Services.genruntimeconfig.cache
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Services\obj\Release\net8.0\ref\SkinCancer.Services.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Services\bin\Release\net8.0\SkinCancer.Repositories.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Services\bin\Release\net8.0\SkinCancer.Repositories.pdb

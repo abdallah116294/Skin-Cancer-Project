@@ -50,11 +50,15 @@ class AISection extends StatelessWidget {
                     white: false)
               ],
             ),
-            horizontalSpacing(12),
-            Image.asset(
-              fit: BoxFit.cover,
-              "assets/image/clinic.png",
-            )
+            horizontalSpacing(30),
+           ClipOval(
+                  child: SizedBox(
+                      width: 150.w,
+                      height: 160.h,
+                      child: Image.network(
+                          fit: BoxFit.cover,
+                          "https://i.pinimg.com/564x/09/4f/16/094f164882a08da22b56b246a2f4c2ec.jpg")),
+                ),
           ],
         ),
       ),

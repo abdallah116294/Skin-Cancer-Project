@@ -1,11 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SkinCancer.Services.AuthServices
 {
@@ -13,8 +8,8 @@ namespace SkinCancer.Services.AuthServices
     {
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            var fromMail = "amargamal832909@gmail.com";
-            var fromPassword = "hrpf rkfw bvea qrws";// Replace with an app-specific password if using 2FA
+            var fromMail = "skin.cancer.detect@gmail.com";
+            var fromPassword = "mjzr wnrn xxtx nfkw";// Replace with an app-specific password if using 2FA
 
             var message = new MailMessage();
             message.From = new MailAddress(fromMail);
