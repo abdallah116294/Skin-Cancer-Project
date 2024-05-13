@@ -27,6 +27,7 @@ namespace SkinCancer.Api
                 ));
             builder.Services.AddLogging(cfg =>
             {
+                //auth
                 cfg.AddDebug();
                 cfg.AddConsole();
             });
