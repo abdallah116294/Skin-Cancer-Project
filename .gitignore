@@ -24,7 +24,7 @@ Version.cpp
 *.pdb
 *.manifest
 *.cache
-*.vs\SkinCancer
+
 /back-end/SkinCancer.Api/.vs/SkinCancer.Api/FileContentIndex
 /back-end/SkinCancer.Api/obj/Debug/net8.0/ref/SkinCancer.Api.dll
 /back-end/SkinCancer.Api/obj/Debug/net8.0/refint/SkinCancer.Api.dll
@@ -53,7 +53,6 @@ Version.cpp
 /back-end/SkinCancer.Api/bin/Debug/net8.0/SkinCancer.Repositories.pdb
 /back-end/SkinCancer.Api/bin/Debug/net8.0/SkinCancer.Services.dll
 /back-end/SkinCancer.Api/bin/Debug/net8.0/SkinCancer.Services.pdb
-/back-end/SkinCancer.Api/Controllers/AccountController.cs
 /back-end/SkinCancer.Api/obj/Debug/net8.0/apphost.exe
 /back-end/SkinCancer.Api/obj/Debug/net8.0/SkinCancer.Api.AssemblyInfo.cs
 /back-end/SkinCancer.Api/obj/Debug/net8.0/SkinCancer.Api.AssemblyInfoInputs.cache
