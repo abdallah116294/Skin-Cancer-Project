@@ -44,20 +44,21 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { Message = "This Email is Already Exists" };
             }
 
-            if (await userManager.FindByNameAsync(model.UserName) != null){
+            if (await userManager.FindByNameAsync(model.UserName) != null)
+            {
                 return new ProcessResult { Message = "This UserName Already Exitss" };
             }
             // Instead of assign each attribute in model to user attributes
             ApplicationUser user = mapper.Map<ApplicationUser>(model);
 
             // Adding user (AppUser) + model.Password to call HashedPassword
-            var result = await userManager.CreateAsync(user,model.Password);
+            var result = await userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
                 string errorMessage = "";
 
-                foreach(var itemError in result.Errors)
+                foreach (var itemError in result.Errors)
                 {
                     errorMessage += $"{itemError.Description} , ";
                 }
@@ -65,7 +66,7 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { IsSucceeded = false, Message = errorMessage };
             }
 
-            await userManager.AddToRoleAsync(user, "Patient");
+            await userManager.AddToRoleAsync(user, "PATIENT");
 
             return new ProcessResult { IsSucceeded = true, Message = "Added Successfully" };
         }

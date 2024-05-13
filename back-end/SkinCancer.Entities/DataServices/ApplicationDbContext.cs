@@ -18,9 +18,6 @@ namespace SkinCancer.Entities
             base.OnModelCreating(builder);
 
 
-            builder.Ignore<IdentityUser>();
-            builder.Ignore<IdentityRole>();
-
 
         }
 
