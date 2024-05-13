@@ -12,6 +12,12 @@ class AppColor {
     const Color.fromRGBO(192, 198, 255, 1),
     const Color.fromRGBO(233, 198, 255, 1),
   ];
+  static List<Color> exploreBg = [
+    const Color(0xFFC5C9FB),
+    const Color(0xFFC5CAFB),
+    const Color(0xFFC5CAFB),
+    const  Color(0xFFC5CAFB),
+  ];
   static Color buttonChoseuser = const Color.fromRGBO(180, 186, 240, 1);
   static Color primaryColor = const Color.fromRGBO(88, 99, 203, 1);
   static Color authfuntext = const Color.fromRGBO(117, 117, 117, 1);

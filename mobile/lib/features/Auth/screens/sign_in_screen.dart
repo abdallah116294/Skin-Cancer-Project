@@ -47,10 +47,12 @@ class _SingInScreenState extends State<SingInScreen> {
               log('loading');
             } else if (state is LoginUserIsSuccessSetate) {
               DailogAlertFun.showMyDialog(
-                  daliogContent: state.userModel.roles[1],
+                  daliogContent: state.userModel.roles[0],
                   actionName: "Go to Home",
                   context: context,
-                  onTap: () {});
+                  onTap: () {
+                    context.pushNamed(Routes.bottomNavScreenRoutes);
+                  });
             } else if (state is LoginUserIsErrorState) {
               log(state.error);
             }
