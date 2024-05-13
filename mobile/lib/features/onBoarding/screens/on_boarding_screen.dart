@@ -28,8 +28,8 @@ class OnBoardingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   image: const DecorationImage(
                       fit: BoxFit.cover,
-                      image: NetworkImage(
-                          "https://cdn.discordapp.com/attachments/1068427454131228793/1237127907634057287/D17E30AF-1939-4BA0-963E-3093397613F9.jpg?ex=663a84a5&is=66393325&hm=4afb837cd34e38b329097884d3cf5c92fe66171db6a6bcf11f4a134fc1c7e16c&"))),
+                      image: AssetImage(
+                          "assets/image/onboarding_2.jpg"))),
             ),
             verticalSpacing(10),
             Text(
