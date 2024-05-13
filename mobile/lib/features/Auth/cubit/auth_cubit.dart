@@ -76,10 +76,10 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> forgetPasssword(String emil) async {
+  Future<void> forgetPassword(String emil) async {
     emit(ForgetPasswordIsLoadingState());
     try {
-      Either<String, String> response = await authRepo.forgetPasssword(emil);
+      Either<String, String> response = await authRepo.forgetPassword(emil);
       emit(response.fold(
           (l) => ForgetPasswordIsErrorState(error: extractErrorMessage(l)),
           (r) => ForgetPaswordIsSuccessState(messge: extractErrorMessage(r))));
@@ -89,14 +89,17 @@ class AuthCubit extends Cubit<AuthState> {
     }
   }
 
-  Future<void> resetPassword(String code, String newPassword) async {
+  Future<void> resetPassword(
+      {required String code,
+      required String email,
+      required String newPassword}) async {
     emit(ResetPasswordIsLoadingState());
     try {
-      Either<String, String> response =
-          await authRepo.resetPassword(code, newPassword);
+      Either<String, String> response = await authRepo.resetPassword(
+          code: code, email: email, newPassword: newPassword);
       emit(response.fold(
           (l) => ResetPasswordIsErrorState(message: extractErrorMessage(l)),
-          (r) => ResetPasswordIsSuccessState(message: extractErrorMessage(r))));
+          (r) => ResetPasswordIsSuccessState(message: r)));
     } catch (error) {
       emit(ResetPasswordIsErrorState(
           message: extractErrorMessage(error.toString())));

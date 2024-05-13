@@ -69,7 +69,7 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<String, String>> forgetPasssword(String email) async {
+  Future<Either<String, String>> forgetPassword(String email) async {
     try {
       final encodeEmail = Uri.encodeComponent(email);
       final response = await apiConsumer.post(
@@ -83,11 +83,13 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<String, String>> resetPassword(
-      String code, String newPassword) async {
+      {required String code,required String email, required String newPassword}) async {
     try {
-      final response = await apiConsumer.post(ApiConstant.resetPasswordEndPoint,queryParameters: {
-        "code":code,
-        "newPassword":newPassword,
+      final response = await apiConsumer
+          .post(ApiConstant.resetPasswordEndPoint, body: {
+        "code": code,
+        "email": email,
+        "newPassword": newPassword,
       });
       return Right(response);
     } on ServerException catch (e) {

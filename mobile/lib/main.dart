@@ -11,8 +11,12 @@ Future<void> main() async {
   await di.init();
   var token = CacheHelper.getData(key: 'token');
   var role = CacheHelper.getData(key: 'doctor_role');
+
   bool? onBoarding = CacheHelper.getData(key: 'onBoarding');
+  var email = CacheHelper.getData(key: 'email');
   log(onBoarding.toString());
+
+  log(email.toString());
   log(token.toString());
   log(role.toString());
   String? startWidget;

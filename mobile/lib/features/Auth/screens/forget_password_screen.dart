@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
@@ -15,10 +16,16 @@ import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/injection_container.dart' as di;
 
-class ForgetPasswordScreen extends StatelessWidget {
+class ForgetPasswordScreen extends StatefulWidget {
   ForgetPasswordScreen({super.key});
 
+  @override
+  State<ForgetPasswordScreen> createState() => _ForgetPasswordScreenState();
+}
+
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   final emailController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -36,9 +43,20 @@ class ForgetPasswordScreen extends StatelessWidget {
                   if (state is ForgetPasswordIsLoadingState) {
                     log('loading');
                   } else if (state is ForgetPaswordIsSuccessState) {
-             
+                    CacheHelper.saveData(key: "email", value: emailController.text);
+                    DailogAlertFun.showMyDialog(
+                        daliogContent: state.messge.toString(),
+                        actionName: 'reset password',
+                        context: context,
+                        onTap: () {
+                          context
+                              .pushReplacementNamed(Routes.oTPCodeScreenRoutes);
+                        });
+
                   } else if (state is ForgetPasswordIsErrorState) {
-                           DailogAlertFun.showMyDialog(
+                    CacheHelper.saveData(key: "email", value: emailController.text);
+
+                    DailogAlertFun.showMyDialog(
                         daliogContent: state.error.toString(),
                         actionName: 'reset password',
                         context: context,
@@ -46,6 +64,7 @@ class ForgetPasswordScreen extends StatelessWidget {
                           context
                               .pushReplacementNamed(Routes.oTPCodeScreenRoutes);
                         });
+
                     log("Error "+state.error.toString());
                   }
                 },
@@ -95,9 +114,10 @@ class ForgetPasswordScreen extends StatelessWidget {
                                 buttonName: StringManager.sendCode,
                                 onTap: () {
                                   if (_formKey.currentState!.validate()) {
+
                                     context
                                         .read<AuthCubit>()
-                                        .forgetPasssword(emailController.text);
+                                        .forgetPassword(emailController.text);
                                   }
                                 },
                                 textColor: Colors.white,
