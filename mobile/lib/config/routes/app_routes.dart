@@ -22,7 +22,7 @@ import '../../features/disease_info/screens/risk_factors.dart';
 import '../../features/disease_info/screens/what_is_cancer.dart';
 
 class Routes {
-  static const String initialRoutes = "/";
+  static const String SplashScreenRoutes = "/SplashScreen";
   static const String onBoardingRoutes = "/OnBoardingScreen";
   static const String choseUserRoutes = "/ChoseUser";
   static const String choseAuthFunScreenRoutes = "/ChoseAuthFunScreen";
@@ -47,7 +47,7 @@ class Routes {
 class AppRoutes {
   static Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case Routes.initialRoutes:
+      case Routes.SplashScreenRoutes:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
       case Routes.onBoardingRoutes:
         return MaterialPageRoute(
@@ -105,8 +105,9 @@ class AppRoutes {
 
       case Routes.topDocScreen:
         return MaterialPageRoute(builder: (context) => const TopDocScreen());
-        case Routes.docDetailsScreen:
-        return MaterialPageRoute(builder: (context) => const DocDetailsScreen());
+      case Routes.docDetailsScreen:
+        return MaterialPageRoute(
+            builder: (context) => const DocDetailsScreen());
     }
   }
 }

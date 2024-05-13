@@ -59,19 +59,25 @@ class _SignupScreenState extends State<SignupScreen> {
                         onTap: () {});
                     log(state.error);
                   } else if (state is AddRoleSuccesState) {
-                         if(widget.role.containsKey('role1')){
-                       DailogAlertFun.showMyDialog(
+                    if (widget.role.containsKey('role1')) {
+                      DailogAlertFun.showMyDialog(
                           daliogContent: "Please check your email",
-                          actionName: "Go Home",
+                          actionName: "Confirm email",
                           context: context,
-                          onTap: () {});
-                     }else if(widget.role.containsKey('role2')){
-                       DailogAlertFun.showMyDialog(
+                          onTap: () {
+                            context.pushNamed(Routes.singInScreenRoutes,
+                                arguments: widget.role);
+                          });
+                    } else if (widget.role.containsKey('role2')) {
+                      DailogAlertFun.showMyDialog(
                           daliogContent: "Please Doctor check your email",
                           actionName: "Go Home",
                           context: context,
-                          onTap: () {});
-                     }
+                          onTap: () {
+                             context.pushNamed(Routes.singInScreenRoutes,
+                                arguments: widget.role);
+                          });
+                    }
                     log(state.respons.userName);
                   } else if (state is AddRoleErrorState) {
                     log(state.error);

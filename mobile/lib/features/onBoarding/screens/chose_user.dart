@@ -43,7 +43,7 @@ class _ChoseUserState extends State<ChoseUser> {
               onTap: () {
                 //add two user role as arrguments with navigator
 
-                context.pushNamed(Routes.singInScreenRoutes,
+                context.pushReplacementNamed(Routes.singInScreenRoutes,
                     arguments: {"role1": "Patient"});
                 // Navigator.pushNamed(
                 //     context, Routes.choseAuthFunScreenRoutes);
@@ -54,7 +54,7 @@ class _ChoseUserState extends State<ChoseUser> {
               imagePathe: AssetsManager.doctor_user,
               user: StringManager.doctor,
               onTap: () {
-                context.pushNamed(Routes.singInScreenRoutes,
+                context.pushReplacementNamed(Routes.singInScreenRoutes,
                     arguments: {"role2": "Doctor"});
 
               },
