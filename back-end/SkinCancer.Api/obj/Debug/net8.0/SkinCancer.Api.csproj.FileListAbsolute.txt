@@ -792,3 +792,5 @@ D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Debug\net8.0\refint\
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Debug\net8.0\SkinCancer.Api.pdb
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Debug\net8.0\SkinCancer.Api.genruntimeconfig.cache
 D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\obj\Debug\net8.0\ref\SkinCancer.Api.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\bin\Debug\net8.0\SkinCancer.Repositories.dll
+D:\AWork\SkinCancerMyRepository\back-end\SkinCancer.Api\bin\Debug\net8.0\SkinCancer.Repositories.pdb

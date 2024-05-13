@@ -5,8 +5,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using SkinCancer.Services.DataServices;
-
+using SkinCancer.Entities;
 #nullable disable
 
 namespace SkinCancer.Services.Migrations

@@ -13,11 +13,16 @@ namespace SkinCancer.Entities.Models
         [Required, MinLength(3), MaxLength(30)]
         public string FirstName { get; set; } = string.Empty;
 
-
         [Required, MinLength(3), MaxLength(30)]
         public string LastName { get; set; } = string.Empty;
 
         public string? Code { get; set; }
+        
+        public short YearsOfExperiences { get; set; }
+        
+        public string? DetectoinImage { get; set; }
 
+
+        public Clinic Clinic { get; set; }
     }
 }

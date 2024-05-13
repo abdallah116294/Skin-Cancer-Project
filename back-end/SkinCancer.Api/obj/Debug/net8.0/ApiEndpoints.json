@@ -129,16 +129,161 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "Code",
-        "Type": "System.String",
-        "IsRequired": false
-      },
+        "Name": "dto",
+        "Type": "SkinCancer.Entities.UserDtos.ResetPasswordDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "CreateClinicAsync",
+    "RelativePath": "api/Clinic/CreateClinic",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
       {
-        "Name": "newPassword",
+        "Name": "dto",
+        "Type": "SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SkinCancer.Entities.AuthModels.ProcessResult",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "DeleteClinicAsync",
+    "RelativePath": "api/Clinic/DeleteClinic",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SkinCancer.Entities.AuthModels.ProcessResult",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "GetClinicsAsync",
+    "RelativePath": "api/Clinic/GetAllClinics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "GetClinicByNameAsync",
+    "RelativePath": "api/Clinic/GetClinicByName",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "name",
         "Type": "System.String",
         "IsRequired": false
       }
     ],
-    "ReturnTypes": []
+    "ReturnTypes": [
+      {
+        "Type": "SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "GetClinicByIdAsync",
+    "RelativePath": "api/Clinic/GetClinicByName{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "UpdateClinicAsync",
+    "RelativePath": "api/Clinic/UpdateClinic",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
   }
 ]
