@@ -11,6 +11,7 @@ namespace SkinCancer.Entities.UserDtos
         //  [FromQuery]string userId, [FromQuery]string code, [FromQuery] string newPassword
 
         public string Code { get;set; }
+        public string Email { get;set; }
 
         public string newPassword { get;set;}
 

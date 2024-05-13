@@ -21,11 +21,13 @@ namespace SkinCancer.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //test
             builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(
                   builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
             builder.Services.AddLogging(cfg =>
             {
+                //auth
                 cfg.AddDebug();
                 cfg.AddConsole();
             });
