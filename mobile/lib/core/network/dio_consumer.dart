@@ -41,7 +41,7 @@ class DioCosumer implements ApiConsumer {
       String? token,
       bool? formDataIsEnabled}) async {
     try {
-      final response = await client.post(path, data: body,queryParameters: queryParameters);
+      final response = await client.post(path, data: body,queryParameters: queryParameters,options: Options(headers:{"Authorization": "Bearer $token"}));
       return _handleResponseAsJson(response);
     } on DioException catch (error) {
       _handleDioError(error);

@@ -6,4 +6,5 @@ class ApiConstant {
   static const String addRoleEndPoint = "/api/Account/AddRole";
   static const String forgetPasswordEndPoint = '/api/Account/ForgetPassword';
   static const String resetPasswordEndPoint = '/api/Account/ResetPassword';
+  static const String createClinicEndPoint = "/api/Clinic/CreateClinic";
 }

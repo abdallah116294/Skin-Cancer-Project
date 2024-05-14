@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/core/widgets/app_button.dart';
@@ -24,7 +26,7 @@ class _AddClinicWidgetState extends State<AddClinicWidget> {
       child: Padding(
         padding: EdgeInsets.only(top: 5.h, left: 10.w),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly ,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +48,9 @@ class _AddClinicWidgetState extends State<AddClinicWidget> {
                     height: 40,
                     textOfButtonStyle: TextStyles.font14BlackW600,
                     buttonName: "Add Your Clinic ",
-                    onTap: () {},
+                    onTap: () {
+                      context.pushNamed(Routes.addClinicScreenRoutes);
+                    },
                     textColor: Colors.black,
                     white: false)
               ],
