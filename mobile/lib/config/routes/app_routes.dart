@@ -6,6 +6,7 @@ import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
 import 'package:mobile/features/clinic/screens/add_clinic_screen.dart';
+import 'package:mobile/features/clinic/screens/doc_clinic_details.dart';
 import 'package:mobile/features/disease_info/screens/early_detection.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
@@ -26,7 +27,7 @@ import '../../features/disease_info/screens/what_is_cancer.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class Routes {
-  static const String SplashScreenRoutes = "/SplashScreen";
+  static const String splashScreenRoutes = "/SplashScreen";
   static const String onBoardingRoutes = "/OnBoardingScreen";
   static const String choseUserRoutes = "/ChoseUser";
   static const String choseAuthFunScreenRoutes = "/ChoseAuthFunScreen";
@@ -47,12 +48,13 @@ class Routes {
   static const String topDocScreen = "/TopDocScreen";
   static const String docDetailsScreen = "/DocDetailsScreen";
   static const String addClinicScreenRoutes = "/AddClinicScreen";
+  static const String docClinicDetailsScreenRoutes = "/DocClinicDetailsScreenRoutes";
 }
 
 class AppRoutes {
   static Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case Routes.SplashScreenRoutes:
+      case Routes.splashScreenRoutes:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
       case Routes.onBoardingRoutes:
         return MaterialPageRoute(
@@ -120,6 +122,8 @@ class AppRoutes {
             builder: (context) => const DocDetailsScreen());
       case Routes.addClinicScreenRoutes:
         return MaterialPageRoute(builder: (context)=>const  AddClinicScreen());
+ case Routes.docClinicDetailsScreenRoutes:
+        return MaterialPageRoute(builder: (context)=>const  DocClinicDetailsScreen());
     }
   }
 }

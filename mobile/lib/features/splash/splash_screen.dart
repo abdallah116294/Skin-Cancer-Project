@@ -2,8 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/assets_path.dart';
+
+import '../../core/cach_helper/cach_helper.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,7 +17,20 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   late Timer? _timer;
-  goNext() => Navigator.of(context).pushNamed(Routes.onBoardingRoutes);
+
+  goNext() {
+    var onBoarding = CacheHelper.getData(key: 'onBoarding');
+    var token = CacheHelper.getData(key: 'token');
+    if (onBoarding != null && token != null) {
+      context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+    } else if (onBoarding == null && token == null) {
+      context.pushReplacementNamed(Routes.onBoardingRoutes);
+    }
+    else if (onBoarding != null && token == null) {
+      context.pushReplacementNamed(Routes.choseUserRoutes);
+    }
+  }
+
   startDely() {
     _timer = Timer(const Duration(seconds: 6), () {
       goNext();
@@ -39,9 +55,7 @@ class _SplashScreenState extends State<SplashScreen> {
       backgroundColor: Colors.white,
       body: Column(
         children: [
-           verticalSpacing(
-             150
-          ),
+          verticalSpacing(150),
           Lottie.asset(AssetsManager.cancerSplash),
         ],
       ),

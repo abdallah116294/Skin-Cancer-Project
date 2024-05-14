@@ -13,10 +13,26 @@ class CreateClinicIsloading extends ClinicState {}
 
 class CreateClinicIsSuccesse extends ClinicState {
   final AddClinicSuccessModel addClinicSuccessModel;
+
   const CreateClinicIsSuccesse({required this.addClinicSuccessModel});
 }
 
 class CreateClinicIsError extends ClinicState {
   final String error;
+
   CreateClinicIsError({required this.error});
+}
+
+class GetDocClinicIsLoading extends ClinicState {}
+
+class GetDocClinicIsSuccess extends ClinicState {
+  final ClinicModel clinicModel;
+
+  const GetDocClinicIsSuccess({required this.clinicModel});
+}
+
+class GetDocClinicIsError extends ClinicState {
+  final String error;
+
+  const GetDocClinicIsError({required this.error});
 }

@@ -357,6 +357,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                         ],
                       ),
                       verticalSpacing(10),
+
                       Center(
                         child: CustomButton(
                             buttoncolor: AppColor.primaryColor,
@@ -364,7 +365,11 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                             height: 61.h,
                             buttonName: 'Upload',
                             onTap: () {
+
                               if (formkey.currentState!.validate()) {
+
+                                CacheHelper.saveData(key: 'clinicName',
+                                    value: nameController.text);
                                 context.read<ClinicCubit>().creatClinic(
                                     ClinicModel(
                                         id: 0,

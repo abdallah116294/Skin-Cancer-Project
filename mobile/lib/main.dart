@@ -22,12 +22,12 @@ Future<void> main() async {
   String? startWidget;
   if (onBoarding != null) {
     if (token != null) {
-      startWidget = Routes.bottomNavScreenRoutes;
+      startWidget = Routes.splashScreenRoutes;
     } else {
-      startWidget = Routes.choseUserRoutes;
+      startWidget = Routes.splashScreenRoutes;
     }
   } else {
-    startWidget = Routes.SplashScreenRoutes;
+    startWidget = Routes.splashScreenRoutes;
   }
   runApp(MyApp(
     startWidget: startWidget,

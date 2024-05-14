@@ -1,7 +1,7 @@
 class ClinicModel {
-  final int id;
+  final dynamic id;
   final String name;
-  final int price;
+  final dynamic price;
   final String phone;
   final String address;
   final String image;
