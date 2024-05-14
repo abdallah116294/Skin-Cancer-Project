@@ -5,6 +5,7 @@ import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
 import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
+import 'package:mobile/features/clinic/screens/add_clinic_screen.dart';
 import 'package:mobile/features/disease_info/screens/early_detection.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
@@ -45,6 +46,7 @@ class Routes {
   static const String earlyDetectionScreen = "/EarlyDetectionScreen";
   static const String topDocScreen = "/TopDocScreen";
   static const String docDetailsScreen = "/DocDetailsScreen";
+  static const String addClinicScreenRoutes = "/AddClinicScreen";
 }
 
 class AppRoutes {
@@ -76,7 +78,7 @@ class AppRoutes {
           builder: (context) => BlocProvider(
             create: (context) => di.sl<AuthCubit>(),
             child: RestPasswordScreen(
-              routeSettings.arguments as String ,
+              routeSettings.arguments as String,
             ),
           ),
         );
@@ -116,6 +118,8 @@ class AppRoutes {
       case Routes.docDetailsScreen:
         return MaterialPageRoute(
             builder: (context) => const DocDetailsScreen());
+      case Routes.addClinicScreenRoutes:
+        return MaterialPageRoute(builder: (context)=>const  AddClinicScreen());
     }
   }
 }
