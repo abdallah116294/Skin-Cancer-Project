@@ -15,13 +15,24 @@ class ClinicRepoImpl implements ClinicRepo {
   Future<Either<String, AddClinicSuccessModel>> createClinic(
       ClinicModel clinicModel, String token) async {
     try {
-      final response = await apiConsumer.post(
-        ApiConstant.createClinicEndPoint,
-        body: clinicModel.toJson(),
-        token: token
-      );
+      final response = await apiConsumer.post(ApiConstant.createClinicEndPoint,
+          body: clinicModel.toJson(), token: token);
       var clinicSuccessModel = AddClinicSuccessModel.fromJson(response);
       return Right(clinicSuccessModel);
+    } on ServerException catch (e) {
+      return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, ClinicModel>> getDocClinic(
+      {required String name}) async {
+    try {
+      final response = await apiConsumer.get(
+          ApiConstant.getClinicByNameEndPoint,
+          queryParameters: {'name': name});
+      var clinicModel = ClinicModel.fromJson(response);
+      return Right(clinicModel);
     } on ServerException catch (e) {
       return Left(e.toString());
     }

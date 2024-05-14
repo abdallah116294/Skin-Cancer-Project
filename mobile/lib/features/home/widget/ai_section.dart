@@ -50,8 +50,8 @@ class AISection extends StatelessWidget {
                     white: false)
               ],
             ),
-            horizontalSpacing(30),
-           ClipOval(
+            horizontalSpacing(23),
+            ClipOval(
                   child: SizedBox(
                       width: 150.w,
                       height: 160.h,
