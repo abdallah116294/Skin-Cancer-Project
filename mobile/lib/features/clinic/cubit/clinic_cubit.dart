@@ -34,4 +34,16 @@ class ClinicCubit extends Cubit<ClinicState> {
       emit(GetDocClinicIsError(error: error.toString()));
     }
   }
+
+  Future<void> deleteClinic({required int id, required String token}) async {
+    emit(DeleteClinicIsloading());
+    try {
+      Either<String, AddClinicSuccessModel> response =
+          await clinicRepo.deleteClinic(id: id, token: token);
+      emit(response.fold((l) => DeleteClinicIsError(error: l),
+          (r) => DeleteClinicIsSuccesse(addClinicSuccessModel: r)));
+    } catch (error) {
+      emit(DeleteClinicIsError(error: error.toString()));
+    }
+  }
 }

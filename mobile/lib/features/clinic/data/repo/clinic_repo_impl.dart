@@ -37,4 +37,17 @@ class ClinicRepoImpl implements ClinicRepo {
       return Left(e.toString());
     }
   }
+
+  @override
+  Future<Either<String, AddClinicSuccessModel>> deleteClinic(
+      {required int id, required String token}) async {
+    try {
+      final reponse = await apiConsumer.delete(ApiConstant.deleteClinicEndPoint,
+          queryParameters: {"id": id}, token: token);
+      final successDeleted = AddClinicSuccessModel.fromJson(reponse);
+      return Right(successDeleted);
+    } on ServerException catch (error) {
+      return Left(error.toString());
+    }
+  }
 }
