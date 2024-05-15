@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkinCancer.Entities.UserDtos
+namespace SkinCancer.Entities.AuthenticationUserDtos
 {
     public class LoginModel
     {
