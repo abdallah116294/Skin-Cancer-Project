@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkinCancer.Entities.Models;
 using SkinCancer.Services.AuthServices.Interfaces;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using SkinCancer.Entities.UserDtos;
+using SkinCancer.Entities.AuthenticationUserDtos;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel.DataAnnotations;
