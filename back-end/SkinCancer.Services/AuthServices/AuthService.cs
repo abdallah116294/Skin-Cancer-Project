@@ -206,18 +206,23 @@ namespace SkinCancer.Services.AuthServices
 
         // Done
         // Assign a certain role for a user 
-        public async Task<string> AddRoleAsync(RoleModel model) {
+        public async Task<string> AddRoleAsync(RoleModel model)
+        {
+            // Input validation
+            if (string.IsNullOrEmpty(model.UserName) || string.IsNullOrEmpty(model.RoleName))
+            {
+                return "Invalid input parameters";
+            }
 
             var user = await userManager.FindByNameAsync(model.UserName);
 
-            // check if user exist or the role required is existed
+            // Check if user or role doesn't exist
             if (user is null || !await roleManager.RoleExistsAsync(model.RoleName))
             {
                 return "Invalid User Name or Role";
             }
 
-
-            // check if he has a role before 
+            // Check if user is already assigned to the specified role
             if (await userManager.IsInRoleAsync(user, model.RoleName))
             {
                 return "User Already Assigned to this role";
@@ -225,8 +230,26 @@ namespace SkinCancer.Services.AuthServices
 
             var result = await userManager.AddToRoleAsync(user, model.RoleName);
 
-            return result.Succeeded ? string.Empty : "SomeThing Went Wrong";
+            if (!result.Succeeded)
+            {
+                // Log or provide more details about the failure
+                return "Failed to assign role to user";
+            }
+
+            // Remove conflicting roles (Patient and Doctor)
+            if (model.RoleName == "Doctor" || model.RoleName == "Patient")
+            {
+                var roles = await userManager.GetRolesAsync(user);
+                if (roles.Contains("Patient") && roles.Contains("Doctor"))
+                {
+                    var roleToRemove = model.RoleName == "Doctor" ? "Patient" : "Doctor";
+                    await userManager.RemoveFromRoleAsync(user, roleToRemove);
+                }
+            }
+
+            return string.Empty; // Success
         }
+
 
 
         // Done
