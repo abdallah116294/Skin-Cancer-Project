@@ -6,7 +6,7 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Services.AuthServices.Interfaces;
 using SkinCancer.Entities.AuthModels;
-using SkinCancer.Entities.UserDtos;
+using SkinCancer.Entities.AuthenticationUserDtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.DataProtection;
