@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkinCancer.Entities.Models
+namespace SkinCancer.Entities.ModelsDtos.PatientDtos
 {
-    public class Clinic : BaseEntity
+    public class PatientGetClinicsDto
     {
+        public int Id { get; set; }
+
         public string Name { get; set; }
 
         public decimal Price { get; set; }
@@ -21,15 +22,18 @@ namespace SkinCancer.Entities.Models
 
         public string Description { get; set; }
 
+        public byte SelectedDateNumber { get; set; }
+
+
+        // From Application User 
         public string DoctorName { get; set; }
 
 
-       /* public string? UserId { get; set; }
-        public ApplicationUser? User { get; set; }*/
-        
-        public ICollection<ApplicationUser> ApplicationUsers { get; set; }
+        // Dates available for the clinic
+        public DateTime Date1 { get; set; }
 
-        public Appointment? Appointment { get; set; }
-       
+        public DateTime Date2 { get; set; }
+
+        public DateTime Date3 { get; set; }
     }
 }

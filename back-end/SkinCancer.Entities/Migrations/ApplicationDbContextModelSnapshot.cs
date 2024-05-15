@@ -163,6 +163,9 @@ namespace SkinCancer.Entities.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
 
@@ -228,6 +231,8 @@ namespace SkinCancer.Entities.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ClinicId");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -264,7 +269,7 @@ namespace SkinCancer.Entities.Migrations
                     b.HasIndex("ClinicId")
                         .IsUnique();
 
-                    b.ToTable("Appointments", (string)null);
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
@@ -302,16 +307,9 @@ namespace SkinCancer.Entities.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
-
-                    b.ToTable("Clinics", (string)null);
+                    b.ToTable("Clinics");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -365,6 +363,17 @@ namespace SkinCancer.Entities.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SkinCancer.Entities.Models.ApplicationUser", b =>
+                {
+                    b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
+                        .WithMany("ApplicationUsers")
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+                });
+
             modelBuilder.Entity("SkinCancer.Entities.Models.Appointment", b =>
                 {
                     b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
@@ -378,21 +387,8 @@ namespace SkinCancer.Entities.Migrations
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
                 {
-                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "User")
-                        .WithOne("Clinic")
-                        .HasForeignKey("SkinCancer.Entities.Models.Clinic", "UserId");
+                    b.Navigation("ApplicationUsers");
 
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SkinCancer.Entities.Models.ApplicationUser", b =>
-                {
-                    b.Navigation("Clinic")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
-                {
                     b.Navigation("Appointment");
                 });
 #pragma warning restore 612, 618
