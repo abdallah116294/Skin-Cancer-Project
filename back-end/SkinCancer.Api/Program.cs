@@ -23,7 +23,7 @@ namespace SkinCancer.Api
 
             //test
             builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(
-                  builder.Configuration.GetConnectionString("DefaultConnection")
+                  builder.Configuration.GetConnectionString("LocalConnection")
                 ));
             builder.Services.AddLogging(cfg =>
             {
