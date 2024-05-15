@@ -19,10 +19,11 @@ namespace SkinCancer.Services.PatientClinicServices
             _clinicalService = clinicalService;
         }
 
-        public async Task<DoctorClinicDto> GetAllClinics()
+        public async Task<IEnumerable<DoctorClinicDto>> GetAllClinics()
         {
             var clinics = await _clinicalService.GetAllClinicsAsync();
 
+            return clinics;
 
         }
 

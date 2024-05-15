@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkinCancer.Entities;
 
@@ -11,9 +12,11 @@ using SkinCancer.Entities;
 namespace SkinCancer.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240515160402_AddApplicationUserNavigationPropertyToAppointmentTable")]
+    partial class AddApplicationUserNavigationPropertyToAppointmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,11 +166,10 @@ namespace SkinCancer.Entities.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClinicId")
+                    b.Property<int>("ClinicId")
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -175,7 +177,6 @@ namespace SkinCancer.Entities.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DetectoinImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
@@ -228,7 +229,7 @@ namespace SkinCancer.Entities.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<short?>("YearsOfExperiences")
+                    b.Property<short>("YearsOfExperiences")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -266,12 +267,20 @@ namespace SkinCancer.Entities.Migrations
                     b.Property<DateTime>("Date3")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ClinicId")
                         .IsUnique();
 
-                    b.ToTable("Appointments", (string)null);
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
@@ -311,7 +320,7 @@ namespace SkinCancer.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Clinics", (string)null);
+                    b.ToTable("Clinics");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -369,7 +378,9 @@ namespace SkinCancer.Entities.Migrations
                 {
                     b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
                         .WithMany("ApplicationUsers")
-                        .HasForeignKey("ClinicId");
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Clinic");
                 });
@@ -382,7 +393,13 @@ namespace SkinCancer.Entities.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Clinic");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>

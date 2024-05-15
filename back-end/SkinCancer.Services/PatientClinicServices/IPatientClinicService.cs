@@ -12,7 +12,7 @@ namespace SkinCancer.Services.PatientClinicServices
     public interface IPatientClinicService
     {
 
-        public Task<DoctorClinicDto> GetAllClinics();
+        public Task<IEnumerable<DoctorClinicDto>> GetAllClinics();
 
         public Task<ProcessResult> PatientBookClinic(PatientBooksClinicDto dto);
 

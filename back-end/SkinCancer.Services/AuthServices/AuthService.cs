@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 namespace SkinCancer.Services.AuthServices
 {
     public class AuthService : IAuthService
@@ -50,9 +51,17 @@ namespace SkinCancer.Services.AuthServices
             }
             // Instead of assign each attribute in model to user attributes
             ApplicationUser user = mapper.Map<ApplicationUser>(model);
-
+            
             // Adding user (AppUser) + model.Password to call HashedPassword
-            var result = await userManager.CreateAsync(user, model.Password);
+            var result = new IdentityResult();
+            try {
+
+               result = await userManager.CreateAsync(user, model.Password);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
 
             if (!result.Succeeded)
             {
