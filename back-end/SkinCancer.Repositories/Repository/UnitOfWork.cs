@@ -18,9 +18,12 @@ namespace SkinCancer.Repositories.Repository
         private readonly ApplicationDbContext context;
         private Hashtable repositories;
 
-        public UnitOfWork(ApplicationDbContext context)
+        public IScheduleRepository scheduleRepository { get; set;}
+
+        public UnitOfWork(ApplicationDbContext context, IScheduleRepository scheduleRepository)
         {
             this.context = context;
+            this.scheduleRepository = scheduleRepository;
         }
 
         public async Task<int> CompleteAsync() => await context.SaveChangesAsync();
