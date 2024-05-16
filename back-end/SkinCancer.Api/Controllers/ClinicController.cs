@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SkinCancer.Api.Helper;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
+using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
+using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.DoctorServices;
 using System.Security.Claims;
@@ -37,7 +40,7 @@ namespace SkinCancer.Api.Controllers
             return clinics;
         }
         [HttpGet("GetClinicByName")]
-        public async Task<ActionResult<DoctorClinicDto>> GetClinicByNameAsync(string name)
+        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByNameAsync(string name)
         {
             if (!ModelState.IsValid)
             {
@@ -53,7 +56,7 @@ namespace SkinCancer.Api.Controllers
             return clinicDto;
         }
         [HttpGet("GetClinicByName{id:int}")]
-        public async Task<ActionResult<DoctorClinicDto>> GetClinicByIdAsync(int id)
+        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByIdAsync(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -71,15 +74,16 @@ namespace SkinCancer.Api.Controllers
 
         [HttpPut("UpdateClinic")]
         [Authorize(Roles = Roles.Doctor + "," + Roles.Admin)]
-        public async Task<ActionResult<DoctorClinicDto>> UpdateClinicAsync(
-            [FromBody] DoctorClinicDto dto)
+        public async Task<ActionResult<DoctorClinicUpdateDto>> UpdateClinicAsync(
+            [FromBody] DoctorClinicUpdateDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByNameAsync(dto.DoctorName);
+           /* var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+
 
             if (user == null)
             {
@@ -94,7 +98,7 @@ namespace SkinCancer.Api.Controllers
             {
                 ModelState.AddModelError(nameof(dto.DoctorName), "User is not a doctor.");
                 return BadRequest(ModelState);
-            }
+            }*/
             var clinic = await _clinicService.UpdateClinicAsync(dto);
 
             if (clinic == null)
@@ -161,13 +165,31 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var clinic = await _clinicService.DeleteClinicAsync(id);
+            var result = await _clinicService.DeleteClinicAsync(id);
 
-            if (!clinic.IsSucceeded)
+            if (!result.IsSucceeded)
             {
-                return NotFound(clinic);
+                return NotFound(result);
             }
-            return Ok(clinic);
+            return Ok(result);
         }
+
+
+        [HttpPost("PatientRateClinic")]
+        public async Task<ActionResult> PatientRatesClinicAsync(PatientRateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _clinicService.PatientRateClinicAsync(dto);
+            if (!result.IsSucceeded)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(result);
+        }
+
     }
 }

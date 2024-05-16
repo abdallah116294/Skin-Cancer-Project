@@ -8,8 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
+using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
+using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Repositories.Interface;
+using SkinCancer.Repositories.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,19 +63,20 @@ namespace SkinCancer.Services.ClinicServices
                 await _unitOfWork.CompleteAsync();
 
                 // Now set the ClinicId for the Appointment
-                var appointment = _mapper.Map<Appointment>(dto);
-                appointment.ClinicId = clinic.Id;
+                //var schedule = _mapper.Map<Schedule>(dto);
+                ///// Waiting
+                ////  appointment.Schedule = clinic.Id;
 
-                // Add the appointment entity to the context
-                await _unitOfWork.Reposirory<Appointment>().AddAsync(appointment);
+                //// Add the appointment entity to the context
+                //await _unitOfWork.Reposirory<Appointment>().AddAsync(appointment);
 
-                // Save changes to the database
-                await _unitOfWork.CompleteAsync();
+                //// Save changes to the database
+                //await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
                 {
                     IsSucceeded = true,
-                    Message = "Clinic and Appointment Created Successfully"
+                    Message = "Clinic Created Successfully"
                 };
             }
             catch (Exception ex)
@@ -104,21 +108,21 @@ namespace SkinCancer.Services.ClinicServices
 
                 _unitOfWork.Reposirory<Clinic>().Delete(clinic);
 
-                var appointment = await _unitOfWork.Reposirory<Appointment>()
-                    .FirstOrDefaultAsync(a => a.ClinicId == id);
+              /*  var appointment = await _unitOfWork.Reposirory<Schedule>()
+                    .Where(a => a.Id == id);
 
                 if (appointment != null)
                 {
-                    _unitOfWork.Reposirory<Appointment>().Delete(appointment);
+                    _unitOfWork.Reposirory<Schedule>().Delete(appointment);
 
                 }
-
+*/
                 await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
                 {
                     IsSucceeded = true,
-                    Message = "Clinic and associated appointment deleted successfully"
+                    Message = "Clinic and associated Schedules deleted successfully"
                 };
             }
             catch (Exception ex)
@@ -134,23 +138,23 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<IEnumerable<DoctorClinicDto>> GetAllClinicsAsync()
+        public async Task<IEnumerable<DoctorClinicDetailsDto>> GetAllClinicsAsync()
         {
             var clinicsWithAppointments = await _unitOfWork.Include<Clinic>
-                                                    (c => c.Appointment)
+                                                    (c => c.Schedules)
                                                    .ToListAsync();
 
-            var dtos = _mapper.Map<IEnumerable<DoctorClinicDto>>(clinicsWithAppointments);
+            var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithAppointments);
 
             return dtos;
         }
 
         // Done
-        public async Task<ActionResult<DoctorClinicDto>> GetClinicById(int id)
+        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicById(int id)
         {
             try
             {
-                var clinic = await _unitOfWork.Include<Clinic>(id, c => c.Appointment);
+                var clinic = await _unitOfWork.Include<Clinic>(id, c => c.Schedules);
 
                 if (clinic == null)
                 {
@@ -158,7 +162,7 @@ namespace SkinCancer.Services.ClinicServices
                     return new NotFoundObjectResult($"Clinic with ID {id} not found.");
                 }
 
-                var dto = _mapper.Map<DoctorClinicDto>(clinic);
+                var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
 
                 return dto;
             }
@@ -176,18 +180,18 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ActionResult<DoctorClinicDto>> GetClinicByName(string name)
+        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByName(string name)
         {
             try
             {
                 var clinic = await _clinicRepository.Include<Clinic>
-                    (name, c => c.Appointment);
+                    (name, c => c.Schedules);
 
                 if (clinic == null)
                 {
                     return new NotFoundObjectResult($"Clinic with name `{name}` not found.");
                 }
-                var dto = _mapper.Map<DoctorClinicDto>(clinic);
+                var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
 
                 return dto;
             }
@@ -203,12 +207,35 @@ namespace SkinCancer.Services.ClinicServices
             }
         }
 
+        public async Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto)
+        {
+            bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
 
-        public async Task<ProcessResult> UpdateClinicAsync(DoctorClinicDto clinicDto)
+            if (!isPatientInClinic)
+            {
+                return new ProcessResult
+                {
+                    Message = "This Patient is not in Clinic"
+                };
+            }
+            var patientRateClinic = _mapper.Map<PatientRateClinic>(dto);
+
+            await _unitOfWork.Reposirory<PatientRateClinic>().AddAsync(patientRateClinic);
+            await _unitOfWork.CompleteAsync();
+            
+            return new ProcessResult
+            {
+                IsSucceeded = true,
+                Message = "Patient rated successfully"
+            };
+        }
+
+        public async Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto)
         {
             try
             {
-                var oldClinic = await _unitOfWork.Include<Clinic>(clinicDto.Id, c => c.Appointment);
+                var oldClinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(clinicDto.Id);
+
 
                 if (oldClinic == null)
                 {
@@ -217,12 +244,6 @@ namespace SkinCancer.Services.ClinicServices
 
                 // Map properties from clinicDto to oldClinic
                 _mapper.Map(clinicDto, oldClinic);
-
-                // If the oldClinic has an associated Appointment, update its properties
-                if (oldClinic.Appointment != null)
-                {
-                    _mapper.Map(oldClinic.Appointment, clinicDto);   
-                }
 
                 _unitOfWork.Reposirory<Clinic>().Update(oldClinic);
                 await _unitOfWork.CompleteAsync();
