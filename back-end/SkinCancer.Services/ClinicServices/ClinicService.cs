@@ -48,7 +48,7 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ProcessResult> CreateClinicAsync(DoctorClinicDto dto)
+        public async Task<ActionResult<ProcessResult>> CreateClinicAsync(DoctorClinicDto dto)
         {
             try
             {
@@ -85,7 +85,7 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ProcessResult> DeleteClinicAsync(int id)
+        public async Task<ActionResult<ProcessResult>> DeleteClinicAsync(int id)
         {
             try
             {
@@ -101,15 +101,7 @@ namespace SkinCancer.Services.ClinicServices
 
                 _unitOfWork.Reposirory<Clinic>().Delete(clinic);
 
-                /*  var appointment = await _unitOfWork.Reposirory<Schedule>()
-                      .Where(a => a.Id == id);
-
-                  if (appointment != null)
-                  {
-                      _unitOfWork.Reposirory<Schedule>().Delete(appointment);
-
-                  }
-  */
+   
                 await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
@@ -131,15 +123,15 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<IEnumerable<DoctorClinicDetailsDto>> GetAllClinicsAsync()
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetAllClinicsAsync()
         {
-            var clinicsWithAppointments = await _unitOfWork.Include<Clinic>
+            var clinicsWithSchedules = await _unitOfWork.Include<Clinic>
                                                     (c => c.Schedules)
                                                    .ToListAsync();
 
-            var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithAppointments);
+            var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithSchedules);
 
-            return dtos;
+            return new OkObjectResult(dtos);
         }
 
         // Done
@@ -157,7 +149,7 @@ namespace SkinCancer.Services.ClinicServices
 
                 var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
 
-                return dto;
+                return new OkObjectResult(dto);
             }
             catch (Exception ex)
             {
@@ -218,7 +210,7 @@ namespace SkinCancer.Services.ClinicServices
             }
         }
 
-        public async Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto)
+        public async Task<ActionResult<ProcessResult>> PatientRateClinicAsync(PatientRateDto dto)   
         {
             /* bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
 
@@ -273,7 +265,7 @@ namespace SkinCancer.Services.ClinicServices
             };
         }
 
-        public async Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto)
+        public async Task<ActionResult<ProcessResult>> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto)
         {
             try
             {
@@ -309,21 +301,13 @@ namespace SkinCancer.Services.ClinicServices
             }
         }
 
-
         // Average Rate
         private void CalculateAverageRate(Clinic clinic)
         {
-            if (clinic.PatientRates != null && clinic.PatientRates.Count > 0)
-            {
-                clinic.Rate = clinic.PatientRates.Average(r => r.Rate);
-            }
-            else
-            {
-                clinic.Rate = 0;
-            }
+            clinic.Rate = clinic.PatientRates?.Count > 0 ?
+                clinic.PatientRates.Average(r => r.Rate) : 0;
+
         }
-
-
     }
 
 }
