@@ -53,7 +53,7 @@ namespace SkinCancer.Api.Controllers
                 return NotFound("No Clinic Found with this name :" + subName);
             }
 
-            return clinicDto;
+            return Ok(clinicDto);
         }
         [HttpGet("GetClinicById{id:int}")]
         public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByIdAsync(int id)
@@ -111,7 +111,7 @@ namespace SkinCancer.Api.Controllers
 
         [HttpPost("CreateClinic")]
         [Authorize(Roles = Roles.Doctor + "," + Roles.Admin)]
-        public async Task<ActionResult<ProcessResult>> CreateClinicAsync(DoctorClinicDto dto)
+        public async Task<ActionResult<ProcessResult>> CreateClinicAsync(CreateClinicDto dto)
         {
             // ApplicationUser Role ===> 
             // Relationship between Doctor and clinic 
@@ -141,7 +141,7 @@ namespace SkinCancer.Api.Controllers
             
             var result = await _clinicService.CreateClinicAsync(dto);
 
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(new ProcessResult { Message = "Can't Create Clinic" });
             }
@@ -181,12 +181,12 @@ namespace SkinCancer.Api.Controllers
 
             var result = await _clinicService.DeleteClinicAsync(id);
 
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(new ProcessResult { Message = "Failed to delete clinic" });
             }
 
-            var user = await _userManager.FindByIdAsync(clinic.Value.DoctorId);
+            var user = await _userManager.FindByIdAsync(clinic.DoctorId);
             if (user == null)
             {
                 return BadRequest(
@@ -222,7 +222,7 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _clinicService.PatientRateClinicAsync(dto);
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(ModelState);
             }

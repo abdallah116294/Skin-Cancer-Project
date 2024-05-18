@@ -23,6 +23,9 @@ namespace SkinCancer.Entities.ModelsDtos.DoctorDtos
             CreateMap<DoctorClinicUpdateDto, Clinic>()
                 .ReverseMap();
 
+            CreateMap<CreateClinicDto, Clinic>()
+                .ReverseMap();
+
         }
        /* private List<Schedule> MapDatesToSchedules(List<DateTime>? availableDates)
         {

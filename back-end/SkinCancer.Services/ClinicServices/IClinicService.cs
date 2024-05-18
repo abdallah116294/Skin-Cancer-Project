@@ -15,19 +15,19 @@ namespace SkinCancer.Services.ClinicServices
     public interface IClinicService
     {
 
-        Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetAllClinicsAsync();
+        Task<IEnumerable<DoctorClinicDetailsDto>> GetAllClinicsAsync();
 
-        Task<ActionResult<ProcessResult>> CreateClinicAsync(DoctorClinicDto clinicDto);
+        Task<ProcessResult> CreateClinicAsync(CreateClinicDto clinicDto);
     
-        Task<ActionResult<ProcessResult>> DeleteClinicAsync(int id);
+        Task<ProcessResult> DeleteClinicAsync(int id);
 
-        Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName(string name);
+        Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicByName(string name);
 
-        Task<ActionResult<DoctorClinicDetailsDto>> GetClinicById(int id);
+        Task<DoctorClinicDetailsDto> GetClinicById(int id);
 
-        Task<ActionResult<ProcessResult>> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto);
+        Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto);
 
-        Task<ActionResult<ProcessResult>> PatientRateClinicAsync(PatientRateDto dto);
+        Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto);
 
 
 
