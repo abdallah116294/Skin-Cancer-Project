@@ -146,7 +146,7 @@
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto",
+        "Type": "SkinCancer.Entities.ModelsDtos.DoctorClinicDtos.CreateClinicDto",
         "IsRequired": true
       }
     ],
@@ -210,16 +210,16 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
-    "Method": "GetClinicByNameAsync",
-    "RelativePath": "api/Clinic/GetClinicByName",
+    "Method": "GetClinicByIdAsync",
+    "RelativePath": "api/Clinic/GetClinicById{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "name",
-        "Type": "System.String",
-        "IsRequired": false
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
       }
     ],
     "ReturnTypes": [
@@ -236,21 +236,21 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
-    "Method": "GetClinicByIdAsync",
-    "RelativePath": "api/Clinic/GetClinicByName{id}",
+    "Method": "GetClinicByNameAsync",
+    "RelativePath": "api/Clinic/GetClinicByName",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
+        "Name": "subName",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "SkinCancer.Entities.ModelsDtos.DoctorClinicDtos.DoctorClinicDetailsDto",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.DoctorClinicDtos.DoctorClinicDetailsDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -303,26 +303,6 @@
     ]
   },
   {
-    "ContainingType": "SkinCancer.Api.Controllers.PatientClinicController",
-    "Method": "PatientGetAllClinicAsync",
-    "RelativePath": "api/PatientClinic",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.DoctorDtos.DoctorClinicDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
     "Method": "UpdateScheduleAsync",
     "RelativePath": "api/Schedule",
@@ -363,14 +343,14 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "clincId",
+        "Name": "clinicId",
         "Type": "System.Int32",
         "IsRequired": false
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.ScheduleDtos.ScheduleDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.ScheduleDtos.ScheduleDetailsDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

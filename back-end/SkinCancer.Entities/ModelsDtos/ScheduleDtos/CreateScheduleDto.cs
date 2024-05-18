@@ -6,15 +6,7 @@ using System.Threading.Tasks;
 
 namespace SkinCancer.Entities.ModelsDtos.ScheduleDtos
 {
-    public class ScheduleDto
+    internal class CreateScheduleDto
     {
-                
-        public DateTime Date { get; set; }
-
-        public bool IsBooked { get; set; }
-
-        public int ClinicId { get; set; }
-        
-
     }
 }
