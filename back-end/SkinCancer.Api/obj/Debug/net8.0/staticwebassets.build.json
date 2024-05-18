@@ -1,19 +1,11 @@
 {
   "Version": 1,
-  "Hash": "+6Q2jginLHuRiYJC9rKyI/dwQNgFbIPGEe5TAkC1lck=",
+  "Hash": "NrQSZPCKJf+LacGUOpLm1yf30JdbVshJ3XaTa2jQdJk=",
   "Source": "SkinCancer.Api",
   "BasePath": "_content/SkinCancer.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [
-    {
-      "Name": "SkinCancer.Api\\wwwroot",
-      "Source": "SkinCancer.Api",
-      "ContentRoot": "F:\\FCI GP\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\wwwroot\\",
-      "BasePath": "_content/SkinCancer.Api",
-      "Pattern": "**"
-    }
-  ],
+  "DiscoveryPatterns": [],
   "Assets": []
 }
