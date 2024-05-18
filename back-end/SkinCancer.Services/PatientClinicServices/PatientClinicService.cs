@@ -1,4 +1,5 @@
-﻿using SkinCancer.Entities.AuthModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
 using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Services.ClinicServices;
@@ -19,20 +20,20 @@ namespace SkinCancer.Services.PatientClinicServices
             _clinicalService = clinicalService;
         }
 
-        public async Task<IEnumerable<DoctorClinicDto>> GetAllClinics()
+        public async Task<ActionResult<IEnumerable<DoctorClinicDto>>> GetAllClinics()
         {
             var clinics = await _clinicalService.GetAllClinicsAsync();
 
-            return clinics;
+            return new OkObjectResult(clinics);
 
         }
 
-        public Task<ProcessResult> PatientBookClinic(PatientBooksClinicDto dto)
+        public Task<ActionResult<ProcessResult>> PatientBookClinic(PatientBooksClinicDto dto)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ProcessResult> PatientRatesClinic(short rate)
+        public Task<ActionResult<ProcessResult>> PatientRatesClinic(short rate)
         {
             throw new NotImplementedException();
         }

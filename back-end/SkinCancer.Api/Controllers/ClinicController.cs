@@ -33,11 +33,11 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpGet("GetAllClinics")]
-        public async Task<IEnumerable<DoctorClinicDto>> GetClinicsAsync()
+        public async Task<ActionResult<IEnumerable<DoctorClinicDto>>> GetClinicsAsync()
         {
             var clinics = await _clinicService.GetAllClinicsAsync();
 
-            return clinics;
+            return Ok(clinics);
         }
         [HttpGet("GetClinicByName")]
         public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByNameAsync(string subName)
@@ -141,7 +141,7 @@ namespace SkinCancer.Api.Controllers
             
             var result = await _clinicService.CreateClinicAsync(dto);
 
-            if (!result.IsSucceeded)
+            if (!result.Value.IsSucceeded)
             {
                 return BadRequest(new ProcessResult { Message = "Can't Create Clinic" });
             }
@@ -181,7 +181,7 @@ namespace SkinCancer.Api.Controllers
 
             var result = await _clinicService.DeleteClinicAsync(id);
 
-            if (!result.IsSucceeded)
+            if (!result.Value.IsSucceeded)
             {
                 return BadRequest(new ProcessResult { Message = "Failed to delete clinic" });
             }
@@ -222,7 +222,7 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _clinicService.PatientRateClinicAsync(dto);
-            if (!result.IsSucceeded)
+            if (!result.Value.IsSucceeded)
             {
                 return BadRequest(ModelState);
             }

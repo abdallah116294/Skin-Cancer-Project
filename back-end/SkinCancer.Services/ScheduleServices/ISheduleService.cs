@@ -1,4 +1,5 @@
-﻿using SkinCancer.Entities.AuthModels;
+﻿using Microsoft.AspNetCore.Mvc;
+using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.ScheduleDtos;
 
@@ -6,15 +7,15 @@ namespace SkinCancer.Services.ScheduleServices
 {
     public interface IScheduleService
     {
-        Task<ProcessResult> CreateSchedule(ScheduleDto dto);
+        Task<ActionResult<ProcessResult>> CreateSchedule(ScheduleDto dto);
 
-        Task<ProcessResult> UpdateSchedule(UpdateScheduleDto dto);
+        Task<ActionResult<ProcessResult>> UpdateSchedule(UpdateScheduleDto dto);
 
-        Task<ProcessResult> BookScheduleAsync(BookScheduleDto dto);
+        Task<ActionResult<ProcessResult>> BookScheduleAsync(BookScheduleDto dto);
 
-        Task<IEnumerable<ScheduleDetailsDto>> GetSchedulesByClinicIdAsync(int clinicId);
+        Task<ActionResult<IEnumerable<ScheduleDetailsDto>>> GetSchedulesByClinicIdAsync(int clinicId);
 
-    
+
     /*
          dayes---> data
     schdule
