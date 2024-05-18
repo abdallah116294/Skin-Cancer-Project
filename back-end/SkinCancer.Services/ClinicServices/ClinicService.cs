@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
@@ -47,7 +48,7 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ProcessResult> CreateClinicAsync(DoctorClinicDto dto)
+        public async Task<ActionResult<ProcessResult>> CreateClinicAsync(DoctorClinicDto dto)
         {
             try
             {
@@ -62,16 +63,8 @@ namespace SkinCancer.Services.ClinicServices
                 // Save changes to the database to obtain the Clinic's ID
                 await _unitOfWork.CompleteAsync();
 
-                // Now set the ClinicId for the Appointment
-                //var schedule = _mapper.Map<Schedule>(dto);
-                ///// Waiting
-                ////  appointment.Schedule = clinic.Id;
-
-                //// Add the appointment entity to the context
-                //await _unitOfWork.Reposirory<Appointment>().AddAsync(appointment);
-
-                //// Save changes to the database
-                //await _unitOfWork.CompleteAsync();
+                CalculateAverageRate(clinic);
+                await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
                 {
@@ -92,7 +85,7 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ProcessResult> DeleteClinicAsync(int id)
+        public async Task<ActionResult<ProcessResult>> DeleteClinicAsync(int id)
         {
             try
             {
@@ -108,15 +101,7 @@ namespace SkinCancer.Services.ClinicServices
 
                 _unitOfWork.Reposirory<Clinic>().Delete(clinic);
 
-              /*  var appointment = await _unitOfWork.Reposirory<Schedule>()
-                    .Where(a => a.Id == id);
-
-                if (appointment != null)
-                {
-                    _unitOfWork.Reposirory<Schedule>().Delete(appointment);
-
-                }
-*/
+   
                 await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
@@ -138,15 +123,15 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<IEnumerable<DoctorClinicDetailsDto>> GetAllClinicsAsync()
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetAllClinicsAsync()
         {
-            var clinicsWithAppointments = await _unitOfWork.Include<Clinic>
+            var clinicsWithSchedules = await _unitOfWork.Include<Clinic>
                                                     (c => c.Schedules)
                                                    .ToListAsync();
 
-            var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithAppointments);
+            var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithSchedules);
 
-            return dtos;
+            return new OkObjectResult(dtos);
         }
 
         // Done
@@ -164,7 +149,7 @@ namespace SkinCancer.Services.ClinicServices
 
                 var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
 
-                return dto;
+                return new OkObjectResult(dto);
             }
             catch (Exception ex)
             {
@@ -180,25 +165,43 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByName(string name)
+
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName
+            (string subName)
         {
+            if (string.IsNullOrEmpty(subName))
+            {
+                return new BadRequestObjectResult("SubName can't be null or empty.");
+            }
             try
             {
-                var clinic = await _clinicRepository.Include<Clinic>
-                    (name, c => c.Schedules);
+                var clinics = await _unitOfWork.Include<Clinic>
+                                                        (c => c.Schedules)
+                                                        .ToListAsync();
 
-                if (clinic == null)
+                if (clinics == null || !clinics.Any())
                 {
-                    return new NotFoundObjectResult($"Clinic with name `{name}` not found.");
+                    return new NotFoundObjectResult($"There is No Clinics Yet");
                 }
-                var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
 
-                return dto;
+                var result = clinics
+                    .Where(c => c.Name.StartsWith(subName, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (!result.Any())
+                {
+                    return new NotFoundObjectResult($"No Clinic Found With this subName : {subName}");
+
+                }
+
+                var dtos = _mapper.Map<List<DoctorClinicDetailsDto>>(result);
+
+                return new OkObjectResult(dtos);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching the clinic by name: {ClinicName}"
-                    , name);
+                    , subName);
 
                 return new ObjectResult("An error occurred while processing your request. Please try again later.")
                 {
@@ -207,22 +210,54 @@ namespace SkinCancer.Services.ClinicServices
             }
         }
 
-        public async Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto)
+        public async Task<ActionResult<ProcessResult>> PatientRateClinicAsync(PatientRateDto dto)   
         {
+            /* bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
+
+             if (!isPatientInClinic)
+             {
+                 return new ProcessResult
+                 {
+                     Message = "This Patient is not in Clinic"
+                 };
+             }
+             var patientRateClinic = _mapper.Map<PatientRateClinic>(dto);
+
+             var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(patientRateClinic.ClinicId);
+
+             // Calculate the Average Rate for a clinic
+             clinic.Rate += (dto.Rate);
+
+             clinic.Rate /= clinic.PatientRates.Count;*/
+
+            var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(dto.ClinicId);
+            if (clinic == null)
+            {
+                return new ProcessResult
+                {
+                    Message = $"No Clinic Found With This Id: {dto.ClinicId}"
+                };
+            }
+
             bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
 
             if (!isPatientInClinic)
             {
                 return new ProcessResult
                 {
-                    Message = "This Patient is not in Clinic"
+                    Message = "This Patient is not in clinic"
                 };
             }
+
             var patientRateClinic = _mapper.Map<PatientRateClinic>(dto);
+            clinic.PatientRates.Add(patientRateClinic);
 
             await _unitOfWork.Reposirory<PatientRateClinic>().AddAsync(patientRateClinic);
             await _unitOfWork.CompleteAsync();
-            
+
+            CalculateAverageRate(clinic);
+            await _unitOfWork.CompleteAsync();
+
             return new ProcessResult
             {
                 IsSucceeded = true,
@@ -230,7 +265,7 @@ namespace SkinCancer.Services.ClinicServices
             };
         }
 
-        public async Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto)
+        public async Task<ActionResult<ProcessResult>> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto)
         {
             try
             {
@@ -264,6 +299,14 @@ namespace SkinCancer.Services.ClinicServices
                     Message = "An error occurred while updating the clinic"
                 };
             }
+        }
+
+        // Average Rate
+        private void CalculateAverageRate(Clinic clinic)
+        {
+            clinic.Rate = clinic.PatientRates?.Count > 0 ?
+                clinic.PatientRates.Average(r => r.Rate) : 0;
+
         }
     }
 
