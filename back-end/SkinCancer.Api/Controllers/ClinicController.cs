@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using SkinCancer.Api.Helper;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
+using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
+using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.DoctorServices;
 using System.Security.Claims;
@@ -30,30 +33,30 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpGet("GetAllClinics")]
-        public async Task<IEnumerable<DoctorClinicDto>> GetClinicsAsync()
+        public async Task<ActionResult<IEnumerable<DoctorClinicDto>>> GetClinicsAsync()
         {
             var clinics = await _clinicService.GetAllClinicsAsync();
 
-            return clinics;
+            return Ok(clinics);
         }
         [HttpGet("GetClinicByName")]
-        public async Task<ActionResult<DoctorClinicDto>> GetClinicByNameAsync(string name)
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByNameAsync(string subName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var clinicDto = await _clinicService.GetClinicByName(name);
+            var clinicDto = await _clinicService.GetClinicByName(subName);
 
             if (clinicDto == null)
             {
-                return NotFound("No Clinic Found with this name :" + name);
+                return NotFound("No Clinic Found with this name :" + subName);
             }
 
-            return clinicDto;
+            return Ok(clinicDto);
         }
-        [HttpGet("GetClinicByName{id:int}")]
-        public async Task<ActionResult<DoctorClinicDto>> GetClinicByIdAsync(int id)
+        [HttpGet("GetClinicById{id:int}")]
+        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByIdAsync(int id)
         {
             if (!ModelState.IsValid)
             {
@@ -71,15 +74,16 @@ namespace SkinCancer.Api.Controllers
 
         [HttpPut("UpdateClinic")]
         [Authorize(Roles = Roles.Doctor + "," + Roles.Admin)]
-        public async Task<ActionResult<DoctorClinicDto>> UpdateClinicAsync(
-            [FromBody] DoctorClinicDto dto)
+        public async Task<ActionResult<DoctorClinicUpdateDto>> UpdateClinicAsync(
+            [FromBody] DoctorClinicUpdateDto dto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = await _userManager.FindByNameAsync(dto.DoctorName);
+           /* var userEmail = User.FindFirst(ClaimTypes.Name)?.Value;
+
 
             if (user == null)
             {
@@ -94,7 +98,7 @@ namespace SkinCancer.Api.Controllers
             {
                 ModelState.AddModelError(nameof(dto.DoctorName), "User is not a doctor.");
                 return BadRequest(ModelState);
-            }
+            }*/
             var clinic = await _clinicService.UpdateClinicAsync(dto);
 
             if (clinic == null)
@@ -107,7 +111,7 @@ namespace SkinCancer.Api.Controllers
 
         [HttpPost("CreateClinic")]
         [Authorize(Roles = Roles.Doctor + "," + Roles.Admin)]
-        public async Task<ActionResult<ProcessResult>> CreateClinicAsync(DoctorClinicDto dto)
+        public async Task<ActionResult<ProcessResult>> CreateClinicAsync(CreateClinicDto dto)
         {
             // ApplicationUser Role ===> 
             // Relationship between Doctor and clinic 
@@ -134,8 +138,7 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            //var doctorName = User.FindFirstValue(ClaimTypes.)
-
+            
             var result = await _clinicService.CreateClinicAsync(dto);
 
             if (!result.IsSucceeded)
@@ -143,8 +146,22 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(new ProcessResult { Message = "Can't Create Clinic" });
             }
 
+            user.DoctorHasClinic = true;
+            var updatedResult = await _userManager.UpdateAsync(user);
+
+            if (!updatedResult.Succeeded)
+            {
+                return BadRequest(
+                    new ProcessResult
+                    {
+                        Message = "Clinic Created but failed to update user."
+                    }
+                    );
+            }
+            
             return Ok(new ProcessResult
             {
+                
                 IsSucceeded = true,
                 Message = "Clinic Created Successfully"
             });
@@ -160,14 +177,58 @@ namespace SkinCancer.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var clinic = await _clinicService.GetClinicById(id);
 
-            var clinic = await _clinicService.DeleteClinicAsync(id);
+            var result = await _clinicService.DeleteClinicAsync(id);
 
-            if (!clinic.IsSucceeded)
+            if (!result.IsSucceeded)
             {
-                return NotFound(clinic);
+                return BadRequest(new ProcessResult { Message = "Failed to delete clinic" });
             }
-            return Ok(clinic);
+
+            var user = await _userManager.FindByIdAsync(clinic.DoctorId);
+            if (user == null)
+            {
+                return BadRequest(
+                        new ProcessResult
+                        {
+                            Message = "No Doctor assigned to this clinic"
+                        }
+                    );
+            }
+
+            user.DoctorHasClinic = false;
+            var updatedResult = await _userManager.UpdateAsync(user);
+
+            if (!updatedResult.Succeeded)
+            {
+                return BadRequest(
+                        new ProcessResult
+                        {
+                            Message = "Clinic Deleted Successfully, but failed to update doctor status"
+                        }
+                    );
+            }
+
+            return Ok(result);
         }
+
+
+        [HttpPost("PatientRateClinic")]
+        public async Task<ActionResult> PatientRatesClinicAsync(PatientRateDto dto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _clinicService.PatientRateClinicAsync(dto);
+            if (!result.IsSucceeded)
+            {
+                return BadRequest(ModelState);
+            }
+
+            return Ok(result);
+        }
+
     }
 }

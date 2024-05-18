@@ -24,11 +24,14 @@ namespace SkinCancer.Entities.Models
         public string DoctorName { get; set; }
 
 
-        public string? UserId { get; set; }
-        public ApplicationUser? User { get; set; }
-        
+        [ForeignKey("Doctor")]
+        public string DoctorId { get; set; } = string.Empty;
+        public ApplicationUser Doctor { get; set; }
 
-        public Appointment? Appointment { get; set; }
+       
+        public List<PatientRateClinic> PatientRates { get; set; }
+        
+        public ICollection<Schedule>? Schedules { get; set; }
        
     }
 }

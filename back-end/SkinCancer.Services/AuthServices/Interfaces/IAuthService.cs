@@ -1,6 +1,6 @@
 ﻿using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
-using SkinCancer.Entities.UserDtos;
+using SkinCancer.Entities.AuthenticationUserDtos;
 using System.IdentityModel.Tokens.Jwt;
 
 namespace SkinCancer.Services.AuthServices.Interfaces

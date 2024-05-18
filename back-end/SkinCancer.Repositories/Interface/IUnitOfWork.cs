@@ -11,6 +11,8 @@ namespace SkinCancer.Repositories.Interface
     public interface IUnitOfWork
     {
         IGenericRepository<TEntity> Reposirory<TEntity>() where TEntity : BaseEntity;
+        IScheduleRepository scheduleRepository { get; set; }
+		IDetectionRepository detectionRepositoty { get; set; }
 
         Task<int> CompleteAsync();
 
