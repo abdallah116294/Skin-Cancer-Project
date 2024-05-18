@@ -1,4 +1,5 @@
 ﻿using SkinCancer.Entities.AuthModels;
+using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.ScheduleDtos;
 
 namespace SkinCancer.Services.ScheduleServices
@@ -11,7 +12,7 @@ namespace SkinCancer.Services.ScheduleServices
 
         Task<ProcessResult> BookScheduleAsync(BookScheduleDto dto);
 
-        Task<IEnumerable<ScheduleDto>> GetClinicSchedulesById(int clinicId);
+        Task<IEnumerable<ScheduleDetailsDto>> GetSchedulesByClinicIdAsync(int clinicId);
 
     
     /*

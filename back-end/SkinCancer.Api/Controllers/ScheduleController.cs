@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkinCancer.Entities.AuthModels;
+using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.ScheduleDtos;
 using SkinCancer.Services.ScheduleServices;
 
@@ -65,14 +66,15 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpGet("GetClinicSchedules")]
-        public async Task<ActionResult<IEnumerable<ScheduleDto>>>
+        public async Task<ActionResult<IEnumerable<ScheduleDetailsDto>>>
             GetClinicSchedulesByClinicIdAsync(int clincId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             
-            var schedulesDtos = await _scheduleService.GetClinicSchedulesById(clincId);
-            return schedulesDtos.ToList();
+            var schedules = await _scheduleService.GetSchedulesByClinicIdAsync(clincId);
+
+            return schedules.ToList();
 
         }
     }
