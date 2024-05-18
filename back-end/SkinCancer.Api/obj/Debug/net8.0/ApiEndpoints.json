@@ -370,7 +370,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.ScheduleDtos.ScheduleDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[SkinCancer.Entities.ModelsDtos.ScheduleDtos.ScheduleDetailsDto, SkinCancer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",

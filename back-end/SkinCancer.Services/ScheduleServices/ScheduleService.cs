@@ -137,11 +137,11 @@ namespace SkinCancer.Services.ScheduleServices
 
         }
 
-        public async Task<IEnumerable<ScheduleDto>> GetClinicSchedulesById(int clinicId)
+        public async Task<IEnumerable<ScheduleDetailsDto>> GetSchedulesByClinicIdAsync(int clinicId)
         {
             var schedules = await _unitOfWork.scheduleRepository.GetClinicSchedulesById(clinicId);
 
-            var schedulesDtos = _mapper.Map<IEnumerable<ScheduleDto>>(schedules);
+            var schedulesDtos = _mapper.Map<IEnumerable<ScheduleDetailsDto>>(schedules);
 
             return schedulesDtos;
                 

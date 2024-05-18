@@ -172,7 +172,8 @@ namespace SkinCancer.Services.ClinicServices
 
         // Done
        
-        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName(string subName)
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName
+            (string subName)
         {
             if (string.IsNullOrEmpty(subName))
             {
