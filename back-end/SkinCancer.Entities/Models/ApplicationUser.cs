@@ -24,16 +24,14 @@ namespace SkinCancer.Entities.Models
 
         public string DetectoinImage { get; set; } = string.Empty;
 
-        public bool? DoctorHasClinic { get; set; } = false;
-
         //       [ValidateNever]
         public Clinic? Clinic { get; set; }
 
 
-        public List<PatientRateClinic> PatientRates { get; set; } = new List<PatientRateClinic>();
-        
-            
+        public List<PatientRateClinic> PatientRates { get; set; }
         //public ICollection<Schedule> Schedules { get; set; }    
         public Schedule Schedule { get; set; }
+
+        public ICollection<DetectionData> detections { get; set; }
     }
 }

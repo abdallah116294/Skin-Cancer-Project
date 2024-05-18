@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SkinCancer.Entities.AuthModels;
-using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.ScheduleDtos;
 using SkinCancer.Services.ScheduleServices;
 
@@ -40,7 +39,7 @@ namespace SkinCancer.Api.Controllers
 
             var result = await _scheduleService.BookScheduleAsync(dto);
 
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(result);
             }
@@ -57,7 +56,7 @@ namespace SkinCancer.Api.Controllers
             }
             var result = await _scheduleService.UpdateSchedule(dto);
 
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(ModelState);
             }
@@ -66,21 +65,15 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpGet("GetClinicSchedules")]
-        public async Task<ActionResult<IEnumerable<ScheduleDetailsDto>>> GetClinicSchedulesByClinicIdAsync(int clinicId)
+        public async Task<ActionResult<IEnumerable<ScheduleDto>>>
+            GetClinicSchedulesByClinicIdAsync(int clincId)
         {
             if (!ModelState.IsValid)
-            {
                 return BadRequest(ModelState);
-            }
+            
+            var schedulesDtos = await _scheduleService.GetClinicSchedulesById(clincId);
+            return schedulesDtos.ToList();
 
-            var schedulesResult = await _scheduleService.GetSchedulesByClinicIdAsync(clinicId);
-
-            if (schedulesResult == null)
-            {
-                return NotFound($"No schedules found for clinic ID {clinicId}.");
-            }
-                
-            return Ok(schedulesResult.Value);
         }
     }
 }

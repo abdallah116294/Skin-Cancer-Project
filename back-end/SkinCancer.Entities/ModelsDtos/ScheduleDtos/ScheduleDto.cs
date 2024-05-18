@@ -14,7 +14,7 @@ namespace SkinCancer.Entities.ModelsDtos.ScheduleDtos
         public bool IsBooked { get; set; }
 
         public int ClinicId { get; set; }
-        
+
 
     }
 }

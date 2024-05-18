@@ -12,8 +12,8 @@ using SkinCancer.Entities;
 namespace SkinCancer.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240518153222_AddRateColumnToClinicTable")]
-    partial class AddRateColumnToClinicTable
+    [Migration("20240518071909_DetectionsDatatABLE")]
+    partial class DetectionsDatatABLE
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -178,9 +178,6 @@ namespace SkinCancer.Entities.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool?>("DoctorHasClinic")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -257,13 +254,11 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
@@ -271,8 +266,7 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Property<string>("DoctorName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -280,19 +274,14 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("nvarchar(25)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<double?>("Rate")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -300,6 +289,36 @@ namespace SkinCancer.Entities.Migrations
                         .IsUnique();
 
                     b.ToTable("Clinics");
+                });
+
+            modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DetectionsData");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
@@ -422,6 +441,17 @@ namespace SkinCancer.Entities.Migrations
                     b.Navigation("Doctor");
                 });
 
+            modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
+                {
+                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "User")
+                        .WithMany("detections")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
                 {
                     b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
@@ -466,6 +496,8 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Navigation("Schedule")
                         .IsRequired();
+
+                    b.Navigation("detections");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>

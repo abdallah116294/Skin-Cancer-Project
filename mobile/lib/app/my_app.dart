@@ -4,7 +4,8 @@ import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/utils/string_manager.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final String startWidget;
+  const MyApp({super.key,required this.startWidget});
 
   // This widget is the root of your application.
   @override
@@ -14,9 +15,10 @@ class MyApp extends StatelessWidget {
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (_, child) {
-        return const MaterialApp(
+        return  MaterialApp(
           debugShowCheckedModeBanner: false,
           onGenerateRoute: AppRoutes.onGenerateRoute,
+          initialRoute: startWidget,
         );
       },
     );
