@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/assets_path.dart';
 import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 
 class ChoseAuthFunScreen extends StatelessWidget {
-  const ChoseAuthFunScreen({super.key});
+  final Map<String, String> roles;
+  ChoseAuthFunScreen({super.key, required this.roles});
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +59,7 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 height: 25.h,
               ),
               CustomButton(
-                  buttoncolor: AppColor.buttonColor,
+                  buttoncolor: AppColor.primaryColor,
                   width: 317.w,
                   height: 61.h,
                   buttonName: StringManager.signIn,
@@ -74,8 +76,10 @@ class ChoseAuthFunScreen extends StatelessWidget {
                 width: 317.w,
                 height: 61.h,
                 buttonName: StringManager.signUp,
-                onTap: () {},
-                textColor: AppColor.buttonColor,
+                onTap: () {
+                  context.pushNamed(Routes.signUpScreenRoutes,arguments: roles);
+                },
+                textColor: AppColor.primaryColor,
                 white: true,
               )
             ],
