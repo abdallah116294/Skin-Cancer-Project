@@ -63,17 +63,7 @@ namespace SkinCancer.Services.ClinicServices
                 // Save changes to the database to obtain the Clinic's ID
                 await _unitOfWork.CompleteAsync();
 
-                // Now set the ClinicId for the Appointment
-                //var schedule = _mapper.Map<Schedule>(dto);
-                ///// Waiting
-                ////  appointment.Schedule = clinic.Id;
-
-                //// Add the appointment entity to the context
-                //await _unitOfWork.Reposirory<Appointment>().AddAsync(appointment);
-
-                //// Save changes to the database
-                //await _unitOfWork.CompleteAsync();
-
+                
                 return new ProcessResult
                 {
                     IsSucceeded = true,

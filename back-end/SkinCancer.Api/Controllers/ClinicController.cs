@@ -138,8 +138,7 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            //var doctorName = User.FindFirstValue(ClaimTypes.)
-
+            
             var result = await _clinicService.CreateClinicAsync(dto);
 
             if (!result.IsSucceeded)
@@ -147,8 +146,22 @@ namespace SkinCancer.Api.Controllers
                 return BadRequest(new ProcessResult { Message = "Can't Create Clinic" });
             }
 
+            user.DoctorHasClinic = true;
+            var updatedResult = await _userManager.UpdateAsync(user);
+
+            if (!updatedResult.Succeeded)
+            {
+                return BadRequest(
+                    new ProcessResult
+                    {
+                        Message = "Clinic Created but failed to update user."
+                    }
+                    );
+            }
+            
             return Ok(new ProcessResult
             {
+                
                 IsSucceeded = true,
                 Message = "Clinic Created Successfully"
             });
@@ -164,13 +177,39 @@ namespace SkinCancer.Api.Controllers
             {
                 return BadRequest(ModelState);
             }
+            var clinic = await _clinicService.GetClinicById(id);
 
             var result = await _clinicService.DeleteClinicAsync(id);
 
             if (!result.IsSucceeded)
             {
-                return NotFound(result);
+                return BadRequest(new ProcessResult { Message = "Failed to delete clinic" });
             }
+
+            var user = await _userManager.FindByIdAsync(clinic.Value.DoctorId);
+            if (user == null)
+            {
+                return BadRequest(
+                        new ProcessResult
+                        {
+                            Message = "No Doctor assigned to this clinic"
+                        }
+                    );
+            }
+
+            user.DoctorHasClinic = false;
+            var updatedResult = await _userManager.UpdateAsync(user);
+
+            if (!updatedResult.Succeeded)
+            {
+                return BadRequest(
+                        new ProcessResult
+                        {
+                            Message = "Clinic Deleted Successfully, but failed to update doctor status"
+                        }
+                    );
+            }
+
             return Ok(result);
         }
 
