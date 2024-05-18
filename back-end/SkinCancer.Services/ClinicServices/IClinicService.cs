@@ -21,7 +21,7 @@ namespace SkinCancer.Services.ClinicServices
 
         Task<ProcessResult> DeleteClinicAsync(int id);
 
-        Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByName(string name);
+        Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName(string name);
 
         Task<ActionResult<DoctorClinicDetailsDto>> GetClinicById(int id);
 

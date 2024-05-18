@@ -40,22 +40,22 @@ namespace SkinCancer.Api.Controllers
             return clinics;
         }
         [HttpGet("GetClinicByName")]
-        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByNameAsync(string name)
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByNameAsync(string subName)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-            var clinicDto = await _clinicService.GetClinicByName(name);
+            var clinicDto = await _clinicService.GetClinicByName(subName);
 
             if (clinicDto == null)
             {
-                return NotFound("No Clinic Found with this name :" + name);
+                return NotFound("No Clinic Found with this name :" + subName);
             }
 
             return clinicDto;
         }
-        [HttpGet("GetClinicByName{id:int}")]
+        [HttpGet("GetClinicById{id:int}")]
         public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByIdAsync(int id)
         {
             if (!ModelState.IsValid)
