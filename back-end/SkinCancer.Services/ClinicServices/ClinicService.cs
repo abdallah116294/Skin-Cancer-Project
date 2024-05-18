@@ -63,7 +63,9 @@ namespace SkinCancer.Services.ClinicServices
                 // Save changes to the database to obtain the Clinic's ID
                 await _unitOfWork.CompleteAsync();
 
-                
+                CalculateAverageRate(clinic);
+                await _unitOfWork.CompleteAsync();
+
                 return new ProcessResult
                 {
                     IsSucceeded = true,
@@ -99,15 +101,15 @@ namespace SkinCancer.Services.ClinicServices
 
                 _unitOfWork.Reposirory<Clinic>().Delete(clinic);
 
-              /*  var appointment = await _unitOfWork.Reposirory<Schedule>()
-                    .Where(a => a.Id == id);
+                /*  var appointment = await _unitOfWork.Reposirory<Schedule>()
+                      .Where(a => a.Id == id);
 
-                if (appointment != null)
-                {
-                    _unitOfWork.Reposirory<Schedule>().Delete(appointment);
+                  if (appointment != null)
+                  {
+                      _unitOfWork.Reposirory<Schedule>().Delete(appointment);
 
-                }
-*/
+                  }
+  */
                 await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
@@ -171,7 +173,7 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-       
+
         public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName
             (string subName)
         {
@@ -201,7 +203,7 @@ namespace SkinCancer.Services.ClinicServices
                 }
 
                 var dtos = _mapper.Map<List<DoctorClinicDetailsDto>>(result);
-                
+
                 return new OkObjectResult(dtos);
             }
             catch (Exception ex)
@@ -218,20 +220,52 @@ namespace SkinCancer.Services.ClinicServices
 
         public async Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto)
         {
+            /* bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
+
+             if (!isPatientInClinic)
+             {
+                 return new ProcessResult
+                 {
+                     Message = "This Patient is not in Clinic"
+                 };
+             }
+             var patientRateClinic = _mapper.Map<PatientRateClinic>(dto);
+
+             var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(patientRateClinic.ClinicId);
+
+             // Calculate the Average Rate for a clinic
+             clinic.Rate += (dto.Rate);
+
+             clinic.Rate /= clinic.PatientRates.Count;*/
+
+            var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(dto.ClinicId);
+            if (clinic == null)
+            {
+                return new ProcessResult
+                {
+                    Message = $"No Clinic Found With This Id: {dto.ClinicId}"
+                };
+            }
+
             bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
 
             if (!isPatientInClinic)
             {
                 return new ProcessResult
                 {
-                    Message = "This Patient is not in Clinic"
+                    Message = "This Patient is not in clinic"
                 };
             }
+
             var patientRateClinic = _mapper.Map<PatientRateClinic>(dto);
+            clinic.PatientRates.Add(patientRateClinic);
 
             await _unitOfWork.Reposirory<PatientRateClinic>().AddAsync(patientRateClinic);
             await _unitOfWork.CompleteAsync();
-            
+
+            CalculateAverageRate(clinic);
+            await _unitOfWork.CompleteAsync();
+
             return new ProcessResult
             {
                 IsSucceeded = true,
@@ -274,6 +308,22 @@ namespace SkinCancer.Services.ClinicServices
                 };
             }
         }
+
+
+        // Average Rate
+        private void CalculateAverageRate(Clinic clinic)
+        {
+            if (clinic.PatientRates != null && clinic.PatientRates.Count > 0)
+            {
+                clinic.Rate = clinic.PatientRates.Average(r => r.Rate);
+            }
+            else
+            {
+                clinic.Rate = 0;
+            }
+        }
+
+
     }
 
 }

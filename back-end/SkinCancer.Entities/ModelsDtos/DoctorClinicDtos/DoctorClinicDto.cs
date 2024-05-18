@@ -21,6 +21,8 @@ namespace SkinCancer.Entities.ModelsDtos.DoctorDtos
         
         public string Description { get; set; }
 
+        public double Rate { get; set; }
+
         public string DoctorId { get; set; }
 
        // public List<DateTime>? AvailableDates { get; set; }
