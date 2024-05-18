@@ -17,13 +17,13 @@ namespace SkinCancer.Services.ClinicServices
 
         Task<IEnumerable<DoctorClinicDetailsDto>> GetAllClinicsAsync();
 
-        Task<ProcessResult> CreateClinicAsync(DoctorClinicDto clinicDto);
-
+        Task<ProcessResult> CreateClinicAsync(CreateClinicDto clinicDto);
+    
         Task<ProcessResult> DeleteClinicAsync(int id);
 
-        Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByName(string name);
+        Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicByName(string name);
 
-        Task<ActionResult<DoctorClinicDetailsDto>> GetClinicById(int id);
+        Task<DoctorClinicDetailsDto> GetClinicById(int id);
 
         Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto);
 
