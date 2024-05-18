@@ -145,12 +145,13 @@ namespace SkinCancer.Api
                 app.UseSwaggerUI();
             
             app.UseHttpsRedirection();
+			app.UseStaticFiles();
 
-            // Required to allow CORS
-            //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            
-            
-            app.UseAuthentication();
+			// Required to allow CORS
+			//app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+
+			app.UseAuthentication();
             app.UseAuthorization();
 
 
