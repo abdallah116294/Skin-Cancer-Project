@@ -20,9 +20,6 @@ namespace SkinCancer.Entities.Models
         public string? PatientId { get; set; }
         public ApplicationUser Patient { get;set; }
 
-/*        public ICollection<Appointment> Appointments { get; set; } 
-*/
- 
         public int ClinicId { get; set; }
         public Clinic Clinic { get; set; }  
     }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkinCancer.Entities;
 
@@ -11,9 +12,11 @@ using SkinCancer.Entities;
 namespace SkinCancer.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240518153222_AddRateColumnToClinicTable")]
+    partial class AddRateColumnToClinicTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,36 +302,6 @@ namespace SkinCancer.Entities.Migrations
                     b.ToTable("Clinics");
                 });
 
-            modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ImagePath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Result")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("DetectionsData");
-                });
-
             modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
                 {
                     b.Property<int>("Id")
@@ -449,17 +422,6 @@ namespace SkinCancer.Entities.Migrations
                     b.Navigation("Doctor");
                 });
 
-            modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
-                {
-                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "User")
-                        .WithMany("detections")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
                 {
                     b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
@@ -504,8 +466,6 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Navigation("Schedule")
                         .IsRequired();
-
-                    b.Navigation("detections");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>

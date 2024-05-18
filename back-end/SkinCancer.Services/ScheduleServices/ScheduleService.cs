@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.ScheduleDtos;
 using SkinCancer.Repositories.Interface;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,22 +18,27 @@ namespace SkinCancer.Services.ScheduleServices
     {
         public readonly IUnitOfWork _unitOfWork;
         public readonly IMapper _mapper;
+        private readonly ILogger<ScheduleService> _logger;
 
-        public ScheduleService(IUnitOfWork unitOfWork, IMapper mapper = null)
+
+        public ScheduleService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ScheduleService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public async Task<ProcessResult> CreateSchedule(ScheduleDto dto)
+        public async Task<ActionResult<ProcessResult>> CreateSchedule(ScheduleDto dto)
         {  
             try
             {
                 var clinic = await _unitOfWork.Reposirory<Clinic>()
                     .GetByIdAsync(dto.ClinicId);
-                
+
                 if (clinic == null)
                 {
+
+                    _logger.LogWarning("No clinic found with ID: {ClinicId}", dto.ClinicId);
                     return new ProcessResult
                     {
                         Message = "No Clinic Found With this Id"
@@ -38,15 +46,13 @@ namespace SkinCancer.Services.ScheduleServices
                 }
                 if (dto.Date <= DateTime.Now)
                 {
+                    _logger.LogWarning("Invalid date for schedule creation: {Date}", dto.Date);
                     return new ProcessResult
                     {
                         Message = "Date Should Be in the future"
                     };
                 }
                 var schedule = _mapper.Map<Schedule>(dto);
-
-                // Set the clinic for the schedule
-               // schedule.Clinic = clinic;
 
                 await _unitOfWork.Reposirory<Schedule>().AddAsync(schedule);
                 await _unitOfWork.CompleteAsync();
@@ -67,7 +73,7 @@ namespace SkinCancer.Services.ScheduleServices
             }
         }
 
-        public async Task<ProcessResult> UpdateSchedule(UpdateScheduleDto dto)
+        public async Task<ActionResult<ProcessResult>> UpdateSchedule(UpdateScheduleDto dto)
         {
             try
             {
@@ -113,38 +119,61 @@ namespace SkinCancer.Services.ScheduleServices
         }
 
 
-        public async Task<ProcessResult> BookScheduleAsync(BookScheduleDto dto)
+        public async Task<ActionResult<ProcessResult>> BookScheduleAsync(BookScheduleDto dto)
         {
-            var schedule = await _unitOfWork.Reposirory<Schedule>().GetByIdAsync(dto.ScheduleId);
-            if (schedule == null)
+            try
             {
+                var schedule = await _unitOfWork.Reposirory<Schedule>().GetByIdAsync(dto.ScheduleId);
+                if (schedule == null)
+                {
 
+                    return new ProcessResult
+                    {
+                        Message = "No such schedule !",
+                        IsSucceeded = false
+                    };
+                }
+                schedule.PatientId = dto.PatientId;
+                schedule.IsBooked = true;
+
+                await _unitOfWork.CompleteAsync();
                 return new ProcessResult
                 {
-                    Message = "No such schedule !",
-                    IsSucceeded = false
+                    IsSucceeded = true,
+                    Message = "Patient Booked Successfully "
                 };
             }
-            schedule.PatientId = dto.PatientId;
-            schedule.IsBooked = true;
-
-            await _unitOfWork.CompleteAsync();
-            return new ProcessResult
+            catch(Exception ex)
             {
-                IsSucceeded = true,
-                Message = "Patient Booked Successfully "
-            };
+                return new ProcessResult { Message = $"An error occurred while booking schedule: {ex.Message}" };
+            }
 
         }
 
-        public async Task<IEnumerable<ScheduleDto>> GetClinicSchedulesById(int clinicId)
+        public async Task<ActionResult<IEnumerable<ScheduleDetailsDto>>> GetSchedulesByClinicIdAsync(int clinicId)
         {
-            var schedules = await _unitOfWork.scheduleRepository.GetClinicSchedulesById(clinicId);
+            try
+            {
+                var schedules = await _unitOfWork.scheduleRepository.GetClinicSchedulesById(clinicId);
 
-            var schedulesDtos = _mapper.Map<IEnumerable<ScheduleDto>>(schedules);
+                if (schedules == null || !schedules.Any())
+                {
+                    _logger.LogWarning("No schedules found for clinic with ID: {ClinicId}", clinicId);
+                    return new NotFoundObjectResult("No Schedules Found.");
+                }
 
-            return schedulesDtos;
-                
+                var schedulesDtos = _mapper.Map<IEnumerable<ScheduleDetailsDto>>(schedules);
+
+                return new OkObjectResult(schedulesDtos);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching schedules for clinic with ID: {ClinicId}", clinicId);
+                return new ObjectResult("An error occurred while processing your request. Please try again later.")
+                {
+                    StatusCode = 500
+                };
+            }
         }
     }
 }
