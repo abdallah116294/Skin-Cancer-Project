@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
@@ -180,25 +181,42 @@ namespace SkinCancer.Services.ClinicServices
         }
 
         // Done
-        public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByName(string name)
+       
+        public async Task<ActionResult<IEnumerable<DoctorClinicDetailsDto>>> GetClinicByName(string subName)
         {
+            if (string.IsNullOrEmpty(subName))
+            {
+                return new BadRequestObjectResult("SubName can't be null or empty.");
+            }
             try
             {
-                var clinic = await _clinicRepository.Include<Clinic>
-                    (name, c => c.Schedules);
+                var clinics = await _unitOfWork.Include<Clinic>
+                                                        (c => c.Schedules)
+                                                        .ToListAsync();
 
-                if (clinic == null)
+                if (clinics == null || !clinics.Any())
                 {
-                    return new NotFoundObjectResult($"Clinic with name `{name}` not found.");
+                    return new NotFoundObjectResult($"There is No Clinics Yet");
                 }
-                var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
 
-                return dto;
+                var result = clinics
+                    .Where(c => c.Name.StartsWith(subName, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+
+                if (!result.Any())
+                {
+                    return new NotFoundObjectResult($"No Clinic Found With this subName : {subName}");
+
+                }
+
+                var dtos = _mapper.Map<List<DoctorClinicDetailsDto>>(result);
+                
+                return new OkObjectResult(dtos);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching the clinic by name: {ClinicName}"
-                    , name);
+                    , subName);
 
                 return new ObjectResult("An error occurred while processing your request. Please try again later.")
                 {
