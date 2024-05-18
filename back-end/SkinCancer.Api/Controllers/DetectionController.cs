@@ -57,7 +57,7 @@ namespace SkinCancer.Api.Controllers
 		public async Task<IActionResult> GetDetectionsData(string userID) {
 			var url = Request.Scheme + "://" + Request.Host + Request.PathBase;
 			var data = await _unitOfWork.detectionRepositoty.Get(userID, url);
-			`return Ok(data);
+			return Ok(data);
 
 
 		}
