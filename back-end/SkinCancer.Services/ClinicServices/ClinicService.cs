@@ -135,7 +135,10 @@ namespace SkinCancer.Services.ClinicServices
 
             try
             {
-                var clinics = await _unitOfWork.Include<Clinic>(c => c.Schedules).ToListAsync();
+                var clinics = await _unitOfWork.Include<Clinic>(c => c.Schedules)
+                                                        .Include(c => c.PatientRates)
+                                                        .ToListAsync();
+
 
                 if (clinics == null || !clinics.Any())
                 {
