@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
@@ -32,6 +33,25 @@ class ClinicCubit extends Cubit<ClinicState> {
           (r) => GetDocClinicIsSuccess(clinicModel: r)));
     } catch (error) {
       emit(GetDocClinicIsError(error: error.toString()));
+    }
+  }
+
+  Future<void> updateClinic(ClinicModel clinicModel, String token) async {
+    try {
+      emit(UpdateDocClinicIsLoading());
+
+      Either<String, ClinicModel> response =
+          await clinicRepo.updateClinic(clinicModel, token);
+      emit(
+        response.fold(
+          (l) => UpdateDocClinicIsError(error: l.toString()),
+          (r) => UpdateDocClinicIsSuccess(clinicModel: clinicModel),
+        ),
+      );
+    } on DioException catch (e) {
+      emit(
+        UpdateDocClinicIsError(error: e.toString()),
+      );
     }
   }
 }

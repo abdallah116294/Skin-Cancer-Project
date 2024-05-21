@@ -36,3 +36,19 @@ class GetDocClinicIsError extends ClinicState {
 
   const GetDocClinicIsError({required this.error});
 }
+
+
+
+class UpdateDocClinicIsLoading extends ClinicState {}
+
+class UpdateDocClinicIsSuccess extends ClinicState {
+  final ClinicModel clinicModel;
+
+  const UpdateDocClinicIsSuccess({required this.clinicModel});
+}
+
+class UpdateDocClinicIsError extends ClinicState {
+  final String error;
+
+  const UpdateDocClinicIsError({required this.error});
+}
