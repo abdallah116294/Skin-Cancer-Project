@@ -6,7 +6,7 @@ import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/home/home_screen.dart';
 
 import '../../core/utils/app_color.dart';
-import '../profile/profile_screen.dart';
+import '../profile/screens/profile_screen.dart';
 
 class BottomGNav extends StatefulWidget {
   const BottomGNav({super.key});

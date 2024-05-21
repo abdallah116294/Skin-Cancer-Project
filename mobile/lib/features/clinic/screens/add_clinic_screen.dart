@@ -378,7 +378,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                                         phone: phoneNumberController.text,
                                         address: addressController.text,
                                         image:
-                                            'https://i.pinimg.com/564x/7a/10/3a/7a103a52bd6ce9b5f29566d6f0dc6306.jpg',
+                                            'https://img.youm7.com/ArticleImgs/2020/5/26/43889-%D8%A7%D9%84%D8%B3%D9%82%D8%A7.jpg',
                                         description: decriptionController.text,
                                         date1: selectedDateAndTime1,
                                         date2: selectedDateAndTime2,

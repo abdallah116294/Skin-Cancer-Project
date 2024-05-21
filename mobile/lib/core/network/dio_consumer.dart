@@ -103,4 +103,21 @@ class DioCosumer implements ApiConsumer {
     case DioExceptionType.receiveTimeout ||
     DioExceptionType.badCertificate) {}
   }
+
+  @override
+  Future delete(String path,
+      {Map<String, dynamic>? body,
+      Map<String, dynamic>? queryParameters,
+      String? token,
+      bool? formDataIsEnabled}) async {
+    try {
+      final response = await client.delete(path,
+          data: body,
+          queryParameters: queryParameters,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      return _handleResponseAsJson(response);
+    } on DioException catch (eror) {
+      _handleDioError(eror);
+    }
+  }
 }

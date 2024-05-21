@@ -36,19 +36,16 @@ class GetDocClinicIsError extends ClinicState {
 
   const GetDocClinicIsError({required this.error});
 }
+class DeleteClinicIsloading extends ClinicState {}
 
+class DeleteClinicIsSuccesse extends ClinicState {
+  final AddClinicSuccessModel addClinicSuccessModel;
 
-
-class UpdateDocClinicIsLoading extends ClinicState {}
-
-class UpdateDocClinicIsSuccess extends ClinicState {
-  final ClinicModel clinicModel;
-
-  const UpdateDocClinicIsSuccess({required this.clinicModel});
+  const DeleteClinicIsSuccesse({required this.addClinicSuccessModel});
 }
 
-class UpdateDocClinicIsError extends ClinicState {
+class DeleteClinicIsError extends ClinicState {
   final String error;
 
-  const UpdateDocClinicIsError({required this.error});
+  DeleteClinicIsError({required this.error});
 }

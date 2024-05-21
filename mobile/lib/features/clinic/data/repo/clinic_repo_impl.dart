@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:dio/dio.dart';
 import 'package:mobile/core/error/exception.dart';
 import 'package:mobile/core/network/api_constant.dart';
 import 'package:mobile/core/network/api_consumer.dart';
@@ -40,17 +39,15 @@ class ClinicRepoImpl implements ClinicRepo {
   }
 
   @override
-  Future<Either<String, ClinicModel>> updateClinic(
-      ClinicModel clinicModel, String token) async{
+  Future<Either<String, AddClinicSuccessModel>> deleteClinic(
+      {required int id, required String token}) async {
     try {
-      final response = await apiConsumer.put(
-        ApiConstant.updateClinicPoint,
-        token: token,
-        body: clinicModel.toJson(),
-      );
-      return right(response);
-    } on DioException catch (e) {
-      return left(e.toString());
+      final reponse = await apiConsumer.delete(ApiConstant.deleteClinicEndPoint,
+          queryParameters: {"id": id}, token: token);
+      final successDeleted = AddClinicSuccessModel.fromJson(reponse);
+      return Right(successDeleted);
+    } on ServerException catch (error) {
+      return Left(error.toString());
     }
   }
 }
