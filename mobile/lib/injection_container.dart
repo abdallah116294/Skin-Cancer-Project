@@ -9,6 +9,9 @@ import 'package:mobile/features/Auth/data/repository/auth_repo_impl.dart';
 import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo_impl.dart';
+import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
+import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
+import 'package:mobile/features/explore/data/repo/patient_clinic_repo_impl.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
@@ -22,6 +25,10 @@ Future<void> init() async {
   sl.registerFactory(() => ClinicCubit(clinicRepo: sl()));
   //repo
   sl.registerLazySingleton<ClinicRepo>(() => ClinicRepoImpl(apiConsumer: sl()));
+  //!Patient
+  sl.registerFactory(() => PatientClinicCubit(patientClinicRepo: sl()));
+  sl.registerLazySingleton<PatientClinicRepo>(
+      () => PatinetClinicRepoImpl(apiConsumer: sl()));
   //!core
   sl.registerLazySingleton<ApiConsumer>(() => DioCosumer(client: sl()));
 
