@@ -49,7 +49,7 @@ class _BottomGNavState extends State<BottomGNav> {
           child: SafeArea(
             child: Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8),
+                  const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
               child: GNav(
                 gap: 10,
                 haptic: true,

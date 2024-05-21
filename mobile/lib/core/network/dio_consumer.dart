@@ -11,6 +11,7 @@ import 'package:mobile/injection_container.dart' as di;
 
 class DioCosumer implements ApiConsumer {
   final Dio client;
+
   DioCosumer({required this.client}) {
     client.options
       ..baseUrl = ApiConstant.baseUrl
@@ -23,6 +24,7 @@ class DioCosumer implements ApiConsumer {
       client.interceptors.add(di.sl<LogInterceptor>());
     }
   }
+
   @override
   Future get(String path,
       {Map<String, dynamic>? queryParameters, String? token}) async {
@@ -99,6 +101,23 @@ class DioCosumer implements ApiConsumer {
       return _handleResponseAsJson(response);
     } on DioException catch (eror) {
       _handleDioError(eror);
+    }
+  }
+
+  @override
+  Future put(String path,
+      {Map<String, dynamic>? body,
+      Map<String, dynamic>? queryParameters,
+      String? token,
+      bool? formDataIsEnabled}) async {
+    try {
+      final response = await client.put(path,
+          data: body,
+          queryParameters: queryParameters,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      return _handleResponseAsJson(response);
+    } on DioException catch (error) {
+      _handleDioError(error);
     }
   }
 }

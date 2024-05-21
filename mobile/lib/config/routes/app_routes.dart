@@ -122,14 +122,21 @@ class AppRoutes {
       case Routes.topDocScreen:
         return MaterialPageRoute(
             builder: (context) => BlocProvider(
-                  create: (context) =>di.sl<PatientClinicCubit>()..getAllClinics(),
+                  create: (context) =>
+                      di.sl<PatientClinicCubit>()..getAllClinics(),
                   child: TopDocScreen(),
                 ));
       case Routes.docDetailsScreen:
         final arg = routeSettings.arguments as int;
-        return MaterialPageRoute(builder: (context) => DocDetailsScreen(id: arg,));
+        return MaterialPageRoute(
+            builder: (context) => DocDetailsScreen(
+                  id: arg,
+                ));
       case Routes.addClinicScreenRoutes:
-        return MaterialPageRoute(builder: (context) => const AddClinicScreen());
+        return MaterialPageRoute(
+            builder: (context) => AddClinicScreen(
+                  values: routeSettings.arguments as Map<String, int?>,
+                ));
       case Routes.docClinicDetailsScreenRoutes:
         return MaterialPageRoute(
             builder: (context) => const DocClinicDetailsScreen());
