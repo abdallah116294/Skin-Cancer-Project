@@ -3,13 +3,19 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
+import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
 
 part 'clinic_state.dart';
 
 class ClinicCubit extends Cubit<ClinicState> {
-  ClinicCubit({required this.clinicRepo}) : super(ClinicInitial());
+  ClinicCubit({
+    required this.clinicRepo,
+    required this.patientClinicRepo,
+  }) : super(ClinicInitial());
   ClinicRepo clinicRepo;
+  PatientClinicRepo patientClinicRepo;
 
   Future<void> creatClinic(ClinicModel clinicModel, String token) async {
     try {
@@ -44,6 +50,32 @@ class ClinicCubit extends Cubit<ClinicState> {
           (r) => DeleteClinicIsSuccesse(addClinicSuccessModel: r)));
     } catch (error) {
       emit(DeleteClinicIsError(error: error.toString()));
+    }
+  }
+
+  Future<void> getDocHasClinic({required String docId}) async {
+    emit(GetDocHasClinicIsLoading());
+    try {
+      Either<String, AddClinicSuccessModel> response =
+          await clinicRepo.getDocHasClinic(docId: docId);
+      emit(response.fold((l) => GetDocHasClinicIsError(error: l),
+          (r) => GetDocHasClinicIsSuccess(addClinicSuccess: r)));
+    } catch (error) {
+      emit(GetDocHasClinicIsError(error: error.toString()));
+    }
+  }
+
+  Future<void> updateClinic(
+      {required UpdateClinicModel updateClinicModel,
+      required String token}) async {
+    emit(UpdateClinicLoading());
+    try {
+      Either<String, AddClinicSuccessModel> response =
+          await clinicRepo.updateClinic(updateClinicModel, token);
+      emit(response.fold((l) => UpdateClinicError(error: l),
+              (r) =>UpdateClinicSuccess(addClinicSuccessModel: r)));
+    } catch (error) {
+      emit(UpdateClinicError(error: error.toString()));
     }
   }
 }

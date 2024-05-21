@@ -4,6 +4,7 @@ import 'package:mobile/core/network/api_constant.dart';
 import 'package:mobile/core/network/api_consumer.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
 
 class ClinicRepoImpl implements ClinicRepo {
@@ -46,6 +47,39 @@ class ClinicRepoImpl implements ClinicRepo {
           queryParameters: {"id": id}, token: token);
       final successDeleted = AddClinicSuccessModel.fromJson(reponse);
       return Right(successDeleted);
+    } on ServerException catch (error) {
+      return Left(error.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, AddClinicSuccessModel>> getDocHasClinic({
+    required String docId,
+  }) async {
+    try {
+      final response = await apiConsumer.get(
+          ApiConstant.getDoctorHasClinicEndPoint,
+          queryParameters: {"doctorId": docId});
+      var addClinicSuccessModel = AddClinicSuccessModel.fromJson(response);
+      return Right(addClinicSuccessModel);
+    } on ServerException catch (error) {
+      return Left(error.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, AddClinicSuccessModel>> updateClinic(
+    UpdateClinicModel updateClinicModel,
+    String token,
+  ) async {
+    try {
+      final respone = await apiConsumer.put(
+        ApiConstant.updateClinic,
+        token: token,
+        body: updateClinicModel.toJson(),
+      );
+      var result = AddClinicSuccessModel.fromJson(respone);
+      return Right(result);
     } on ServerException catch (error) {
       return Left(error.toString());
     }

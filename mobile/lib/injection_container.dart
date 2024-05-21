@@ -22,7 +22,7 @@ Future<void> init() async {
   sl.registerLazySingleton<AuthRepo>(() => AuthRepoImpl(apiConsumer: sl()));
   //!Clinic
   //cubit
-  sl.registerFactory(() => ClinicCubit(clinicRepo: sl()));
+  sl.registerFactory(() => ClinicCubit(clinicRepo: sl(), patientClinicRepo: sl()));
   //repo
   sl.registerLazySingleton<ClinicRepo>(() => ClinicRepoImpl(apiConsumer: sl()));
   //!Patient

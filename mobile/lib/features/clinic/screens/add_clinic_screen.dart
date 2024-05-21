@@ -18,11 +18,14 @@ import 'package:mobile/core/widgets/custom_dailog.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/widgets/pick_image_widget.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class AddClinicScreen extends StatefulWidget {
-  const AddClinicScreen({super.key});
+  final Map<String, int?> values;
+
+  const AddClinicScreen({super.key, required this.values});
 
   @override
   State<AddClinicScreen> createState() => _AddClinicScreenState();
@@ -38,6 +41,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
   final nameController = TextEditingController();
   final picker = ImagePicker();
   XFile? _pickedImage;
+
   Future<void> localImagePicker() async {
     final ImagePicker picker = ImagePicker();
     await AppMethods.imagePickerDialog(
@@ -66,6 +70,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
   String showDate3 = '';
   String userImageUrl = '';
   final formkey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
@@ -113,6 +118,15 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                       context: context,
                       onTap: () {
                         context.pushNamed(Routes.bottomNavScreenRoutes);
+                      });
+                } else if (state is UpdateClinicSuccess) {
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Updated Success",
+                      actionName: "Go Home",
+                      context: context,
+                      onTap: () {
+                        context
+                            .pushReplacementNamed(Routes.bottomNavScreenRoutes);
                       });
                 }
               },
@@ -267,7 +281,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           showDate1.isEmpty
-                              ? const Text('Enter Your availabile Date')
+                              ? const Text('Enter Your available Date')
                               : Text(showDate1),
                           IconButton(
                               onPressed: () async {
@@ -297,7 +311,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           showDate2.isEmpty
-                              ? Text('Enter Your availabile Date')
+                              ? const Text('Enter Your availabile Date')
                               : Text(showDate2),
                           IconButton(
                               onPressed: () async {
@@ -329,7 +343,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           showDate3.isEmpty
-                              ? Text('Enter Your availabile Date')
+                              ? const Text('Enter Your availabile Date')
                               : Text(showDate3),
                           IconButton(
                               onPressed: () async {
@@ -357,39 +371,66 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                         ],
                       ),
                       verticalSpacing(10),
-
-                      Center(
-                        child: CustomButton(
-                            buttoncolor: AppColor.primaryColor,
-                            width: 358.w,
-                            height: 61.h,
-                            buttonName: 'Upload',
-                            onTap: () {
-
-                              if (formkey.currentState!.validate()) {
-
-                                CacheHelper.saveData(key: 'clinicName',
-                                    value: nameController.text);
-                                context.read<ClinicCubit>().creatClinic(
-                                    ClinicModel(
-                                        id: 0,
-                                        name: nameController.text,
-                                        price: int.parse(priceController.text),
-                                        phone: phoneNumberController.text,
-                                        address: addressController.text,
-                                        image:
-                                            'https://img.youm7.com/ArticleImgs/2020/5/26/43889-%D8%A7%D9%84%D8%B3%D9%82%D8%A7.jpg',
-                                        description: decriptionController.text,
-                                        date1: selectedDateAndTime1,
-                                        date2: selectedDateAndTime2,
-                                        date3: selectedDateAndTime3,
-                                        doctorName: username),
-                                    token);
-                              }
-                            },
-                            textColor: Colors.white,
-                            white: false),
-                      ),
+                      widget.values["action"] == 1
+                          ? Center(
+                              child: CustomButton(
+                                  buttoncolor: AppColor.primaryColor,
+                                  width: 358.w,
+                                  height: 61.h,
+                                  buttonName: 'Add Clinic',
+                                  onTap: () {
+                                    if (formkey.currentState!.validate()) {
+                                      CacheHelper.saveData(
+                                          key: 'clinicName',
+                                          value: nameController.text);
+                                      context.read<ClinicCubit>().creatClinic(
+                                          ClinicModel(
+                                              id: 0,
+                                              name: nameController.text,
+                                              price: int.parse(
+                                                  priceController.text),
+                                              phone: phoneNumberController.text,
+                                              address: addressController.text,
+                                              image:
+                                                  'https://img.youm7.com/ArticleImgs/2020/5/26/43889-%D8%A7%D9%84%D8%B3%D9%82%D8%A7.jpg',
+                                              description:
+                                                  decriptionController.text,
+                                              date1: selectedDateAndTime1,
+                                              date2: selectedDateAndTime2,
+                                              date3: selectedDateAndTime3,
+                                              doctorName: username),
+                                          token);
+                                    }
+                                  },
+                                  textColor: Colors.white,
+                                  white: false),
+                            )
+                          : Center(
+                              child: CustomButton(
+                                  buttoncolor: AppColor.primaryColor,
+                                  width: 358.w,
+                                  height: 61.h,
+                                  buttonName: 'Update',
+                                  onTap: () {
+                                    if (formkey.currentState!.validate()) {
+                                      context.read<ClinicCubit>().updateClinic(
+                                          updateClinicModel: UpdateClinicModel(
+                                              id: widget.values["clinicId"],
+                                              name: nameController.text,
+                                              price: int.parse(
+                                                  priceController.text),
+                                              phone: phoneNumberController.text,
+                                              address: addressController.text,
+                                              image:
+                                                  "https://i.pinimg.com/564x/db/bd/22/dbbd222f3cfc06c1dafc3747f9f9a85e.jpg",
+                                              description:
+                                                  decriptionController.text),
+                                          token: token);
+                                    }
+                                  },
+                                  textColor: Colors.white,
+                                  white: false),
+                            ),
                     ],
                   ),
                 );

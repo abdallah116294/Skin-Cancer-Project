@@ -6,11 +6,17 @@ import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/text_styles.dart';
 
 class DocClinicWidget extends StatelessWidget {
-  final String  title ;
-  final String  subtitle ;
-  final IconData  icon;
+  final String title;
+
+  final String subtitle;
+
+  final IconData icon;
+
   const DocClinicWidget({
-    super.key, required this.title, required this.subtitle, required this.icon,
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.icon,
   });
 
   @override

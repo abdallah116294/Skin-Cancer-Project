@@ -39,9 +39,9 @@ class DioCosumer implements ApiConsumer {
   @override
   Future post(String path,
       {Map<String, dynamic>? body,
-        Map<String, dynamic>? queryParameters,
-        String? token,
-        bool? formDataIsEnabled}) async {
+      Map<String, dynamic>? queryParameters,
+      String? token,
+      bool? formDataIsEnabled}) async {
     try {
       final response = await client.post(path,
           data: body,
@@ -53,23 +53,6 @@ class DioCosumer implements ApiConsumer {
     }
   }
 
-  Future put(String path, {
-    String? token,
-    Map<String, dynamic>? queryParameters,
-    Map<String, dynamic>? body,
-  }) async {
-   try {
-     final response = await client.put(
-          path,
-          queryParameters: queryParameters,
-          data:body,
-        options: Options(headers:{"Authorization": "Bearer $token"})
-      );
-   } on DioException catch (e) {
-     _handleDioError(e);
-   }
-  }
-
   dynamic _handleResponseAsJson(Response<dynamic> response) {
     final responseJson = json.decode(response.data.toString());
     return responseJson;
@@ -77,9 +60,9 @@ class DioCosumer implements ApiConsumer {
 
   dynamic _handleDioError(DioException error) {
     if (error.type
-    case DioExceptionType.connectionTimeout ||
-    DioExceptionType.sendTimeout ||
-    DioException.receiveTimeout) {
+        case DioExceptionType.connectionTimeout ||
+            DioExceptionType.sendTimeout ||
+            DioException.receiveTimeout) {
       throw const FetchDataException();
     } else if (error.type case DioExceptionType.values) {
       switch (error.response?.statusCode) {
@@ -96,12 +79,12 @@ class DioCosumer implements ApiConsumer {
         case StatusCode.internalServerError:
           throw const InternalServerErrorException();
       }
-    } else if (error.type case DioExceptionType.cancel) {} else
-    if (error.type case DioExceptionType.unknown) {
+    } else if (error.type case DioExceptionType.cancel) {
+    } else if (error.type case DioExceptionType.unknown) {
       throw const NoInternetConnectionException();
     } else if (error.type
-    case DioExceptionType.receiveTimeout ||
-    DioExceptionType.badCertificate) {}
+        case DioExceptionType.receiveTimeout ||
+            DioExceptionType.badCertificate) {}
   }
 
   @override
@@ -118,6 +101,23 @@ class DioCosumer implements ApiConsumer {
       return _handleResponseAsJson(response);
     } on DioException catch (eror) {
       _handleDioError(eror);
+    }
+  }
+
+  @override
+  Future put(String path,
+      {Map<String, dynamic>? body,
+      Map<String, dynamic>? queryParameters,
+      String? token,
+      bool? formDataIsEnabled}) async {
+    try {
+      final response = await client.put(path,
+          data: body,
+          queryParameters: queryParameters,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      return _handleResponseAsJson(response);
+    } on DioException catch (error) {
+      _handleDioError(error);
     }
   }
 }

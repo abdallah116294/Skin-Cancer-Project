@@ -17,4 +17,8 @@ class ApiConstant {
       "/api/Clinic/PatientRateClinic";
   static const String getClinicSchedulesclinicIdEndPoint =
       "/api/Schedule/GetClinicSchedules";
+  static const String getDoctorHasClinicEndPoint =
+      "/api/Clinic/IsDoctorHasClinic";
+  static const String updateClinic =
+      "/api/Clinic/UpdateClinic";
 }
