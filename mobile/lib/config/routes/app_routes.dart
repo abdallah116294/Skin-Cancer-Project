@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
@@ -8,6 +10,7 @@ import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
 import 'package:mobile/features/clinic/screens/add_clinic_screen.dart';
 import 'package:mobile/features/clinic/screens/doc_clinic_details.dart';
 import 'package:mobile/features/disease_info/screens/early_detection.dart';
+import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
 import 'package:mobile/features/explore/doc_details.dart';
@@ -15,7 +18,7 @@ import 'package:mobile/features/home/home_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_auth_fun_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_user.dart';
 import 'package:mobile/features/onBoarding/screens/on_boarding_screen.dart';
-import 'package:mobile/features/profile/profile_screen.dart';
+import 'package:mobile/features/profile/screens/profile_screen.dart';
 import 'package:mobile/features/splash/splash_screen.dart';
 
 import '../../features/Auth/cubit/auth_cubit.dart';
@@ -48,7 +51,8 @@ class Routes {
   static const String topDocScreen = "/TopDocScreen";
   static const String docDetailsScreen = "/DocDetailsScreen";
   static const String addClinicScreenRoutes = "/AddClinicScreen";
-  static const String docClinicDetailsScreenRoutes = "/DocClinicDetailsScreenRoutes";
+  static const String docClinicDetailsScreenRoutes =
+      "/DocClinicDetailsScreenRoutes";
 }
 
 class AppRoutes {
@@ -116,14 +120,19 @@ class AppRoutes {
             builder: (context) => const EarlyDetectionScreen());
 
       case Routes.topDocScreen:
-        return MaterialPageRoute(builder: (context) => const TopDocScreen());
-      case Routes.docDetailsScreen:
         return MaterialPageRoute(
-            builder: (context) => const DocDetailsScreen());
+            builder: (context) => BlocProvider(
+                  create: (context) =>di.sl<PatientClinicCubit>()..getAllClinics(),
+                  child: TopDocScreen(),
+                ));
+      case Routes.docDetailsScreen:
+        final arg = routeSettings.arguments as int;
+        return MaterialPageRoute(builder: (context) => DocDetailsScreen(id: arg,));
       case Routes.addClinicScreenRoutes:
-        return MaterialPageRoute(builder: (context)=>const  AddClinicScreen());
- case Routes.docClinicDetailsScreenRoutes:
-        return MaterialPageRoute(builder: (context)=>const  DocClinicDetailsScreen());
+        return MaterialPageRoute(builder: (context) => const AddClinicScreen());
+      case Routes.docClinicDetailsScreenRoutes:
+        return MaterialPageRoute(
+            builder: (context) => const DocClinicDetailsScreen());
     }
   }
 }

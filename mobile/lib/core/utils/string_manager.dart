@@ -30,4 +30,6 @@ class StringManager {
   static const String restPassword = "Reset password";
   static const String restpassword2 = "please type password you’ll  remember";
   static const String alreadyHaveAccount = "Already have an account?";
+  static const String userIdKey =
+      "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid";
 }
