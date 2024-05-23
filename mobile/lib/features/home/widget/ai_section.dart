@@ -12,7 +12,7 @@ class AISection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       width: 365.w,
       height: 190.h,
       decoration: BoxDecoration(
@@ -44,7 +44,7 @@ class AISection extends StatelessWidget {
                     textOfButtonStyle: TextStyles.font14BlackW600,
                     buttonName: "Start Now",
                     onTap: () {
-
+                      context.pushNamed(Routes.aIScanScreen);
                     },
                     textColor: Colors.black,
                     white: false)
@@ -52,13 +52,13 @@ class AISection extends StatelessWidget {
             ),
             horizontalSpacing(23),
             ClipOval(
-                  child: SizedBox(
-                      width: 150.w,
-                      height: 160.h,
-                      child: Image.network(
-                          fit: BoxFit.cover,
-                          "https://i.pinimg.com/564x/09/4f/16/094f164882a08da22b56b246a2f4c2ec.jpg")),
-                ),
+              child: SizedBox(
+                  width: 150.w,
+                  height: 160.h,
+                  child: Image.network(
+                      fit: BoxFit.cover,
+                      "https://i.pinimg.com/564x/09/4f/16/094f164882a08da22b56b246a2f4c2ec.jpg")),
+            ),
           ],
         ),
       ),
