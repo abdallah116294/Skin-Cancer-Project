@@ -11,7 +11,6 @@ import 'package:mobile/injection_container.dart' as di;
 
 class DioCosumer implements ApiConsumer {
   final Dio client;
-
   DioCosumer({required this.client}) {
     client.options
       ..baseUrl = ApiConstant.baseUrl

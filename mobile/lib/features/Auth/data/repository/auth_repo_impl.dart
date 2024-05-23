@@ -83,14 +83,17 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<String, String>> resetPassword(
-      {required String code,required String email, required String newPassword}) async {
+      {required String code,
+      required String email,
+      required String newPassword}) async {
     try {
-      final response = await apiConsumer
-          .post(ApiConstant.resetPasswordEndPoint, body: {
+      final response =
+          await apiConsumer.post(ApiConstant.resetPasswordEndPoint, body: {
         "code": code,
         "email": email,
         "newPassword": newPassword,
       });
+      log("Repo outPut"+response);
       return Right(response);
     } on ServerException catch (e) {
       return Left(e.toString());

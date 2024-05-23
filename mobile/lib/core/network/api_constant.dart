@@ -1,3 +1,5 @@
+const int skinmodel = 1;
+const int detectmodel = 2;
 class ApiConstant {
   static const String baseUrl = 'http://skincancerdetectionapiv2.runasp.net';
   static const String loginEndPoint = '/api/Account/Login';
@@ -21,4 +23,8 @@ class ApiConstant {
       "/api/Clinic/IsDoctorHasClinic";
   static const String updateClinic =
       "/api/Clinic/UpdateClinic";
+    static const String aiBasUrl =
+      "http://18.214.13.65";
+  static const String skinornotModel = "/predict/$skinmodel";
+  static const String detectModel = "/predict/$detectmodel";    
 }

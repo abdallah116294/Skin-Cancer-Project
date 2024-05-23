@@ -99,13 +99,21 @@ class AuthCubit extends Cubit<AuthState> {
           code: code, email: email, newPassword: newPassword);
       emit(response.fold(
           (l) => ResetPasswordIsErrorState(message: extractErrorMessage(l)),
-          (r) => ResetPasswordIsSuccessState(message: r)));
+          (r) => ResetPasswordIsSuccessState(message: extractPasswordUpdatedMessage(r))));
     } catch (error) {
       emit(ResetPasswordIsErrorState(
           message: extractErrorMessage(error.toString())));
     }
   }
 
+String extractPasswordUpdatedMessage(String responseText) {
+  final RegExp regex = RegExp(r'Password Updated Successfully');
+  final match = regex.firstMatch(responseText);
+  if (match != null) {
+    return match.group(0) ?? '';
+  }
+  return 'Password Updated Successfully';
+}
   String extractErrorMessage(String errorString) {
     // Split the errorString by newline characters
     List<String> lines = errorString.split('\n');
