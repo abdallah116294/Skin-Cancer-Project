@@ -28,7 +28,7 @@ namespace SkinCancer.Services.ScheduleServices
             _logger = logger;
         }
 
-        public async Task<ActionResult<ProcessResult>> CreateSchedule(ScheduleDto dto)
+        public async Task<ProcessResult> CreateSchedule(ScheduleDto dto)
         {  
             try
             {
@@ -73,7 +73,7 @@ namespace SkinCancer.Services.ScheduleServices
             }
         }
 
-        public async Task<ActionResult<ProcessResult>> UpdateSchedule(UpdateScheduleDto dto)
+        public async Task<ProcessResult> UpdateSchedule(UpdateScheduleDto dto)
         {
             try
             {
@@ -119,7 +119,7 @@ namespace SkinCancer.Services.ScheduleServices
         }
 
 
-        public async Task<ActionResult<ProcessResult>> BookScheduleAsync(BookScheduleDto dto)
+        public async Task<ProcessResult> BookScheduleAsync(BookScheduleDto dto)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace SkinCancer.Services.ScheduleServices
 
         }
 
-        public async Task<ActionResult<IEnumerable<ScheduleDetailsDto>>> GetSchedulesByClinicIdAsync(int clinicId)
+        public async Task<IEnumerable<ScheduleDetailsDto>> GetSchedulesByClinicIdAsync(int clinicId)
         {
             try
             {
@@ -159,20 +159,17 @@ namespace SkinCancer.Services.ScheduleServices
                 if (schedules == null || !schedules.Any())
                 {
                     _logger.LogWarning("No schedules found for clinic with ID: {ClinicId}", clinicId);
-                    return new NotFoundObjectResult("No Schedules Found.");
+                    return Enumerable.Empty<ScheduleDetailsDto>(); // Return an empty list
                 }
 
                 var schedulesDtos = _mapper.Map<IEnumerable<ScheduleDetailsDto>>(schedules);
 
-                return new OkObjectResult(schedulesDtos);
+                return schedulesDtos;
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while fetching schedules for clinic with ID: {ClinicId}", clinicId);
-                return new ObjectResult("An error occurred while processing your request. Please try again later.")
-                {
-                    StatusCode = 500
-                };
+                throw;
             }
         }
     }
