@@ -21,10 +21,10 @@ namespace SkinCancer.Repositories.Repository
         public IScheduleRepository scheduleRepository { get; set;}
         public IDetectionRepository detectionRepositoty { get; set;}
 
-        public UnitOfWork(ApplicationDbContext context, IScheduleRepository scheduleRepository)
+        public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
-            this.scheduleRepository = scheduleRepository;
+            this.scheduleRepository = new ScheduleRepository(context);
             this.detectionRepositoty = new DetectionRepository(context);
         }
 
@@ -72,6 +72,27 @@ namespace SkinCancer.Repositories.Repository
 
             return await query.FirstOrDefaultAsync(e => e.Id == id);
         }
+		public List<T> SelectItem<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) where T : class
+		{
+			IQueryable<T> query = context.Set<T>();
 
-    }
+			if (includes != null)
+			{
+				foreach (var include in includes)
+				{
+					query = query.Include(include);
+				}
+			}
+
+			if (predicate != null)
+			{
+				query = query.Where(predicate);
+			}
+
+			return query.ToList();
+		}
+
+	}
 }
+
+
