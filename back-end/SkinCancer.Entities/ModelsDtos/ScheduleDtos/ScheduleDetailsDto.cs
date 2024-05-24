@@ -8,6 +8,8 @@ namespace SkinCancer.Entities.ModelsDtos.ScheduleDtos
 {
     public class ScheduleDetailsDto
     {
+        public int Id { get; set; } 
+
         public DateTime Date { get; set; }
 
         public bool IsBooked { get; set; } = false;

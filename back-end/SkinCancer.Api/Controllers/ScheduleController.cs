@@ -47,7 +47,7 @@ namespace SkinCancer.Api.Controllers
 
             var result = await _scheduleService.BookScheduleAsync(dto);
 
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(result);
             }
@@ -64,7 +64,7 @@ namespace SkinCancer.Api.Controllers
             }
             var result = await _scheduleService.UpdateSchedule(dto);
 
-            if (!result.Value.IsSucceeded)
+            if (!result.IsSucceeded)
             {
                 return BadRequest(ModelState);
             }
@@ -87,7 +87,7 @@ namespace SkinCancer.Api.Controllers
                 return NotFound($"No schedules found for clinic ID {clinicId}.");
             }
                 
-            return Ok(schedulesResult.Value);
+            return Ok(schedulesResult);
         }
         [HttpGet("GetUserAppointments")]
         public IActionResult GetUserAppointments(string userId) {
