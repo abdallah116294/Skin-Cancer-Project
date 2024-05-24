@@ -46,7 +46,7 @@ namespace SkinCancer.Services.ClinicServices
                 await _unitOfWork.Reposirory<Clinic>().AddAsync(clinic);
                 await _unitOfWork.CompleteAsync();
 
-                CalculateAverageRate(clinic);
+                UpdateAverageRate(clinic);
                 await _unitOfWork.CompleteAsync();
 
                 return new ProcessResult
@@ -101,7 +101,15 @@ namespace SkinCancer.Services.ClinicServices
 
         public async Task<IEnumerable<DoctorClinicDetailsDto>> GetAllClinicsAsync()
         {
-            var clinicsWithSchedules = await _unitOfWork.Include<Clinic>(c => c.Schedules).ToListAsync();
+            var clinicsWithSchedules = await _unitOfWork.Include<Clinic>
+                                                        (c => c.Schedules)
+                                                        .Include(c => c.PatientRates)
+                                                        .ToListAsync();
+
+            foreach(var item in clinicsWithSchedules)
+            {
+                UpdateAverageRate(item);
+            }
             var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithSchedules);
             return dtos;
         }
@@ -110,10 +118,14 @@ namespace SkinCancer.Services.ClinicServices
         {
             try
             {
-                var clinic = await _unitOfWork.Include<Clinic>(id, c => c.Schedules) 
-                            ??
-                            throw new ClinicNotFoundException($"Clinic with ID {id} not found.");
+                var checkClinicId = await _unitOfWork.Include<Clinic>(id, c => c.Schedules) 
+                                    ??
+                                   throw new ClinicNotFoundException($"Clinic with ID {id} not found.");
 
+
+                var clinic = await _unitOfWork.Include<Clinic>(c => c.Schedules)
+                                                        .Include(c => c.PatientRates)
+                                                        .ToListAsync();
 
                 var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
                 return dto;
@@ -189,7 +201,7 @@ namespace SkinCancer.Services.ClinicServices
             await _unitOfWork.Reposirory<PatientRateClinic>().AddAsync(patientRateClinic);
             await _unitOfWork.CompleteAsync();
 
-            CalculateAverageRate(clinic);
+            UpdateAverageRate(clinic);
             await _unitOfWork.CompleteAsync();
 
             return new ProcessResult
@@ -229,10 +241,19 @@ namespace SkinCancer.Services.ClinicServices
                 };
             }
         }
-        private void CalculateAverageRate(Clinic clinic)
+        private void UpdateAverageRate(Clinic clinic)
         {
-            clinic.Rate = clinic.PatientRates?.Count > 0 ?
-                clinic.PatientRates.Average(r => r.Rate) : 0;
+            double totalRate = 0;
+            int numberOfRatings = clinic.PatientRates.Count;
+
+            foreach (var patientRate in clinic.PatientRates)
+            {
+                totalRate += patientRate.Rate;
+            }
+
+            // Calculate the average rate only if there are ratings
+            clinic.Rate = numberOfRatings > 0 ? Math.Floor(totalRate / numberOfRatings) : 0;
+
         }
     }
 }
