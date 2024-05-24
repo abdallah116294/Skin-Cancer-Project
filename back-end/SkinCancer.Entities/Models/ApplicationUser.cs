@@ -37,5 +37,6 @@ namespace SkinCancer.Entities.Models
         public Schedule Schedule { get; set; }
 
         public ICollection<DetectionData> detections { get; set; }
+
     }
 }

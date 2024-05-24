@@ -22,7 +22,7 @@ namespace SkinCancer.Api.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Upload(PostDetectionData dto)
+		public async Task<IActionResult> Upload([FromForm]PostDetectionData dto)
 		{
 			if (!ModelState.IsValid) {
 			return BadRequest(dto);
@@ -41,7 +41,8 @@ namespace SkinCancer.Api.Controllers
 					ImagePath = filePath,
 					Result = dto.Result,
 					Date = DateTime.UtcNow,
-					UserId = dto.UserId
+					UserId = dto.UserId,
+					Diagnosis=""
 				};
 				 await _unitOfWork.detectionRepositoty.AddAsync(detectionData);
 				await _unitOfWork.CompleteAsync();
@@ -60,6 +61,28 @@ namespace SkinCancer.Api.Controllers
 			return Ok(data);
 
 
+		}
+
+		[HttpPost("AddDiagnosis")]
+		public async Task<IActionResult> AddDiagnosis(int Id, string Diagonosis) {
+			var detectionData = _unitOfWork.SelectItem<DetectionData>(x => x.Id == Id).FirstOrDefault();
+			if (detectionData == null)
+			{
+				return BadRequest($"this Id {Id} Not Found");
+			}
+			try
+			{
+				detectionData.Diagnosis = Diagonosis;
+				_unitOfWork.detectionRepositoty.Update(detectionData);
+				await _unitOfWork.CompleteAsync();
+				return Ok("added success");
+			}
+			catch (Exception ex)
+			{
+
+				return BadRequest(ex);
+			}
+			
 		}
 	}
 }

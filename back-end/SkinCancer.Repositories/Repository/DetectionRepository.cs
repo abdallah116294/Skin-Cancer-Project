@@ -27,6 +27,8 @@ namespace SkinCancer.Repositories.Repository
             ImagePath=baseUrl+x.ImagePath,
             Date=x.Date,
             Id=x.Id,    
+            Diagnosis=x.Diagnosis,
             }).ToListAsync();
 	}
+
 }

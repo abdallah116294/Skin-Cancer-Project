@@ -9,6 +9,7 @@ namespace SkinCancer.Entities.ModelsDtos.DoctorClinicDtos
 {
     public class DoctorClinicDetailsDto : DoctorClinicDto
     {
+        public int Id { get;set; }
 
         public List<DateTime>? AvailableDates { get; set; }
     }
