@@ -14,6 +14,8 @@ namespace SkinCancer.Entities.Models
 		public DateTime Date { get; set; }
 		[ForeignKey("User")]
 		public string UserId { get; set; }	
+		public string? Diagnosis { get; set; }	
+		
 
 		public ApplicationUser User { get; set; }
 
