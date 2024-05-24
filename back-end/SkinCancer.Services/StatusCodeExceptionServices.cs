@@ -25,4 +25,11 @@ namespace SkinCancer.Services
             StatusCode = statusCode;
         }
     }
+
+    public class ClinicNotFoundException : Exception
+    {
+        public ClinicNotFoundException(string message) : base(message)
+        {
+        }
+    }
 }
