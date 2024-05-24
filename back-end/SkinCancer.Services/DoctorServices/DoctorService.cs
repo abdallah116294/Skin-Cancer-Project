@@ -31,40 +31,7 @@ namespace SkinCancer.Services.DoctorServices
             _userManager = userManager;
         }
 
-       /* public async Task<DoctorClinicDto> CreateClinicAsync(DoctorClinicDto dto)
-        {
-            // You can check for null and so on heree...............
-            var mappedClinic = _mapper.Map<Clinic>(dto);
-            await  _unitOfWork.Reposirory<Clinic>().AddAsync(mappedClinic);
-            await _unitOfWork.CompleteAsync();
 
-            return dto;
-        }
 
-        public async Task<ProcessResult> DeleteClinicAsync(int id)
-        {
-            var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(id);
-            
-            if (clinic == null)
-            {
-                return new ProcessResult { Message = "No Clinic found" };
-            }
-
-             _unitOfWork.Reposirory<Clinic>().Delete(clinic);
-            await _unitOfWork.CompleteAsync();
-
-            return new ProcessResult { IsSucceeded = true, Message = "success" };
-            
-            }
-
-        public Task<ProcessResult> GetClinicById(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ProcessResult> GetClinicByName(string name)
-        {
-            throw new NotImplementedException();
-        }*/
-    }
+	}
 }
