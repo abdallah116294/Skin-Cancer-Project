@@ -110,11 +110,10 @@ namespace SkinCancer.Services.ClinicServices
         {
             try
             {
-                var clinic = await _unitOfWork.Include<Clinic>(id, c => c.Schedules);
-                if (clinic == null)
-                {
-                    throw new Exception($"Clinic with ID {id} not found.");
-                }
+                var clinic = await _unitOfWork.Include<Clinic>(id, c => c.Schedules) 
+                            ??
+                            throw new ClinicNotFoundException($"Clinic with ID {id} not found.");
+
 
                 var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
                 return dto;
@@ -125,6 +124,7 @@ namespace SkinCancer.Services.ClinicServices
                 throw;
             }
         }
+
 
         public async Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicByName(string subName)
         {
