@@ -89,9 +89,9 @@ namespace SkinCancer.Api.Controllers
                 
             return Ok(schedulesResult);
         }
-        [HttpGet("GetUserAppointments")]
-        public IActionResult GetUserAppointments(string userId) {
-        var patientSchedules = unitOfWork.SelectItem<Schedule>(x => x.PatientId == userId,
+        [HttpGet("GetPatientAppointments")]
+        public IActionResult GetPatientAppointments(string userId) {
+        /*var patientSchedules = unitOfWork.SelectItem<Schedule>(x => x.PatientId == userId,
 													x => x.Clinic,
 													x => x.Patient).Select(x=>
                                                     new {
@@ -100,24 +100,28 @@ namespace SkinCancer.Api.Controllers
                                                     Date=x.Date,
                                                     ClinicName=x.Clinic.Name,
                                                     userId=x.PatientId,
-                                                    });
-            return Ok(patientSchedules);
+                                                    });*/
+            return Ok();
 		}
-		[HttpGet("GetClinicAppointments")]
-		public IActionResult GetClinicAppointments(int clinicId)
+		[HttpGet("GetClinicBookedSchedules")]
+		public async Task<ActionResult> GetClinicBookedSchedules(int clinicId)
 		{
-			var clinicSchedules = unitOfWork.SelectItem<Schedule>(x => x.ClinicId == clinicId && x.IsBooked==true,
-														x => x.Clinic,
-														x => x.Patient).Select(x =>
-														new {
-															Id = x.Id,
-															Name = x.Patient.FirstName + " " + x.Patient.LastName,
-															Date = x.Date,
-															ClinicName = x.Clinic.Name,
-															userId = x.PatientId,
+            try
+            {
+                var clinicSchedules = await _scheduleService
+                    .GetClinicBookedSchedules(clinicId);
 
-														});
-			return Ok(clinicSchedules);
+                if (clinicSchedules == null || !clinicSchedules.Any())
+                {
+                    return Ok(new ProcessResult { Message = "No booked schedules found for this clinic." });
+                }
+
+                return Ok(clinicSchedules);
+            }
+            catch
+            {
+                return StatusCode(500 , "An error occurred while fetching clinic appointments");
+            }
 		}
 
 	}
