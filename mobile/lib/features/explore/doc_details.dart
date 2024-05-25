@@ -158,7 +158,8 @@ class DocDetailsScreen extends StatelessWidget {
                                                   Colors.black.withOpacity(0.1),
                                               blurRadius: 5.0,
                                               spreadRadius: 0.0)
-                                        ]),
+                                        ]
+                                        ),
                                     child: Center(
                                         child: Padding(
                                           padding: const EdgeInsets.all(8.0),

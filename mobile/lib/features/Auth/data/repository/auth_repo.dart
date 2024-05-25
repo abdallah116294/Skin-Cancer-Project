@@ -4,7 +4,7 @@ import 'package:mobile/features/Auth/data/model/user_model.dart';
 import '../model/add_role_response.dart';
 
 abstract class AuthRepo {
-  Future<Either<String, UserModel>> loginUser(String email, String password);
+  Future<Either<String, UserModel>> loginUser({required String email,required String password});
 
   Future<Either<String, String>> registerUser({
     required String email,

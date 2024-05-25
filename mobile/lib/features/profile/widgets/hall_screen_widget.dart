@@ -139,6 +139,7 @@ class HallProfileScreenWidget extends StatelessWidget {
                 dotoctorRole == null
                     ? ProfileWidget(
                         onTap: () {
+                          context.pushNamed(Routes.patientSelectedClinic);
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(
@@ -152,6 +153,8 @@ class HallProfileScreenWidget extends StatelessWidget {
                       )
                     : ProfileWidget(
                         onTap: () {
+                          context
+                              .pushNamed(Routes.docClinicDetailsScreenRoutes);
                           // Navigator.push(
                           //     context,
                           //     MaterialPageRoute(

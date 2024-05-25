@@ -15,8 +15,8 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<String, UserModel>> loginUser(
-      String email, String password) async {
-    try {
+      {required String email, required String password}) async {
+     try {
       final respons = await apiConsumer.post(ApiConstant.loginEndPoint,
           body: {"email": email, "password": password});
       final user = UserModel.fromJson(respons);
@@ -73,6 +73,7 @@ class AuthRepoImpl implements AuthRepo {
     try {
       final encodeEmail = Uri.encodeComponent(email);
       final response = await apiConsumer.post(
+        body: {},
         ApiConstant.forgetPasswordEndPoint + "?email=$encodeEmail",
       );
       return Right(response);
@@ -93,7 +94,7 @@ class AuthRepoImpl implements AuthRepo {
         "email": email,
         "newPassword": newPassword,
       });
-      log("Repo outPut"+response);
+      log("Repo outPut" + response);
       return Right(response);
     } on ServerException catch (e) {
       return Left(e.toString());

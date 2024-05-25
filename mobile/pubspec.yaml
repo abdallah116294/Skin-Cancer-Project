@@ -55,6 +55,11 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/image/re_splash.png
+  android: true
+
 
 
 flutter:

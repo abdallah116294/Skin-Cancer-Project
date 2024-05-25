@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
 import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
@@ -73,9 +74,32 @@ class ClinicCubit extends Cubit<ClinicState> {
       Either<String, AddClinicSuccessModel> response =
           await clinicRepo.updateClinic(updateClinicModel, token);
       emit(response.fold((l) => UpdateClinicError(error: l),
-              (r) =>UpdateClinicSuccess(addClinicSuccessModel: r)));
+          (r) => UpdateClinicSuccess(addClinicSuccessModel: r)));
     } catch (error) {
       emit(UpdateClinicError(error: error.toString()));
+    }
+  }
+
+  Future<void> getSelectedClinic(String userId) async {
+    emit(GetSelectedClinicIsLoading());
+    try {
+      Either<String, List<SelectedClinicModel>> response =
+          await clinicRepo.getPatineSelectedClinic(userId);
+      emit(response.fold((l) => GetSelectedClinicIsError(error: l),
+          (r) => GetSelectedClinicIsSuccess(selectedClinic: r)));
+    } catch (error) {
+      emit(GetSelectedClinicIsError(error: error.toString()));
+    }
+  }
+    Future<void> getClinicAppointments(int clincId) async {
+    emit(GetSelectedClinicIsLoading());
+    try {
+      Either<String, List<SelectedClinicModel>> response =
+          await clinicRepo.getClinicAppointment(clincId);
+      emit(response.fold((l) => GetSelectedClinicIsError(error: l),
+          (r) => GetSelectedClinicIsSuccess(selectedClinic: r)));
+    } catch (error) {
+      emit(GetSelectedClinicIsError(error: error.toString()));
     }
   }
 }

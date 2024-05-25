@@ -82,3 +82,15 @@ class UpdateClinicError extends ClinicState {
 
   const UpdateClinicError({required this.error});
 }
+class GetSelectedClinicIsLoading extends ClinicState {}
+
+class GetSelectedClinicIsSuccess extends ClinicState {
+  final List<SelectedClinicModel> selectedClinic;
+
+  const GetSelectedClinicIsSuccess({required this.selectedClinic});
+}
+class GetSelectedClinicIsError extends ClinicState {
+  final String error;
+
+  const GetSelectedClinicIsError({required this.error});
+}

@@ -1,5 +1,6 @@
 const int skinmodel = 1;
 const int detectmodel = 2;
+
 class ApiConstant {
   static const String baseUrl = 'http://skincancerv4.runasp.net';
   static const String loginEndPoint = '/api/Account/Login';
@@ -21,13 +22,15 @@ class ApiConstant {
       "/api/Schedule/GetClinicSchedules";
   static const String getDoctorHasClinicEndPoint =
       "/api/Clinic/IsDoctorHasClinic";
-  static const String updateClinic =
-      "/api/Clinic/UpdateClinic";
-    static const String aiBasUrl =
-      "http://18.214.13.65";
+  static const String updateClinic = "/api/Clinic/UpdateClinic";
+  static const String aiBasUrl = "http://18.214.13.65";
   static const String skinornotModel = "/predict/$skinmodel";
   static const String detectModel = "/predict/$detectmodel";
   static const String uploadAiResult = "/api/Detection";
   static const String getAiResult = "/api/Detection";
-
+  static const String getPatinetAppointment =
+      "/api/Schedule/GetUserAppointments";
+  static const String getClinicAppointments =
+      "/api/Schedule/GetClinicAppointments";
+  static const String addDiagnosis = "/api/Detection/AddDiagnosis";
 }
