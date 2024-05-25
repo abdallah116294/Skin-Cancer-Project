@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkinCancer.Repositories")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+250c3329b2c7b246fdfccab1466b412f17ec6426")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70e1aaddcd08fbe1cdbe975c3bc07aeb1578091d")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkinCancer.Repositories")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkinCancer.Repositories")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

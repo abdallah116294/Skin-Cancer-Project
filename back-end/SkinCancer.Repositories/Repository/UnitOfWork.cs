@@ -92,6 +92,27 @@ namespace SkinCancer.Repositories.Repository
 			return query.ToList();
 		}
 
+        public Task<List<T>> SelectItemAsync<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) where T : class
+        {
+            IQueryable<T> query = context.Set<T>();
+
+            if (includes != null)
+            {
+                foreach (var include in includes)
+                {
+                    query = query.Include(include);
+                }
+            }
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query.ToListAsync();
+        }
+
+
 	}
 }
 
