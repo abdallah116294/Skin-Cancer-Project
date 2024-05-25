@@ -38,5 +38,6 @@ namespace SkinCancer.Entities.Models
 
         public ICollection<DetectionData> detections { get; set; }
 
+
     }
 }
