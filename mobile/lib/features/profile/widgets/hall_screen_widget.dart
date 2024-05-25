@@ -7,18 +7,22 @@ import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/features/appointment/screen/appointment_screen.dart';
 import 'package:mobile/features/profile/widgets/profile_widget.dart';
 
+import '../../../config/routes/app_routes.dart';
+
 class HallProfileScreenWidget extends StatelessWidget {
   const HallProfileScreenWidget({
     super.key,
-   // required this.imagUrl,
+    // required this.imagUrl,
     required this.name,
     //required this.uid,
-  //  required this.num,
+    //  required this.num,
   });
+
   final String name;
+
   // final String imagUrl;
- // final String uid;
- // final int num;
+  // final String uid;
+  // final int num;
   @override
   Widget build(BuildContext context) {
     var dotoctorRole = CacheHelper.getData(key: 'doctor_role');
@@ -73,7 +77,8 @@ class HallProfileScreenWidget extends StatelessWidget {
                 left: MediaQuery.of(context).size.width / 4.w,
                 child: CircleAvatar(
                   radius: 80.r,
-                  backgroundImage: NetworkImage('https://i.pinimg.com/236x/cf/9b/8d/cf9b8d7501016b56d552e154e096b46e.jpg'),
+                  backgroundImage: NetworkImage(
+                      'https://i.pinimg.com/236x/cf/9b/8d/cf9b8d7501016b56d552e154e096b46e.jpg'),
                 ),
               ),
               Positioned(
@@ -107,7 +112,7 @@ class HallProfileScreenWidget extends StatelessWidget {
                 //   leading: Icon(color: Color(0xFF6671EB), Icons.person),
                 //   title: 'Your profile',
                 // ),
-                dotoctorRole !=null
+                dotoctorRole != null
                     ? ProfileWidget(
                         leading: const Icon(
                             color: Color(0xFF6671EB), Icons.calendar_month),
@@ -124,10 +129,7 @@ class HallProfileScreenWidget extends StatelessWidget {
                             const Icon(color: Color(0xFF6671EB), Icons.history),
                         title: 'AI history',
                         onTap: () {
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (context) => AIResultsScreen(
-                          //           uid: uid,
-                          //         )));
+                          context.pushNamed(Routes.aIHistoryScreen);
                         },
                       ),
                 // ProfileWidget(

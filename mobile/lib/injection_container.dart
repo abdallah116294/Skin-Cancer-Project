@@ -5,8 +5,7 @@ import 'package:mobile/core/network/api_consumer.dart';
 import 'package:mobile/core/network/api_iterceptors.dart';
 import 'package:mobile/core/network/dio_consumer.dart';
 import 'package:mobile/features/AI_scan/cubit/ai_perediction_cubit.dart';
-import 'package:mobile/features/AI_scan/data/ai_repo.dart';
-import 'package:mobile/features/AI_scan/data/ai_repo_impl.dart';
+import 'package:mobile/features/AI_scan/data/repos/ai_repo_impl.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo_impl.dart';
@@ -17,7 +16,10 @@ import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
 import 'package:mobile/features/explore/data/repo/patient_clinic_repo_impl.dart';
 
+import 'features/AI_scan/data/repos/ai_repo.dart';
+
 final sl = GetIt.instance;
+
 Future<void> init() async {
   //!Auth
   //cubit
@@ -37,7 +39,7 @@ Future<void> init() async {
   //!Ai
   sl.registerFactory(() => AiPeredictionCubit(aiRepo: sl()));
   //repo
-  sl.registerLazySingleton<AIRepo>(() => AIRepoImpl());
+  sl.registerLazySingleton<AIRepo>(() => AIRepoImpl(apiConsumer: sl()));
   //!core
   sl.registerLazySingleton<ApiConsumer>(() => DioCosumer(client: sl()));
   sl.registerLazySingleton(() => DioHelper());
