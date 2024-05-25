@@ -171,6 +171,54 @@ namespace SkinCancer.Services.ClinicServices
             }
         }
 
+        public async Task<ProcessResult> IsDoctorHasClinicAsync(string doctorId)
+        {
+            try
+            {
+                var doctor = await _userManager.FindByIdAsync(doctorId);
+                if (doctor == null)
+                {
+                    return new ProcessResult
+                    {
+                        Message = "No Doctor found with this Id" + doctorId,
+                    };
+                }
+
+                var doctorRoles = await _userManager.GetRolesAsync(doctor);
+                var doctorRolesLower = doctorRoles.Select(role => role.ToLower()).ToList();
+                if (!doctorRolesLower.Contains("doctor"))
+                {
+                    return new ProcessResult
+                    {
+                        Message = "This User is already Patient so he can't own a clinic"
+                    };
+                }
+
+                if (!(bool)doctor.DoctorHasClinic)
+                {
+                    return new ProcessResult
+                    {
+                        Message = "This Doctor Doesn't own a clinic yet"
+                    };
+                }
+
+                return new ProcessResult
+                {
+                    IsSucceeded = true,
+                    Message = "This Doctor has already clinic"
+                };
+            }
+            catch(Exception ex)
+            {
+                return new ProcessResult
+                {
+                    Message = "An error occurred while processing the request"
+                };
+            }
+
+           
+        }
+
         public async Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto)
         {
             var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(dto.ClinicId);
