@@ -28,26 +28,25 @@ class DocClinicDetailsScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) =>
-          di.sl<PatientClinicCubit>()
-            ..getAllClinics(),
+          create: (context) => di.sl<PatientClinicCubit>()..getAllClinics(),
         ),
         BlocProvider(
-          create: (context) => di.sl<ClinicCubit>()..deleteClinic(id: 1, token: token),
+          create: (context) =>
+              di.sl<ClinicCubit>()..deleteClinic(id: 1, token: token),
         ),
       ],
       child: BlocConsumer<PatientClinicCubit, PatientClinicState>(
-        listener: (context, state) {
-
-        },
+        listener: (context, state) {},
         builder: (context, state) {
           var token = CacheHelper.getData(key: 'token');
           Map<String, dynamic> data = Jwt.parseJwt(token);
           String docId = data[
-          "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+              "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
           if (state is GetAllClinicIsSuccess) {
             Iterable<ClinicInfoModel> clinicInfoModel = state.clinicInfoModel
                 .where((element) => element.doctorId == docId);
+            CacheHelper.saveData(
+                key: 'clinic_id', value: clinicInfoModel.first.id);
 
             ///Todo
             //  DateTime dateTime3 = DateTime.parse(clinicInfoModel.first.availableDates as String) ;
@@ -127,13 +126,13 @@ class DocClinicDetailsScreen extends StatelessWidget {
                                     width: 146.w,
                                     decoration: BoxDecoration(
                                         borderRadius:
-                                        BorderRadius.circular(20.r),
+                                            BorderRadius.circular(20.r),
                                         border: Border.all(
                                             color: const Color(0xFF9EA5F0),
                                             width: 1.5)),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         const Icon(
                                           Icons.monetization_on_outlined,
@@ -161,21 +160,20 @@ class DocClinicDetailsScreen extends StatelessWidget {
                                     width: 146.w,
                                     decoration: BoxDecoration(
                                         borderRadius:
-                                        BorderRadius.circular(20.r),
+                                            BorderRadius.circular(20.r),
                                         border: Border.all(
                                             color: const Color(0xFF9EA5F0),
                                             width: 1.5)),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
                                         const Icon(
                                           Icons.monetization_on_outlined,
                                           color: Color(0xFF9EA5F0),
                                         ),
                                         Text(
-                                          "${(clinicInfoModel.first.price! -
-                                              100)}\$",
+                                          "${(clinicInfoModel.first.price! - 100)}\$",
                                           style: TextStyles.font15BlackW500,
                                         ),
                                       ],
@@ -204,13 +202,13 @@ class DocClinicDetailsScreen extends StatelessWidget {
                                   return DocClinicWidget(
                                     icon: Icons.calendar_month_outlined,
                                     title: DateConverter.getDateTimeWithMonth(
-                                        dateTime)
+                                            dateTime)
                                         .split(',')[0],
                                     subtitle: DateConverter.getTime(dateTime),
                                   );
                                 },
                                 separatorBuilder: (context, index) =>
-                                const Divider(),
+                                    const Divider(),
                                 itemCount: clinicInfoModel
                                     .first.availableDates.length),
                           ),
@@ -243,7 +241,7 @@ class DocClinicDetailsScreen extends StatelessWidget {
             return Scaffold(
               body: Center(
                   child:
-                  Text("some thing went wrong  ${state.error.toString()}")),
+                      Text("some thing went wrong  ${state.error.toString()}")),
             );
           } else {
             return const Scaffold(

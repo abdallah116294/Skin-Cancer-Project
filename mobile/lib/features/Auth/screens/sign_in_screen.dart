@@ -49,8 +49,10 @@ class _SingInScreenState extends State<SingInScreen> {
               log('loading');
             } else if (state is LoginUserIsSuccessSetate) {
               if (state.userModel.roles[0] == "Doctor") {
-                CacheHelper.saveData(key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(key: 'doctor_role', value: state.userModel.roles[0]);
+                CacheHelper.saveData(
+                    key: 'token', value: state.userModel.token);
+                CacheHelper.saveData(
+                    key: 'doctor_role', value: state.userModel.roles[0]);
                 DailogAlertFun.showMyDialog(
                     daliogContent: "Welecome Doctor",
                     actionName: "Go to Home",
@@ -59,8 +61,10 @@ class _SingInScreenState extends State<SingInScreen> {
                       context.pushNamed(Routes.bottomNavScreenRoutes);
                     });
               } else {
-                 CacheHelper.saveData(key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(key: 'patient_role', value: state.userModel.roles[0]);
+                CacheHelper.saveData(
+                    key: 'token', value: state.userModel.token);
+                CacheHelper.saveData(
+                    key: 'patient_role', value: state.userModel.roles[0]);
                 DailogAlertFun.showMyDialog(
                     daliogContent: "Welecome",
                     actionName: " Go to Home",
@@ -164,9 +168,10 @@ class _SingInScreenState extends State<SingInScreen> {
                                     buttonName: StringManager.signIn,
                                     onTap: () {
                                       if (_formKey.currentState!.validate()) {
+                                        log(emailController.text);
+                                        log(passwordController.text);
                                         BlocProvider.of<AuthCubit>(context)
-                                            .userlogin(emailController.text,
-                                                passwordController.text);
+                                            .userlogin(email: emailController.text,password: passwordController.text);
                                       }
                                     },
                                     textColor: Colors.white,

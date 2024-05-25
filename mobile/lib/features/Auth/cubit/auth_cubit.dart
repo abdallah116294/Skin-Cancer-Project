@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
@@ -17,11 +18,13 @@ class AuthCubit extends Cubit<AuthState> {
   AuthRepo authRepo;
   String autherror = '';
 
-  Future<void> userlogin(String email, String password) async {
+  Future<void> userlogin(
+      {required String email, required String password}) async {
     emit(LoginUserIsLoadingState());
     try {
+      log("cubit $password");
       Either<String, UserModel> response =
-          await authRepo.loginUser(email, password);
+          await authRepo.loginUser(email: email, password: password);
       response.fold((left) {
         autherror = extractErrorMessage(left);
         emit(LoginUserIsErrorState(error: autherror));
@@ -99,21 +102,23 @@ class AuthCubit extends Cubit<AuthState> {
           code: code, email: email, newPassword: newPassword);
       emit(response.fold(
           (l) => ResetPasswordIsErrorState(message: extractErrorMessage(l)),
-          (r) => ResetPasswordIsSuccessState(message: extractPasswordUpdatedMessage(r))));
+          (r) => ResetPasswordIsSuccessState(
+              message: extractPasswordUpdatedMessage(r))));
     } catch (error) {
       emit(ResetPasswordIsErrorState(
           message: extractErrorMessage(error.toString())));
     }
   }
 
-String extractPasswordUpdatedMessage(String responseText) {
-  final RegExp regex = RegExp(r'Password Updated Successfully');
-  final match = regex.firstMatch(responseText);
-  if (match != null) {
-    return match.group(0) ?? '';
+  String extractPasswordUpdatedMessage(String responseText) {
+    final RegExp regex = RegExp(r'Password Updated Successfully');
+    final match = regex.firstMatch(responseText);
+    if (match != null) {
+      return match.group(0) ?? '';
+    }
+    return 'Password Updated Successfully';
   }
-  return 'Password Updated Successfully';
-}
+
   String extractErrorMessage(String errorString) {
     // Split the errorString by newline characters
     List<String> lines = errorString.split('\n');

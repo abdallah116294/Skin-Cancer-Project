@@ -32,4 +32,76 @@ class StringManager {
   static const String alreadyHaveAccount = "Already have an account?";
   static const String userIdKey =
       "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid";
+  static const List<Map<String, String>> diseaes = [
+    {
+      "name": "Actinic Keratosis",
+      "description":
+          "Actinic keratosis is a rough, scaly patch on the skin that develops from years of exposure to the sun. It is also known as solar keratosis. These patches are often found on the face, lips, ears, back of the hands, forearms, scalp, or neck. They can be a precursor to skin cancer, making it important to monitor and treat them.",
+      "symptoms":
+          "Rough, dry or scaly patch of skin less than 1 inch in diameter; flat to slightly raised patch or bump on the top layer of skin; in some cases, a hard, wart-like surface; color variations from pink to red to brown; itching or burning in the affected area."
+    },
+    {
+      "name": "Basal Cell Carcinoma",
+      "description":
+          "Basal cell carcinoma (BCC) is the most common form of skin cancer, arising from the basal cells in the skin's lowest layer. It often develops on areas of the skin that receive the most sun exposure, such as the face, ears, neck, scalp, shoulders, and back. BCC grows slowly and rarely metastasizes (spreads) to other parts of the body but can cause significant local damage if not treated.",
+      "symptoms":
+          "Raised, smooth, pearly bump on sun-exposed skin; small blood vessels may be visible within the tumor; a sore that heals and then reopens; a reddish patch or irritated area; a shiny bump or nodule that is pearly or translucent and is often pink, red, or white; a white, yellow, or waxy scar-like area."
+    },
+    {
+      "name": "Dermatofibroma",
+      "description":
+          "Dermatofibroma is a common benign fibrous nodule that most often appears on the skin of the lower legs. They are typically harmless and can develop from a minor injury, such as a bug bite or a thorn prick. Dermatofibromas are firm to the touch and can vary in color.",
+      "symptoms":
+          "Firm, small, raised nodule that may be red, brown, or purple; usually found on the legs; can be tender, itchy, or asymptomatic; often dimple inward when pinched."
+    },
+    {
+      "name": "Melanoma",
+      "description":
+          "Melanoma is the most serious type of skin cancer, originating in the melanocytes, the cells that produce the pigment melanin. It can develop in an existing mole or appear as a new dark spot on the skin. Early detection and treatment are crucial as melanoma can spread rapidly to other parts of the body.",
+      "symptoms":
+          "New, unusual growth or a change in an existing mole; can appear as a large brownish spot with darker speckles; a mole that changes in color, size or feel or that bleeds; a small lesion with an irregular border and portions that appear red, white, blue or blue-black; dark lesions on the palms, soles, fingertips, or toes, or on mucous membranes lining the mouth, nose, vagina or anus."
+    },
+    {
+      "name": "Nevus",
+      "description":
+          "A nevus (plural nevi), commonly known as a mole, is a benign growth on the skin that develops when melanocytes grow in clusters. Moles can appear anywhere on the skin, alone or in groups, and they usually appear before adulthood.",
+      "symptoms":
+          "Small, dark brown spots caused by clusters of pigmented cells; can be flesh-colored, pink, red, blue, or black; usually round or oval and can be flat or raised; may have hair growing from them."
+    },
+    {
+      "name": "Pigmented Benign Keratosis",
+      "description":
+          "Pigmented benign keratosis, also known as seborrheic keratosis, is a non-cancerous skin growth that often appears in middle-aged and older adults. These growths are typically brown, black, or light tan and have a slightly elevated, waxy, or scaly appearance.",
+      "symptoms":
+          "Often appears as a black, brown, or tan growth; can have a waxy, scaly, slightly elevated appearance; common in older adults; can appear singly or in clusters; typically found on the head, neck, chest, or back."
+    },
+    {
+      "name": "Seborrheic Keratosis",
+      "description":
+          "Seborrheic keratosis is a common non-cancerous skin growth that tends to appear in older adults. These growths are usually brown, black, or light tan and have a waxy, scaly, slightly elevated appearance. They can appear anywhere on the body but are most common on the face, chest, shoulders, or back.",
+      "symptoms":
+          "Waxy, scaly, slightly elevated appearance; can vary in color from light tan to black; round or oval in shape; well-defined edges; looks like it's stuck onto the skin; can appear singly or in clusters."
+    },
+    {
+      "name": "Squamous Cell Carcinoma",
+      "description":
+          "Squamous cell carcinoma (SCC) is a common form of skin cancer that arises from the squamous cells in the outer layer of the skin. It often develops on areas of the body exposed to the sun, such as the face, ears, neck, lips, and backs of the hands. SCC can grow and spread to other parts of the body if not treated promptly.",
+      "symptoms":
+          "Firm, red nodule; flat sore with a scaly crust; new sore or raised area on an old scar or ulcer; rough, scaly patch on the lip that may evolve to an open sore; red sore or rough patch inside your mouth; a red, raised patch or wart-like sore on or in the anus or on your genitals."
+    },
+    {
+      "name": "Vascular Lesion",
+      "description":
+          "Vascular lesions are abnormalities of the skin and underlying tissues that result from blood vessel irregularities. They can appear at birth (congenital) or develop later in life (acquired). These lesions can vary greatly in appearance and can be harmless or signify a more serious condition.",
+      "symptoms":
+          "Can appear as a red, blue, or purple mark; may be flat or raised; can vary in size and shape; commonly found on the face, neck, and chest; types include hemangiomas, port-wine stains, and cherry angiomas."
+    },
+    {
+      "name": "Melanocytic Nevi",
+      "description":
+          "Melanocytic nevi, commonly known as moles, are benign growths of melanocytes, the cells that produce pigment in the skin. They are very common and can appear anywhere on the skin. Most people have between 10 and 40 moles. While most moles are harmless, some can develop into melanoma, a serious form of skin cancer.",
+      "symptoms":
+          "Small, dark brown spots caused by clusters of pigmented cells; can be flesh-colored, pink, red, blue, or black; usually round or oval and can be flat or raised; may have hair growing from them; changes in color, size, or shape should be monitored."
+    }
+  ];
 }

@@ -1,7 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,10 +14,13 @@ import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
+import 'package:mobile/core/utils/string_manager.dart';
+import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
 import 'package:mobile/features/AI_scan/cubit/ai_perediction_cubit.dart';
+import 'package:mobile/features/AI_scan/data/models/disease_info_mode.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class AIScanScreen extends StatefulWidget {
@@ -111,6 +116,25 @@ class _AIScanScreenState extends State<AIScanScreen> {
   //   return userImageUrl;
   // }
 
+  Disease? getDiseaseByName(List<Disease> diseases, String name) {
+    try {
+      return diseases.firstWhere(
+        (disease) => disease.name.toLowerCase() == name.toLowerCase(),
+      );
+    } catch (e) {
+      return null;
+    }
+  }
+
+  Map<String, String> findDiseaseByName(String name) {
+    for (var disease in StringManager.diseaes) {
+      if (disease['name'].toString() == name.toString()) {
+        return disease;
+      }
+    }
+    return {}; // Return null if no disease is found
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -173,7 +197,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
+                     state is PeredictionCancerTypeIsSuccess?SizedBox() : Text(
                         "Upload a photo of your skin lesion",
                         style: TextStyle(
                             color: Colors.black,
@@ -183,13 +207,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
                       SizedBox(
                         height: 5.h,
                       ),
-                      Text(
+                   state is PeredictionCancerTypeIsSuccess?SizedBox() :  Text(
                         " Our AI will detect potential skin cancer type",
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 15.sp,
                             fontWeight: FontWeight.bold),
                       ),
+                      verticalSpacing(10),
+                      state is PeredictionCancerTypeIsSuccess?Text("Possible Skin Cancer Type \n${state.peredictionModel.prediction}",style: TextStyles.font26BlackW700,):const SizedBox(),
                       SizedBox(
                         height: 20.h,
                       ),
@@ -211,9 +237,9 @@ class _AIScanScreenState extends State<AIScanScreen> {
                             : Container(
                                 child: Column(children: [
                                   Container(
-                                    width: 356.w,
+                                    width: double.infinity,
                                     height: 400.h,
-                                    child: Image.file(_image),
+                                    child: Image.file(_image,fit: BoxFit.cover,),
                                   ),
                                   SizedBox(
                                     height: 20.h,
@@ -222,21 +248,40 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                           AiPeredictionState>(
                                       builder: (context, state) {
                                     if (state is PeredictonSkinOrNotIsloading) {
-                                      return CireProgressIndecatorWidget();
+                                      return const CireProgressIndecatorWidget();
                                     } else if (state
                                         is PeredictionCancerTypeIsSuccess) {
+                                      Map<String, String> disease =
+                                          findDiseaseByName(state
+                                              .peredictionModel.prediction);
                                       return Container(
-                                          padding: EdgeInsets.all(10.w),
-                                          decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(20.r),
-                                            color: AppColor.buttonChoseuser,
-                                          ),
-                                          child: Text(
-                                            'Ummm 😥 our AI can detect  ${state.peredictionModel.prediction} you must checkout doctor',
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontSize: 24),
+                                         padding: const EdgeInsets.all(20),
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color:
+                                                  Colors.black.withOpacity(0.1),
+                                              blurRadius: 5.0,
+                                              spreadRadius: 0.0)
+                                        ]
+                                        ),
+                                          child: Column(
+                                            children: [
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'What is ${disease['name'].toString()}?',
+                                                  style: TextStyle(fontSize: 27.sp,color: Colors.red),
+                                                ),
+                                              ),
+                                              verticalSpacing(10),
+                                              Text(disease['description'].toString()),
+                                              verticalSpacing(10),
+                                              Align(alignment: Alignment.centerLeft,child: Text('What are the Symptoms?',style: TextStyle(fontSize: 27.sp,color: Colors.red),)),
+                                              Text(disease['description'].toString()),
+                                            ],
                                           ));
                                     } else if (state
                                         is PeredictionCancerTypeIsSuccess) {
@@ -257,7 +302,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                             ));
                                       }
                                     }
-                                    return SizedBox();
+                                    return const SizedBox();
                                   }),
                                   const SizedBox(
                                     height: 15,

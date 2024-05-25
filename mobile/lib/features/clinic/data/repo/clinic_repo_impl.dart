@@ -4,6 +4,7 @@ import 'package:mobile/core/network/api_constant.dart';
 import 'package:mobile/core/network/api_consumer.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
 
@@ -80,6 +81,38 @@ class ClinicRepoImpl implements ClinicRepo {
       );
       var result = AddClinicSuccessModel.fromJson(respone);
       return Right(result);
+    } on ServerException catch (error) {
+      return Left(error.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<SelectedClinicModel>>> getPatineSelectedClinic(
+      String userId) async {
+    try {
+      final response = await apiConsumer.get(ApiConstant.getPatinetAppointment,
+          queryParameters: {"userId": userId});
+      //final list = response.map((e) => SelectedClinicModel.fromJson(e)).toList();
+      List<SelectedClinicModel> list = (response as List)
+          .map((e) => SelectedClinicModel.fromJson(e))
+          .toList();
+      return Right(list);
+    } on ServerException catch (errorr) {
+      return Left(errorr.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, List<SelectedClinicModel>>> getClinicAppointment(
+      int id) async {
+    try {
+          final response = await apiConsumer.get(ApiConstant.getClinicAppointments,
+          queryParameters: {"clinicId": id});
+      //final list = response.map((e) => SelectedClinicModel.fromJson(e)).toList();
+      List<SelectedClinicModel> list = (response as List)
+          .map((e) => SelectedClinicModel.fromJson(e))
+          .toList();
+      return Right(list);
     } on ServerException catch (error) {
       return Left(error.toString());
     }

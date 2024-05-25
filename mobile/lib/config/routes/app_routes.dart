@@ -1,8 +1,8 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/AI_scan/scressns/ai_history_screen.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_item_history_details.dart';
 import 'package:mobile/features/AI_scan/scressns/ai_scan_screen.dart';
 import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
 import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
@@ -11,6 +11,7 @@ import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
 import 'package:mobile/features/clinic/screens/add_clinic_screen.dart';
 import 'package:mobile/features/clinic/screens/doc_clinic_details.dart';
+import 'package:mobile/features/clinic/screens/patient_selected_clinic.dart';
 import 'package:mobile/features/disease_info/screens/early_detection.dart';
 import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
@@ -57,6 +58,9 @@ class Routes {
       "/DocClinicDetailsScreenRoutes";
   static const String aIScanScreen = "/AIScanScreen";
   static const String aIHistoryScreen = "/AIHistoryScreen";
+  static const String patientSelectedClinic = "/PatientSelectedClinic";
+  static const String aIItemHistoryDetailsScreen =
+      "/AIItemHistoryDetailsScreen";
 }
 
 class AppRoutes {
@@ -145,9 +149,16 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (context) => const DocClinicDetailsScreen());
       case Routes.aIScanScreen:
-        return MaterialPageRoute(builder: (context)=>const AIScanScreen());
-        case Routes.aIHistoryScreen:
-        return MaterialPageRoute(builder: (context)=>const AiHistoryScreen());
+        return MaterialPageRoute(builder: (context) => const AIScanScreen());
+      case Routes.aIHistoryScreen:
+        return MaterialPageRoute(builder: (context) =>  AiHistoryScreen(userId:routeSettings.arguments as String ,));
+      case Routes.patientSelectedClinic:
+        return MaterialPageRoute(
+            builder: (context) => const PatientSelectedClinic());
+      case Routes.aIItemHistoryDetailsScreen:
+        return MaterialPageRoute(builder: (context)=>AIItemHistoryDetailsScreen(outpus: routeSettings.arguments as Map<String,dynamic>,));
+      default:
+        return null;
     }
   }
 }

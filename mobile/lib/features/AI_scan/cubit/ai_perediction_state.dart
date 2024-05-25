@@ -20,7 +20,9 @@ class PeredictonSkinOrNotIsSuccess extends AiPeredictionState {
 class PeredictionCancerTypeIsSuccess extends AiPeredictionState {
   final PeredictionModel peredictionModel;
 
-  PeredictionCancerTypeIsSuccess({required this.peredictionModel});
+  PeredictionCancerTypeIsSuccess({
+    required this.peredictionModel,
+  });
 }
 
 class PeredictonSkinOrNotIsError extends AiPeredictionState {
@@ -45,7 +47,6 @@ class UploadAiResultError extends AiPeredictionState {
   const UploadAiResultError(this.errorMessage);
 }
 
-
 class GetAiHistoryResultLoading extends AiPeredictionState {}
 
 class GetAiHistoryResultSuccess extends AiPeredictionState {
@@ -59,3 +60,24 @@ class GetAiHistoryResultError extends AiPeredictionState {
 
   const GetAiHistoryResultError(this.errorMessage);
 }
+
+class GetDiseasInfoSucces extends AiPeredictionState {
+  List<Disease> diseas;
+  GetDiseasInfoSucces({required this.diseas});
+}
+
+class GetDiseasInfoError extends AiPeredictionState {
+  String error;
+  GetDiseasInfoError({required this.error});
+}
+
+class AddDiagonosisSucessState extends AiPeredictionState {
+  final String result;
+  AddDiagonosisSucessState({required this.result});
+}
+
+class AddDiagonosisErrorState extends AiPeredictionState {
+  final String error;
+  AddDiagonosisErrorState({required this.error});
+}
+

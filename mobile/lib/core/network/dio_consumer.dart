@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -41,11 +42,10 @@ class DioCosumer implements ApiConsumer {
       {Map<String, dynamic>? body,
       Map<String, dynamic>? queryParameters,
       String? token,
-
       bool? formDataIsEnabled}) async {
     try {
       final response = await client.post(path,
-          data: formDataIsEnabled! ? FormData.fromMap(body!): body,
+          data: body,
           queryParameters: queryParameters,
           options: Options(headers: {"Authorization": "Bearer $token"}));
       return _handleResponseAsJson(response);
