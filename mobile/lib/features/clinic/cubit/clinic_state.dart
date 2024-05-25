@@ -94,3 +94,17 @@ class GetSelectedClinicIsError extends ClinicState {
 
   const GetSelectedClinicIsError({required this.error});
 }
+
+
+class DocCreateSchedualLoading extends ClinicState {}
+
+class DocCreateSchedualSuccess extends ClinicState {
+  final AddClinicSuccessModel selectedClinic;
+
+  const DocCreateSchedualSuccess({required this.selectedClinic});
+}
+class DocCreateSchedualError extends ClinicState {
+  final String error;
+
+  const DocCreateSchedualError({required this.error});
+}

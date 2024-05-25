@@ -3,6 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/create_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
@@ -18,7 +19,7 @@ class ClinicCubit extends Cubit<ClinicState> {
   ClinicRepo clinicRepo;
   PatientClinicRepo patientClinicRepo;
 
-  Future<void> creatClinic(ClinicModel clinicModel, String token) async {
+  Future<void> creatClinic(CreateClinicModel clinicModel, String token) async {
     try {
       Either<String, AddClinicSuccessModel> response =
           await clinicRepo.createClinic(clinicModel, token);
@@ -100,6 +101,18 @@ class ClinicCubit extends Cubit<ClinicState> {
           (r) => GetSelectedClinicIsSuccess(selectedClinic: r)));
     } catch (error) {
       emit(GetSelectedClinicIsError(error: error.toString()));
+    }
+  }
+
+    Future<void> docCreateSchadual(String date ,bool isBook ,int clinicId ) async {
+    emit(DocCreateSchedualLoading());
+    try {
+      Either<String, AddClinicSuccessModel> response =
+          await clinicRepo.docCreateSchedule(date, isBook, clinicId);
+      emit(response.fold((l) => DocCreateSchedualError(error: l),
+          (r) => DocCreateSchedualSuccess(selectedClinic: r)));
+    } catch (error) {
+      emit(DocCreateSchedualError(error: error.toString()));
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:mobile/core/network/api_constant.dart';
 import 'package:mobile/core/network/api_consumer.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/create_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
@@ -15,7 +16,7 @@ class ClinicRepoImpl implements ClinicRepo {
 
   @override
   Future<Either<String, AddClinicSuccessModel>> createClinic(
-      ClinicModel clinicModel, String token) async {
+      CreateClinicModel clinicModel, String token) async {
     try {
       final response = await apiConsumer.post(ApiConstant.createClinicEndPoint,
           body: clinicModel.toJson(), token: token);
@@ -106,13 +107,30 @@ class ClinicRepoImpl implements ClinicRepo {
   Future<Either<String, List<SelectedClinicModel>>> getClinicAppointment(
       int id) async {
     try {
-          final response = await apiConsumer.get(ApiConstant.getClinicAppointments,
+      final response = await apiConsumer.get(ApiConstant.getClinicAppointments,
           queryParameters: {"clinicId": id});
       //final list = response.map((e) => SelectedClinicModel.fromJson(e)).toList();
       List<SelectedClinicModel> list = (response as List)
           .map((e) => SelectedClinicModel.fromJson(e))
           .toList();
       return Right(list);
+    } on ServerException catch (error) {
+      return Left(error.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, AddClinicSuccessModel>> docCreateSchedule(
+      String date, bool isBook, int clinicId) async {
+    try {
+      final response =
+          await apiConsumer.post(ApiConstant.docCreateSchedule, body: {
+        "date": date,
+        "isBooked": isBook,
+        "clinicId": clinicId,
+      });
+      final result =AddClinicSuccessModel.fromJson(response);
+      return Right(result);
     } on ServerException catch (error) {
       return Left(error.toString());
     }
