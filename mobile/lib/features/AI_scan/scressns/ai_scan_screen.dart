@@ -1,13 +1,16 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
+import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
@@ -27,6 +30,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
   late File _image;
   List? _output;
   final picker = ImagePicker();
+
   // detectImage(File image) async {
   //   log("detect image");
   //   var output = await Tflite.runModelOnImage(
@@ -64,6 +68,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
   }
 
   String userImageUrl = '';
+
   Future pickGallery() async {
     var image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) {
@@ -117,6 +122,11 @@ class _AIScanScreenState extends State<AIScanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var patient_role = CacheHelper.getData(key: 'patient_role');
+    var token = CacheHelper.getData(key: 'token');
+    Map<String, dynamic> data = Jwt.parseJwt(token);
+    String patientId = data[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -146,130 +156,156 @@ class _AIScanScreenState extends State<AIScanScreen> {
               }
             } else if (state is PeredictonSkinOrNotIsError) {
               log(state.error);
+            } else if (state is UploadAiResultSuccess) {
+              DailogAlertFun.showMyDialog(
+                  daliogContent: "Upload Success",
+                  actionName: 'Go Back',
+                  context: context,
+                  onTap: () {
+                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                  });
             }
           },
           builder: (context, state) {
-            return Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Upload a photo of your skin lesion",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 22.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 5.h,
-                    ),
-                    Text(
-                      " Our AI will detect potential skin cancer type",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.sp,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 20.h,
-                    ),
-                    Center(
-                      child: _loading
-                          ? Container(
-                              width: 356.w,
-                              child: Column(children: [
-                                Image.asset(
-                                  "assets/image/ai_scan.png",
-                                  width: 356.w,
-                                  height: 581.h,
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                )
-                              ]),
-                            )
-                          : Container(
-                              child: Column(children: [
-                                Container(
-                                  width: 356.w,
-                                  height: 400.h,
-                                  child: Image.file(_image),
-                                ),
-                                SizedBox(
-                                  height: 20.h,
-                                ),
-                                BlocBuilder<AiPeredictionCubit,
-                                        AiPeredictionState>(
-                                    builder: (context, state) {
-                                  if (state is PeredictonSkinOrNotIsloading) {
-                                    return CireProgressIndecatorWidget();
-                                  }
-                                  else if (state is PeredictionCancerTypeIsSuccess) {
-                                    return Container(
-                                        padding: EdgeInsets.all(10.w),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20.r),
-                                          color: AppColor.buttonChoseuser,
-                                        ),
-                                        child: Text(
-                                          'Ummm 😥 our AI can detect  ${state.peredictionModel.prediction} you must checkout doctor',
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24),
-                                        ));
-                                  }else if (state is PeredictionCancerTypeIsSuccess){
-                                    if(state.peredictionModel.prediction=="Not Skin"){
-                                          return Container(
-                                        padding: EdgeInsets.all(10.w),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(20.r),
-                                          color: AppColor.buttonChoseuser,
-                                        ),
-                                        child: const  Text(
-                                          'Pleas Enter Skin Image',
-                                          style:  TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 24),
-                                        ));
+            return SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Upload a photo of your skin lesion",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 5.h,
+                      ),
+                      Text(
+                        " Our AI will detect potential skin cancer type",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: 20.h,
+                      ),
+                      Center(
+                        child: _loading
+                            ? Container(
+                                width: 356.w,
+                                child: Column(children: [
+                                  Image.asset(
+                                    "assets/image/ai_scan.png",
+                                    width: 356.w,
+                                    height: 581.h,
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  )
+                                ]),
+                              )
+                            : Container(
+                                child: Column(children: [
+                                  Container(
+                                    width: 356.w,
+                                    height: 400.h,
+                                    child: Image.file(_image),
+                                  ),
+                                  SizedBox(
+                                    height: 20.h,
+                                  ),
+                                  BlocBuilder<AiPeredictionCubit,
+                                          AiPeredictionState>(
+                                      builder: (context, state) {
+                                    if (state is PeredictonSkinOrNotIsloading) {
+                                      return CireProgressIndecatorWidget();
+                                    } else if (state
+                                        is PeredictionCancerTypeIsSuccess) {
+                                      return Container(
+                                          padding: EdgeInsets.all(10.w),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20.r),
+                                            color: AppColor.buttonChoseuser,
+                                          ),
+                                          child: Text(
+                                            'Ummm 😥 our AI can detect  ${state.peredictionModel.prediction} you must checkout doctor',
+                                            style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 24),
+                                          ));
+                                    } else if (state
+                                        is PeredictionCancerTypeIsSuccess) {
+                                      if (state.peredictionModel.prediction ==
+                                          "Not Skin") {
+                                        return Container(
+                                            padding: EdgeInsets.all(10.w),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(20.r),
+                                              color: AppColor.buttonChoseuser,
+                                            ),
+                                            child: const Text(
+                                              'Pleas Enter Skin Image',
+                                              style: TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 24),
+                                            ));
+                                      }
                                     }
-                                  }
-                                  return SizedBox();
-                                }),
-                                const SizedBox(
-                                  height: 15,
-                                )
-                              ]),
-                            ),
-                    ),
-                    Expanded(
-                      child: Row(
+                                    return SizedBox();
+                                  }),
+                                  const SizedBox(
+                                    height: 15,
+                                  )
+                                ]),
+                              ),
+                      ),
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          CustomButton(
-                              buttoncolor: const Color.fromRGBO(88, 99, 203, 1),
-                              width: 300.w,
-                              height: 60.h,
-                              buttonName: "Upload",
-                              onTap: () {
-                                pickGallery().then((value) {
-                                  context
-                                      .read<AiPeredictionCubit>()
-                                      .peredictonSkinorNot(_image);
-                                });
-                              },
-                              textColor: Colors.white,
-                              white: false),
-                          IconButton(
-                              color: Colors.grey,
-                              onPressed: () {},
-                              icon: const Icon(Icons.save))
+                          Expanded(
+                            child: CustomButton(
+                                buttoncolor:
+                                    const Color.fromRGBO(88, 99, 203, 1),
+                                width: 300.w,
+                                height: 60.h,
+                                buttonName: "Upload",
+                                onTap: () {
+                                  pickGallery().then((value) {
+                                    context
+                                        .read<AiPeredictionCubit>()
+                                        .peredictonSkinorNot(_image);
+                                  });
+                                },
+                                textColor: Colors.white,
+                                white: false),
+                          ),
+                          patient_role != null
+                              ? IconButton(
+                                  color: Colors.grey,
+                                  onPressed: () {
+                                    state is PeredictionCancerTypeIsSuccess
+                                        ? context
+                                            .read<AiPeredictionCubit>()
+                                            .uploadAiResult(
+                                                patientId,
+                                                state.peredictionModel
+                                                    .prediction,
+                                                _image)
+                                        : log("not done");
+                                  },
+                                  icon: const Icon(Icons.save))
+                              : const SizedBox()
                         ],
                       ),
-                    ),
-                  ]),
+                      verticalSpacing(40),
+                    ]),
+              ),
             );
           },
         ),

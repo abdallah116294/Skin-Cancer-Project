@@ -11,6 +11,7 @@ import 'package:mobile/injection_container.dart' as di;
 
 class DioCosumer implements ApiConsumer {
   final Dio client;
+
   DioCosumer({required this.client}) {
     client.options
       ..baseUrl = ApiConstant.baseUrl
@@ -40,10 +41,11 @@ class DioCosumer implements ApiConsumer {
       {Map<String, dynamic>? body,
       Map<String, dynamic>? queryParameters,
       String? token,
+
       bool? formDataIsEnabled}) async {
     try {
       final response = await client.post(path,
-          data: body,
+          data: formDataIsEnabled! ? FormData.fromMap(body!): body,
           queryParameters: queryParameters,
           options: Options(headers: {"Authorization": "Bearer $token"}));
       return _handleResponseAsJson(response);
@@ -113,6 +115,22 @@ class DioCosumer implements ApiConsumer {
       final response = await client.put(path,
           data: body,
           queryParameters: queryParameters,
+          options: Options(headers: {"Authorization": "Bearer $token"}));
+      return _handleResponseAsJson(response);
+    } on DioException catch (error) {
+      _handleDioError(error);
+    }
+  }
+
+  @override
+  Future postFile(String path,
+      {bool? isFormData,
+      Map<String, dynamic>? queryParameters,
+      String? token,
+      Map<String, dynamic>? formData}) async {
+    try {
+      final response = await client.post(path,
+          data: isFormData! ? FormData.fromMap(formData!) : formData,
           options: Options(headers: {"Authorization": "Bearer $token"}));
       return _handleResponseAsJson(response);
     } on DioException catch (error) {

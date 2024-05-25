@@ -2,6 +2,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_history_screen.dart';
 import 'package:mobile/features/AI_scan/scressns/ai_scan_screen.dart';
 import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
 import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
@@ -55,6 +56,7 @@ class Routes {
   static const String docClinicDetailsScreenRoutes =
       "/DocClinicDetailsScreenRoutes";
   static const String aIScanScreen = "/AIScanScreen";
+  static const String aIHistoryScreen = "/AIHistoryScreen";
 }
 
 class AppRoutes {
@@ -143,7 +145,9 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (context) => const DocClinicDetailsScreen());
       case Routes.aIScanScreen:
-        return MaterialPageRoute(builder: (context)=>AIScanScreen());
+        return MaterialPageRoute(builder: (context)=>const AIScanScreen());
+        case Routes.aIHistoryScreen:
+        return MaterialPageRoute(builder: (context)=>const AiHistoryScreen());
     }
   }
 }
