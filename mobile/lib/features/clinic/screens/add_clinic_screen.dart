@@ -18,6 +18,7 @@ import 'package:mobile/core/widgets/custom_dailog.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
+import 'package:mobile/features/clinic/data/model/create_clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/update_model.dart';
 import 'package:mobile/features/clinic/widgets/pick_image_widget.dart';
 import 'package:mobile/injection_container.dart' as di;
@@ -76,6 +77,9 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
     String username = data['sub'];
+    String docId = data[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -265,111 +269,8 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                       SizedBox(
                         height: 20.h,
                       ),
-                      Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Availability',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 19.sp,
-                                fontWeight: FontWeight.bold),
-                          )),
-                      SizedBox(
-                        height: 20.h,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          showDate1.isEmpty
-                              ? const Text('Enter Your available Date')
-                              : Text(showDate1),
-                          IconButton(
-                              onPressed: () async {
-                                Map<String, String?> result =
-                                    await DateConverter.showDateTimePicker(
-                                        selectedDateAndTime:
-                                            selectedDateAndTime1,
-                                        showDate: showDate1,
-                                        context: context,
-                                        firstDate: DateTime(2015, 8),
-                                        lastDate: DateTime(2101),
-                                        initialDate: DateTime.now());
-                                setState(() {
-                                  showDate1 = result['showDate']!;
-                                  selectedDateAndTime1 =
-                                      result['selectedDateAndTime']!;
-                                });
-                              },
-                              icon: Icon(
-                                color: AppColor.primaryColor,
-                                Icons.date_range,
-                              ))
-                        ],
-                      ),
-                      verticalSpacing(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          showDate2.isEmpty
-                              ? const Text('Enter Your availabile Date')
-                              : Text(showDate2),
-                          IconButton(
-                              onPressed: () async {
-                                log(showDate2);
-                                Map<String, String?> result =
-                                    await DateConverter.showDateTimePicker(
-                                        context: context,
-                                        selectedDateAndTime:
-                                            selectedDateAndTime2,
-                                        showDate: showDate2,
-                                        firstDate: DateTime(2015, 8),
-                                        lastDate: DateTime(2101),
-                                        initialDate: DateTime.now());
-                                setState(() {
-                                  showDate2 = result['showDate']!;
-                                  selectedDateAndTime2 =
-                                      result['selectedDateAndTime']!;
-                                });
-                                log(showDate2);
-                              },
-                              icon: Icon(
-                                color: AppColor.primaryColor,
-                                Icons.date_range,
-                              ))
-                        ],
-                      ),
-                      verticalSpacing(10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          showDate3.isEmpty
-                              ? const Text('Enter Your availabile Date')
-                              : Text(showDate3),
-                          IconButton(
-                              onPressed: () async {
-                                log(showDate1);
-                                Map<String, String?> result =
-                                    await DateConverter.showDateTimePicker(
-                                        context: context,
-                                        selectedDateAndTime:
-                                            selectedDateAndTime3,
-                                        showDate: showDate3,
-                                        firstDate: DateTime(2015, 8),
-                                        lastDate: DateTime(2101),
-                                        initialDate: DateTime.now());
-                                setState(() {
-                                  showDate3 = result['showDate']!;
-                                  selectedDateAndTime3 =
-                                      result['selectedDateAndTime']!;
-                                });
-                                log(showDate1);
-                              },
-                              icon: Icon(
-                                color: AppColor.primaryColor,
-                                Icons.date_range,
-                              ))
-                        ],
-                      ),
+
+
                       verticalSpacing(10),
                       widget.values["action"] == 1
                           ? Center(
@@ -384,8 +285,8 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                                           key: 'clinicName',
                                           value: nameController.text);
                                       context.read<ClinicCubit>().creatClinic(
-                                          ClinicModel(
-                                              id: 0,
+                                          CreateClinicModel(
+                                              doctorId: docId,
                                               name: nameController.text,
                                               price: int.parse(
                                                   priceController.text),
@@ -395,9 +296,6 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                                                   'https://img.youm7.com/ArticleImgs/2020/5/26/43889-%D8%A7%D9%84%D8%B3%D9%82%D8%A7.jpg',
                                               description:
                                                   decriptionController.text,
-                                              date1: selectedDateAndTime1,
-                                              date2: selectedDateAndTime2,
-                                              date3: selectedDateAndTime3,
                                               doctorName: username),
                                           token);
                                     }

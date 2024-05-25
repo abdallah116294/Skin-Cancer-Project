@@ -33,4 +33,5 @@ class ApiConstant {
   static const String getClinicAppointments =
       "/api/Schedule/GetClinicAppointments";
   static const String addDiagnosis = "/api/Detection/AddDiagnosis";
+  static const String docCreateSchedule = "/api/Schedule/DoctorCreateSchedule";
 }
