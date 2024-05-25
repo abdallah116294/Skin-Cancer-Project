@@ -15,6 +15,7 @@ namespace SkinCancer.Services.ScheduleServices
 
         Task<IEnumerable<ScheduleDetailsDto>> GetSchedulesByClinicIdAsync(int clinicId);
 
+        Task<IEnumerable<ScheduleDetailsDto>> GetClinicBookedSchedules(int clinicId);
 
     /*
          dayes---> data

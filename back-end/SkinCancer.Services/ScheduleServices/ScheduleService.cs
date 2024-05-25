@@ -172,5 +172,28 @@ namespace SkinCancer.Services.ScheduleServices
                 throw;
             }
         }
+
+        public async Task<IEnumerable<ScheduleDetailsDto>> GetClinicBookedSchedules(int clinicId)
+        {
+            try
+            {
+                var schedules = _unitOfWork.SelectItem<Schedule>
+                    (s => s.ClinicId == clinicId && s.IsBooked, s => s.Clinic);
+
+                if (schedules == null || !schedules.Any())
+                {
+                    return Enumerable.Empty<ScheduleDetailsDto>();
+                }
+
+                var dtos = _mapper.Map<IEnumerable<ScheduleDetailsDto>>(schedules);
+
+                return dtos;
+            }
+            catch (Exception ex)
+            {
+                return Enumerable.Empty<ScheduleDetailsDto>();
+            }
+
+        }
     }
 }
