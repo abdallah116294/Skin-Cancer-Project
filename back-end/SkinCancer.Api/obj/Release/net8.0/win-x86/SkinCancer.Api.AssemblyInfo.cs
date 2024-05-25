@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SkinCancer.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e02288092c9ebf796224bad6c98c82a36a0070f1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+250c3329b2c7b246fdfccab1466b412f17ec6426")]
 [assembly: System.Reflection.AssemblyProductAttribute("SkinCancer.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SkinCancer.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

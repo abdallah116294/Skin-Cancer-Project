@@ -1,11 +1,39 @@
 {
   "Version": 1,
-  "Hash": "NrQSZPCKJf+LacGUOpLm1yf30JdbVshJ3XaTa2jQdJk=",
+  "Hash": "jS0rJzECGQ+U8b4QVUBfXYFDwy4nutruJ5s40cm2qxc=",
   "Source": "SkinCancer.Api",
   "BasePath": "_content/SkinCancer.Api",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "SkinCancer.Api\\wwwroot",
+      "Source": "SkinCancer.Api",
+      "ContentRoot": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\wwwroot\\",
+      "BasePath": "_content/SkinCancer.Api",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\wwwroot\\detections\\393bb47e-584d-4975-8a1b-82d37c870836.png",
+      "SourceId": "SkinCancer.Api",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\wwwroot\\",
+      "BasePath": "_content/SkinCancer.Api",
+      "RelativePath": "detections/393bb47e-584d-4975-8a1b-82d37c870836.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\detections\\393bb47e-584d-4975-8a1b-82d37c870836.png"
+    }
+  ]
 }

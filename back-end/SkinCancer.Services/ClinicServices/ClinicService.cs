@@ -118,15 +118,12 @@ namespace SkinCancer.Services.ClinicServices
         {
             try
             {
-                var checkClinicId = await _unitOfWork.Include<Clinic>(id, c => c.Schedules) 
-                                    ??
+                var clinic = await _unitOfWork.Include<Clinic>
+                                   (id , c => c.Schedules , c => c.PatientRates)                                    ??
                                    throw new ClinicNotFoundException($"Clinic with ID {id} not found.");
 
 
-                var clinic = await _unitOfWork.Include<Clinic>(c => c.Schedules)
-                                                        .Include(c => c.PatientRates)
-                                                        .ToListAsync();
-
+               
                 var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
                 return dto;
             }
@@ -186,6 +183,7 @@ namespace SkinCancer.Services.ClinicServices
             }
 
             bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
+            var patient = await _userManager.FindByIdAsync(dto.PatientId);
 
             if (!isPatientInClinic)
             {

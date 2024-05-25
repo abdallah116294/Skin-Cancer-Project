@@ -303,6 +303,69 @@
     ]
   },
   {
+    "ContainingType": "SkinCancer.Api.Controllers.DetectionController",
+    "Method": "Upload",
+    "RelativePath": "api/Detection",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "UserId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Result",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "Microsoft.AspNetCore.Http.IFormFile",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.DetectionController",
+    "Method": "GetDetectionsData",
+    "RelativePath": "api/Detection",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userID",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.DetectionController",
+    "Method": "AddDiagnosis",
+    "RelativePath": "api/Detection/AddDiagnosis",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "Id",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Diagonosis",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
     "Method": "UpdateScheduleAsync",
     "RelativePath": "api/Schedule",
@@ -336,6 +399,22 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
+    "Method": "GetClinicAppointments",
+    "RelativePath": "api/Schedule/GetClinicAppointments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "clinicId",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
     "Method": "GetClinicSchedulesByClinicIdAsync",
     "RelativePath": "api/Schedule/GetClinicSchedules",
     "HttpMethod": "GET",
@@ -359,6 +438,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
+    "Method": "GetUserAppointments",
+    "RelativePath": "api/Schedule/GetUserAppointments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",

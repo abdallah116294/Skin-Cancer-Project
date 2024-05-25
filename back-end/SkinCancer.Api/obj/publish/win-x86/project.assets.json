@@ -11128,11 +11128,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
+      "projectUniqueName": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
       "projectName": "SkinCancer.Api",
-      "projectPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
+      "projectPath": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
       "packagesPath": "C:\\Users\\iamasd\\.nuget\\packages\\",
-      "outputPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\obj\\publish\\win-x86\\",
+      "outputPath": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\obj\\publish\\win-x86\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -11154,11 +11154,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Entities\\SkinCancer.Entities.csproj": {
-              "projectPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Entities\\SkinCancer.Entities.csproj"
+            "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Entities\\SkinCancer.Entities.csproj": {
+              "projectPath": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Entities\\SkinCancer.Entities.csproj"
             },
-            "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\SkinCancer.Services.csproj": {
-              "projectPath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Services\\SkinCancer.Services.csproj"
+            "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Services\\SkinCancer.Services.csproj": {
+              "projectPath": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Services\\SkinCancer.Services.csproj"
             }
           }
         }

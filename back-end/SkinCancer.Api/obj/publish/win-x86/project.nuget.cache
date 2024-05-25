@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "X+zDyxD9Tsi+cBzFtm1pgxcwXYRp9IyNFYuhtyuIlfTHkJb1HYOPd7l0pt8ca96Jt/HDgkmo/UZjb6/L6oBeqw==",
+  "dgSpecHash": "IrQFpNyREZHvEjE3cwbS29tVH0K82V57V3dY+dijT6p+gSrERkn2WZnQ+eCDmY01njA6n6bl/VstttrbCe0CPg==",
   "success": true,
-  "projectFilePath": "D:\\AWork\\SkinCancerMyRepository\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
+  "projectFilePath": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\iamasd\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\iamasd\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",

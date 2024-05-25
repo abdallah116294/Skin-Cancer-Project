@@ -69,7 +69,7 @@ namespace SkinCancer.Api.Controllers
                 return NotFound("No Clinic Found with this  Id: " + id);
             }
 
-            return clinicDto;
+            return Ok(clinicDto);
         }
 
         [HttpPut("UpdateClinic")]

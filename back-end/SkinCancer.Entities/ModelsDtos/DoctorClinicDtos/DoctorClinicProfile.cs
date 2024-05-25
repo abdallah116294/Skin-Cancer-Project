@@ -17,7 +17,8 @@ namespace SkinCancer.Entities.ModelsDtos.DoctorDtos
                              .ReverseMap();
 
             CreateMap<Clinic,DoctorClinicDetailsDto>()
-               .ForMember(dest => dest.AvailableDates, opt => opt.MapFrom<DoctorClinicScheduleResolver>())
+               .ForMember(dest => dest.AvailableDates,
+                    opt => opt.MapFrom<DoctorClinicScheduleResolver>())
                .ReverseMap();
 
             CreateMap<DoctorClinicUpdateDto, Clinic>()
