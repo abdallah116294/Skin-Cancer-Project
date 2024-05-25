@@ -89,20 +89,35 @@ namespace SkinCancer.Api.Controllers
                 
             return Ok(schedulesResult);
         }
-        [HttpGet("GetPatientAppointments")]
-        public IActionResult GetPatientAppointments(string userId) {
-        /*var patientSchedules = unitOfWork.SelectItem<Schedule>(x => x.PatientId == userId,
-													x => x.Clinic,
-													x => x.Patient).Select(x=>
-                                                    new {
-                                                    Id=x.Id,
-                                                    Name=x.Patient.FirstName+" "+x.Patient.LastName,
-                                                    Date=x.Date,
-                                                    ClinicName=x.Clinic.Name,
-                                                    userId=x.PatientId,
-                                                    });*/
-            return Ok();
-		}
+
+
+        [HttpGet("GetPatientSchedules")]
+        public async Task<ActionResult> GetPatientSchedulesAsync(string patientId)
+        {
+
+            if (string.IsNullOrWhiteSpace(patientId))
+            {
+                return BadRequest(new { Message = "Patient ID cannot be null or empty." });
+            }
+            try
+            {
+                var patientSchedules = await _scheduleService.GetPatientSchedules(patientId);
+
+                if (patientSchedules == null || !patientSchedules.Any())
+                {
+                    return NotFound(new { Message = "No schedules found for the specified patient." });
+                }
+
+                return Ok(patientSchedules);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while fetching patient schedules." });
+            }
+        }
+
+
+
 		[HttpGet("GetClinicBookedSchedules")]
 		public async Task<ActionResult> GetClinicBookedSchedules(int clinicId)
 		{

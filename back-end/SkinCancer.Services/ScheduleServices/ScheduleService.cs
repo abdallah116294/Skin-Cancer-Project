@@ -5,6 +5,7 @@ using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.ScheduleDtos;
 using SkinCancer.Repositories.Interface;
+using SkinCancer.Repositories.Repository;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -194,6 +195,68 @@ namespace SkinCancer.Services.ScheduleServices
                 return Enumerable.Empty<ScheduleDetailsDto>();
             }
 
+        }
+
+        public async Task<IEnumerable<PatientScheduleDetailsDto>> GetPatientSchedules(string patientId)
+        {
+
+            try
+            {
+                var schedules = await _unitOfWork.SelectItemAsync<Schedule>(
+                 x => x.PatientId == patientId,
+                 x => x.Clinic,
+                 x => x.Patient);
+
+
+                /* var patientSchedules = _unitOfWork.SelectItem<Schedule>
+                                                         (x => x.PatientId == patientId,
+                                                         x => x.Clinic,
+                                                         x => x.Patient)
+                                                         .Select(x => new
+                                                         {
+                                                             Id = x.Id,
+                                                             Name = x.Patient.UserName,
+                                                             Date = x.Date,
+                                                             ClinicName = x.Clinic.Name,
+                                                             PatientId = x.PatientId,
+                                                         });*/
+
+                if (schedules == null || !schedules.Any())
+                {
+                    return Enumerable.Empty<PatientScheduleDetailsDto>();
+                }
+
+                var patientSchedules = schedules.Select(s => new
+                {
+                    Id = s.Id,
+                    PatientName = s.Patient.UserName,
+                    Date = s.Date,
+                    ClinicName = s.Clinic.Name,
+                    PatientId = s.PatientId,
+                });
+
+                var result = new List<PatientScheduleDetailsDto>();
+
+                foreach (var item in patientSchedules)
+                {
+                    var dto = new PatientScheduleDetailsDto
+                    {
+                        PatientId = item.PatientId,
+                        PatientName = item.PatientName,
+                        ClinicName = item.ClinicName,
+                        Date = item.Date,
+                        ScheduleId = item.Id
+                    };
+                    result.Add(dto);
+                }
+
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Enumerable.Empty<PatientScheduleDetailsDto>();
+            }
         }
     }
 }
