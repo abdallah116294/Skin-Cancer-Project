@@ -29,6 +29,8 @@ namespace SkinCancer.Services.ClinicServices
 
         Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto);
 
+        Task<ProcessResult> IsDoctorHasClinicAsync(string doctorId);
+
 
 
     }

@@ -230,5 +230,13 @@ namespace SkinCancer.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("IsDoctorHasClinic")]
+        public async Task<ActionResult> IsDoctorHasClinicAsync(string doctorId)
+        {
+            var checkDoctorHasClinic = await _clinicService.IsDoctorHasClinicAsync(doctorId);
+
+            return Ok(checkDoctorHasClinic);
+        }
+
     }
 }
