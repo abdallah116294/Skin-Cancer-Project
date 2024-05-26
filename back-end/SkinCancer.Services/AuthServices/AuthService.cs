@@ -6,57 +6,57 @@ using System.Text;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Services.AuthServices.Interfaces;
 using SkinCancer.Entities.AuthModels;
-using SkinCancer.Entities.AuthenticationUserDtos;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos;
 namespace SkinCancer.Services.AuthServices
 {
     public class AuthService : IAuthService
     {
-        private readonly UserManager<ApplicationUser> userManager;
-        private readonly RoleManager<IdentityRole> roleManager;
-        private readonly IConfiguration configuration;
-        private readonly IMapper mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
         private readonly IEmailSender emailSender;
-        private readonly IDataProtector protector;
-        public AuthService(UserManager<ApplicationUser> userManager,
-                           RoleManager<IdentityRole> roleManager,
-                           IConfiguration configuration,
-                           IMapper mapper , IEmailSender emailSender,
+        private readonly IDataProtector _protector;
+        public AuthService(UserManager<ApplicationUser> _userManager,
+                           RoleManager<IdentityRole> _roleManager,
+                           IConfiguration _configuration,
+                           IMapper _mapper , IEmailSender emailSender,
                            IDataProtectionProvider dataProtection)
         { 
-            this.userManager = userManager;
-            this.roleManager = roleManager;
-            this.configuration = configuration;
-            this.mapper = mapper;
+            this._userManager = _userManager;
+            this._roleManager = _roleManager;
+            this._configuration = _configuration;
+            this._mapper = _mapper;
             this.emailSender = emailSender;
-            protector = dataProtection.CreateProtector("75DD1BB4-17AF-4504-B4FF-96BD6DF6E935");
+            _protector = dataProtection.CreateProtector("75DD1BB4-17AF-4504-B4FF-96BD6DF6E935");
         }
 
         // Done
         // Register New Patient without Authentication
         public async Task<ProcessResult> RegisterAsync(RegisterModel model)
         {
-            if (await userManager.FindByEmailAsync(model.Email) != null)
+            if (await _userManager.FindByEmailAsync(model.Email) != null)
             {
                 return new ProcessResult { Message = "This Email is Already Exists" };
             }
 
-            if (await userManager.FindByNameAsync(model.UserName) != null)
+            if (await _userManager.FindByNameAsync(model.UserName) != null)
             {
                 return new ProcessResult { Message = "This UserName Already Exitss" };
             }
             // Instead of assign each attribute in model to user attributes
-            ApplicationUser user = mapper.Map<ApplicationUser>(model);
+            ApplicationUser user = _mapper.Map<ApplicationUser>(model);
             
             // Adding user (AppUser) + model.Password to call HashedPassword
             var result = new IdentityResult();
             try {
 
-               result = await userManager.CreateAsync(user, model.Password);
+               result = await _userManager.CreateAsync(user, model.Password);
             }
             catch (Exception ex)
             {
@@ -75,10 +75,52 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { IsSucceeded = false, Message = errorMessage };
             }
 
-            await userManager.AddToRoleAsync(user, "PATIENT");
+            await _userManager.AddToRoleAsync(user, "PATIENT");
 
             return new ProcessResult { IsSucceeded = true, Message = "Added Successfully" };
         }
+       
+        public async Task<PatientDetailsDto> GetPatientDetails(string patientId)
+        {
+            try
+            {
+                var patient = await _userManager.FindByIdAsync(patientId) ?? throw new ArgumentException($"No Patient Found with this Id: {patientId}");
+
+                var patientRoles = await _userManager.GetRolesAsync(patient);
+
+                var patientRolesToLower = patientRoles.Select(role => role.ToLower())
+                                                      .ToList();
+
+                if (!patientRolesToLower.Contains("patient"))
+                {
+                    throw new InvalidOperationException("This User is not a patient.");
+                }
+
+                var dto = _mapper.Map<PatientDetailsDto>(patient);
+
+                return dto;
+
+            }
+            catch (ArgumentException ex)
+            {
+                // Log the exception here if you have a logger
+                // _logger.LogError(ex, "Invalid patient ID: {PatientId}", patientId);
+                throw;
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Log the exception here if you have a logger
+                // _logger.LogError(ex, "Invalid operation for patient ID: {PatientId}", patientId);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here if you have a logger
+                // _logger.LogError(ex, "An error occurred while fetching patient details for patient ID: {PatientId}", patientId);
+                throw new Exception("An error occurred while fetching patient details.", ex);
+            }
+        }
+        
 
         // Done
         public async Task<ProcessResult> EmailConfirmationAsync(string UserId, string code)
@@ -88,15 +130,15 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { Message = "Invalid Email" };
             }
                
-            var user = await userManager.FindByIdAsync(UserId);
+            var user = await _userManager.FindByIdAsync(UserId);
             if (user == null)
             {
                 return new ProcessResult { Message = "No user With this ID" };
             }
 
             code =/* Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));*/
-                    protector.Unprotect(code);
-            var result = await userManager.ConfirmEmailAsync(user, code);
+                    _protector.Unprotect(code);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
 
             var processResult = new ProcessResult();
             processResult.Message = result.Succeeded ? "Thank You For Confirming Email" :
@@ -113,11 +155,11 @@ namespace SkinCancer.Services.AuthServices
                 return new ProcessResult { Message = "Email is not found" };
             }
 
-            var user = await userManager.FindByEmailAsync(email);
+            var user = await _userManager.FindByEmailAsync(email);
 
-            user.Code = protector.Protect(code);
+            user.Code = _protector.Protect(code);
             
-            await userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
             if (user == null)
             {
@@ -140,10 +182,10 @@ namespace SkinCancer.Services.AuthServices
         public async Task<ProcessResult> ResetPasswordAsync(string UserId, string code, string newPassword)
         {
 
-            var user = await userManager.FindByIdAsync(UserId);
+            var user = await _userManager.FindByIdAsync(UserId);
 //773265‏
 // 282816‏
-            var unProtected = protector.Unprotect(user.Code);
+            var unProtected = _protector.Unprotect(user.Code);
             //998427‏ 
             // there is a character added into the code so we have to check if there is something was 
             // added or not
@@ -157,17 +199,17 @@ namespace SkinCancer.Services.AuthServices
             if (string.IsNullOrEmpty(newPassword))
                 return new ProcessResult { Message = "Write Valid Password" };
 
-            var removeResult = await userManager.RemovePasswordAsync(user);
+            var removeResult = await _userManager.RemovePasswordAsync(user);
 
             if (!removeResult.Succeeded)
                 return new ProcessResult { Message = string.Join(", ", removeResult.Errors.Select(er => er.Description)) };
 
-            var changePassword = await userManager.AddPasswordAsync(user, newPassword);
+            var changePassword = await _userManager.AddPasswordAsync(user, newPassword);
 
             if (!changePassword.Succeeded)
                 return new ProcessResult { Message = string.Join(", ", changePassword.Errors.Select(er => er.Description)) };
 
-            var updateUser = await userManager.UpdateAsync(user);
+            var updateUser = await _userManager.UpdateAsync(user);
 
             if (!updateUser.Succeeded)
                 return new ProcessResult { Message = string.Join(", ", updateUser.Errors.Select(er => er.Description)) };
@@ -184,9 +226,9 @@ namespace SkinCancer.Services.AuthServices
         {
             var authModel = new AuthResult();
 
-            var user = await userManager.FindByEmailAsync(model.Email);
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
-            if (user is null || !await userManager.CheckPasswordAsync(user,model.Password))
+            if (user is null || !await _userManager.CheckPasswordAsync(user,model.Password))
             {
                 return new AuthResult { Message = "Email Or Password is not correct" };
             }
@@ -199,7 +241,7 @@ namespace SkinCancer.Services.AuthServices
             }
 
             var jwtSecurityToken = await CreateJwtToken(user);
-            var rolesList = await userManager.GetRolesAsync(user);
+            var rolesList = await _userManager.GetRolesAsync(user);
 
 
             authModel.IsAuthenticated = true;
@@ -223,21 +265,21 @@ namespace SkinCancer.Services.AuthServices
                 return "Invalid input parameters";
             }
 
-            var user = await userManager.FindByNameAsync(model.UserName);
+            var user = await _userManager.FindByNameAsync(model.UserName);
 
             // Check if user or role doesn't exist
-            if (user is null || !await roleManager.RoleExistsAsync(model.RoleName))
+            if (user is null || !await _roleManager.RoleExistsAsync(model.RoleName))
             {
                 return "Invalid User Name or Role";
             }
 
             // Check if user is already assigned to the specified role
-            if (await userManager.IsInRoleAsync(user, model.RoleName))
+            if (await _userManager.IsInRoleAsync(user, model.RoleName))
             {
                 return "User Already Assigned to this role";
             }
 
-            var result = await userManager.AddToRoleAsync(user, model.RoleName);
+            var result = await _userManager.AddToRoleAsync(user, model.RoleName);
 
             if (!result.Succeeded)
             {
@@ -248,11 +290,11 @@ namespace SkinCancer.Services.AuthServices
             // Remove conflicting roles (Patient and Doctor)
             if (model.RoleName == "Doctor" || model.RoleName == "Patient")
             {
-                var roles = await userManager.GetRolesAsync(user);
+                var roles = await _userManager.GetRolesAsync(user);
                 if (roles.Contains("Patient") && roles.Contains("Doctor"))
                 {
                     var roleToRemove = model.RoleName == "Doctor" ? "Patient" : "Doctor";
-                    await userManager.RemoveFromRoleAsync(user, roleToRemove);
+                    await _userManager.RemoveFromRoleAsync(user, roleToRemove);
                 }
             }
 
@@ -266,8 +308,8 @@ namespace SkinCancer.Services.AuthServices
         public async Task<JwtSecurityToken> CreateJwtToken(ApplicationUser user)
 
         {
-            var userClaims = await userManager.GetClaimsAsync(user);
-            var roles = await userManager.GetRolesAsync(user);
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
             var roleClaim = new List<Claim>();
             
             foreach (var role in roles)
@@ -286,15 +328,15 @@ namespace SkinCancer.Services.AuthServices
 
 
             var symmetricSecurityKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
+                Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
 
             var signingCredentials = new SigningCredentials(symmetricSecurityKey,
                                          SecurityAlgorithms.HmacSha256);
 
 
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: configuration["JWT:Issuer"],
-                audience: configuration["JWT:Audience"],
+                issuer: _configuration["JWT:Issuer"],
+                audience: _configuration["JWT:Audience"],
                 claims: claims,
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: signingCredentials

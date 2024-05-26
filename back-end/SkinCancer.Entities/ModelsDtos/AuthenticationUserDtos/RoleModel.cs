@@ -6,7 +6,7 @@ using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SkinCancer.Entities.AuthenticationUserDtos
+namespace SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos
 {
     public class RoleModel
     {
