@@ -14,6 +14,8 @@ namespace SkinCancer.Entities.MappingProfiles
 
             CreateMap<PatientDetailsDto , ApplicationUser>().ReverseMap();
 
+            CreateMap<DoctorDetailsDto , ApplicationUser>().ReverseMap();
+
         }
     }
 }

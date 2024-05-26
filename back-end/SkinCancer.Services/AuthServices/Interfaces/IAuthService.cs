@@ -12,6 +12,8 @@ namespace SkinCancer.Services.AuthServices.Interfaces
 
         public Task<PatientDetailsDto> GetPatientDetails(string patientId);
 
+        public Task<DoctorDetailsDto> GetDoctorDetails(string doctorId);
+
         public Task<ProcessResult> EmailConfirmationAsync(string UserId, string code);
 
         public Task<ProcessResult> ForgetPassword(string email , string code);
