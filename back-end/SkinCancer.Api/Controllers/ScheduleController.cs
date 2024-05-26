@@ -128,7 +128,7 @@ namespace SkinCancer.Api.Controllers
 
                 if (clinicSchedules == null || !clinicSchedules.Any())
                 {
-                    return Ok(new ProcessResult { Message = "No booked schedules found for this clinic." });
+                    return NotFound(new { Message = "No schedules found for the specified patient." });
                 }
 
                 return Ok(clinicSchedules);

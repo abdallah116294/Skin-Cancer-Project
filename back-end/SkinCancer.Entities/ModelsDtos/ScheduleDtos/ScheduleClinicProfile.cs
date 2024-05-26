@@ -17,6 +17,12 @@ namespace SkinCancer.Entities.ModelsDtos.ScheduleDtos
             CreateMap<Schedule , UpdateScheduleDto>().ReverseMap(); 
 
             CreateMap<Schedule, ScheduleDetailsDto>().ReverseMap();
+
+            CreateMap<Schedule, PatientScheduleDetailsDto>()
+                 .ForMember(dest => dest.ScheduleId, opt => opt.MapFrom(src => src.Id))
+                 .ForMember(dest => dest.PatientName,
+                    opt => opt.MapFrom(src => $"{src.Patient.FirstName} {src.Patient.LastName}"))
+                 .ReverseMap();
         }
 
     }

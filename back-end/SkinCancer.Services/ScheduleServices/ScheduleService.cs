@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
@@ -17,16 +19,20 @@ namespace SkinCancer.Services.ScheduleServices
 {
     public class ScheduleService : IScheduleService
     {
-        public readonly IUnitOfWork _unitOfWork;
-        public readonly IMapper _mapper;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         private readonly ILogger<ScheduleService> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
 
-        public ScheduleService(IUnitOfWork unitOfWork, IMapper mapper, ILogger<ScheduleService> logger)
+        public ScheduleService(IUnitOfWork unitOfWork, IMapper mapper,
+                               ILogger<ScheduleService> logger,
+                               UserManager<ApplicationUser> userManager)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _logger = logger;
+            _userManager = userManager;
         }
 
         public async Task<ProcessResult> CreateSchedule(ScheduleDto dto)
@@ -174,25 +180,28 @@ namespace SkinCancer.Services.ScheduleServices
             }
         }
 
-        public async Task<IEnumerable<ScheduleDetailsDto>> GetClinicBookedSchedules(int clinicId)
+        public async Task<IEnumerable<PatientScheduleDetailsDto>> GetClinicBookedSchedules(int clinicId)
         {
             try
             {
                 var schedules = _unitOfWork.SelectItem<Schedule>
-                    (s => s.ClinicId == clinicId && s.IsBooked, s => s.Clinic);
+                    (s => s.ClinicId == clinicId && s.IsBooked, s => s.Clinic,
+                     s => s.Patient);
 
                 if (schedules == null || !schedules.Any())
                 {
-                    return Enumerable.Empty<ScheduleDetailsDto>();
+                    return Enumerable.Empty<PatientScheduleDetailsDto>();
                 }
 
-                var dtos = _mapper.Map<IEnumerable<ScheduleDetailsDto>>(schedules);
+                var dtos = _mapper.Map<IEnumerable<PatientScheduleDetailsDto>>(schedules).ToList();
 
+
+                
                 return dtos;
             }
             catch (Exception ex)
             {
-                return Enumerable.Empty<ScheduleDetailsDto>();
+                return Enumerable.Empty<PatientScheduleDetailsDto>();
             }
 
         }
@@ -202,7 +211,7 @@ namespace SkinCancer.Services.ScheduleServices
 
             try
             {
-                var schedules = await _unitOfWork.SelectItemAsync<Schedule>(
+                var schedules =  _unitOfWork.SelectItem<Schedule>(
                  x => x.PatientId == patientId,
                  x => x.Clinic,
                  x => x.Patient);
@@ -229,7 +238,7 @@ namespace SkinCancer.Services.ScheduleServices
                 var patientSchedules = schedules.Select(s => new
                 {
                     Id = s.Id,
-                    PatientName = s.Patient.UserName,
+                    PatientName = s.Patient.FirstName + " " + s.Patient.LastName,
                     Date = s.Date,
                     ClinicName = s.Clinic.Name,
                     PatientId = s.PatientId,
