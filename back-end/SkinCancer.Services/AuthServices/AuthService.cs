@@ -84,7 +84,9 @@ namespace SkinCancer.Services.AuthServices
         {
             try
             {
-                var patient = await _userManager.FindByIdAsync(patientId) ?? throw new ArgumentException($"No Patient Found with this Id: {patientId}");
+                var patient = await _userManager.FindByIdAsync(patientId) 
+                              ??
+                              throw new ArgumentException($"No Patient Found with this Id: {patientId}");
 
                 var patientRoles = await _userManager.GetRolesAsync(patient);
 
@@ -120,7 +122,41 @@ namespace SkinCancer.Services.AuthServices
                 throw new Exception("An error occurred while fetching patient details.", ex);
             }
         }
-        
+
+        public async Task<DoctorDetailsDto> GetDoctorDetails(string doctorId)
+        {
+            try
+            {
+                var doctor = await _userManager.FindByIdAsync(doctorId)
+                             ??
+                             throw new ArgumentException("No Doctor Found With This Id" + doctorId);
+
+                var doctorRoles = await _userManager.GetRolesAsync(doctor);
+
+                var doctorRolesToLower = doctorRoles.Select(d => d.ToLower()).ToList();
+
+                if (!doctorRolesToLower.Contains("doctor"))
+                {
+                    throw new InvalidOperationException("The User is not a doctor");
+                }
+
+                var dto = _mapper.Map<DoctorDetailsDto>(doctor);
+
+                return dto;
+            }
+            catch (ArgumentException ex)
+            {
+                throw;
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("An error occurred while fetching patient details.", ex);
+            }
+        }
 
         // Done
         public async Task<ProcessResult> EmailConfirmationAsync(string UserId, string code)

@@ -86,6 +86,43 @@ namespace SkinCancer.Api.Controllers
             }
         }
 
+        [HttpGet("GetDoctorDetails")]
+        public async Task<ActionResult> GetDoctorDetailsAsync(string doctorId)
+        {
+            if (string.IsNullOrWhiteSpace(doctorId)) 
+            {
+                return BadRequest(new ProcessResult
+                {
+                    Message = "doctorId can't be null or empty"
+                });
+            }
+
+            try
+            {
+                var doctorDto = await _authService.GetDoctorDetails(doctorId);
+
+                if (doctorDto == null)
+                {
+                    return NotFound(new { Message = "No patient found with the specified ID." });
+                }
+
+                return Ok(doctorDto);
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { Message = ex.Message });
+            }
+
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Message = "An error occurred while fetching doctor details." });
+            }
+        }
+
         [HttpPost("Register")]
         public async Task<IActionResult> Register(RegisterModel model)
         {
