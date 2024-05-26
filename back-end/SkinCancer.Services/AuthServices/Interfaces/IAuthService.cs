@@ -1,7 +1,7 @@
 ﻿using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
-using SkinCancer.Entities.AuthenticationUserDtos;
 using System.IdentityModel.Tokens.Jwt;
+using SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos;
 
 namespace SkinCancer.Services.AuthServices.Interfaces
 {
@@ -9,6 +9,8 @@ namespace SkinCancer.Services.AuthServices.Interfaces
     {
 
         public Task<ProcessResult> RegisterAsync(RegisterModel model);
+
+        public Task<PatientDetailsDto> GetPatientDetails(string patientId);
 
         public Task<ProcessResult> EmailConfirmationAsync(string UserId, string code);
 
