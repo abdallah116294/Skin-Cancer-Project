@@ -55,7 +55,7 @@ namespace SkinCancer.Api.Controllers
         }
 
 
-        [HttpPut]
+        [HttpPut("UpdateSchedule")]
         public async Task<ActionResult> UpdateScheduleAsync(UpdateScheduleDto dto)
         {
             if (!ModelState.IsValid)
@@ -118,9 +118,9 @@ namespace SkinCancer.Api.Controllers
 
 
 
-		[HttpGet("GetClinicBookedSchedules")]
-		public async Task<ActionResult> GetClinicBookedSchedules(int clinicId)
-		{
+        [HttpGet("GetClinicBookedSchedules")]
+        public async Task<ActionResult> GetClinicBookedSchedules(int clinicId)
+        {
             try
             {
                 var clinicSchedules = await _scheduleService
@@ -135,9 +135,9 @@ namespace SkinCancer.Api.Controllers
             }
             catch
             {
-                return StatusCode(500 , "An error occurred while fetching clinic appointments");
+                return StatusCode(500, "An error occurred while fetching clinic appointments");
             }
-		}
+        }	
 
 	}
 }
