@@ -69,3 +69,23 @@ class ResetPasswordIsSuccessState extends AuthState {
   final message;
   ResetPasswordIsSuccessState({required this.message});
 }
+class GetDoctorDetialsSuccess extends AuthState {
+  final DoctorDetails doctorModel;
+
+  const GetDoctorDetialsSuccess({required this.doctorModel});
+}
+class GetDoctorDetialsError extends AuthState {
+  final String error;
+
+  const GetDoctorDetialsError({required this.error});
+}
+class GetPatientDetialsSuccess extends AuthState {
+  final PatientDetails doctorModel;
+
+  const GetPatientDetialsSuccess({required this.doctorModel});
+}
+class GetPatientDetialsError extends AuthState {
+  final String error;
+
+  const GetPatientDetialsError({required this.error});
+}

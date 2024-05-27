@@ -108,3 +108,13 @@ class DocCreateSchedualError extends ClinicState {
 
   const DocCreateSchedualError({required this.error});
 }
+// class GetDoctorDetialsSuccess extends ClinicState {
+//   final DoctorDetails doctorModel;
+
+//   const GetDoctorDetialsSuccess({required this.doctorModel});
+// }
+// class GetDoctorDetialsError extends ClinicState {
+//   final String error;
+
+//   const GetDoctorDetialsError({required this.error});
+// }

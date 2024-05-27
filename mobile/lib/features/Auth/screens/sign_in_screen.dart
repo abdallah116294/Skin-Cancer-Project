@@ -48,29 +48,39 @@ class _SingInScreenState extends State<SingInScreen> {
             if (state is LoginUserIsLoadingState) {
               log('loading');
             } else if (state is LoginUserIsSuccessSetate) {
-              if (state.userModel.roles[0] == "Doctor") {
+              if (widget.roles['role1'] == state.userModel.roles[0] ||
+                  widget.roles['role2'] == state.userModel.roles[0]) {
                 CacheHelper.saveData(
                     key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(
-                    key: 'doctor_role', value: state.userModel.roles[0]);
+                if (state.userModel.roles[0] == 'Doctor') {
+                  CacheHelper.saveData(
+                      key: 'doctor_role', value: state.userModel.roles[0]);
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Welecome Doctor",
+                      actionName: "Go to Home",
+                      context: context,
+                      onTap: () {
+                        context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                      });
+                } else {
+                  CacheHelper.saveData(
+                      key: 'patient_role', value: state.userModel.roles[0]);
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Welecome",
+                      actionName: " Go to Home",
+                      context: context,
+                      onTap: () {
+                        context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                      });
+                }
+              } else if (widget.roles['role1'] != state.userModel.roles[0] ||
+                  widget.roles["role2"] != state.userModel.roles[0]) {
                 DailogAlertFun.showMyDialog(
-                    daliogContent: "Welecome Doctor",
-                    actionName: "Go to Home",
+                    daliogContent: "You don't allow",
+                    actionName: " Go Backe",
                     context: context,
                     onTap: () {
-                      context.pushNamed(Routes.bottomNavScreenRoutes);
-                    });
-              } else {
-                CacheHelper.saveData(
-                    key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(
-                    key: 'patient_role', value: state.userModel.roles[0]);
-                DailogAlertFun.showMyDialog(
-                    daliogContent: "Welecome",
-                    actionName: " Go to Home",
-                    context: context,
-                    onTap: () {
-                      context.pushNamed(Routes.bottomNavScreenRoutes);
+                      context.pushReplacementNamed(Routes.choseUserRoutes);
                     });
               }
             } else if (state is LoginUserIsErrorState) {
@@ -171,7 +181,10 @@ class _SingInScreenState extends State<SingInScreen> {
                                         log(emailController.text);
                                         log(passwordController.text);
                                         BlocProvider.of<AuthCubit>(context)
-                                            .userlogin(email: emailController.text,password: passwordController.text);
+                                            .userlogin(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text);
                                       }
                                     },
                                     textColor: Colors.white,

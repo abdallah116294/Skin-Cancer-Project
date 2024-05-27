@@ -20,7 +20,7 @@ class AISection extends StatelessWidget {
         color: const Color(0xFFC5CAFB),
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 5.h, left: 10.w),
+        padding: EdgeInsets.only(top: 5.h, left: 22.w),
         child: Row(
           children: [
             Column(
@@ -50,7 +50,7 @@ class AISection extends StatelessWidget {
                     white: false)
               ],
             ),
-            horizontalSpacing(23),
+            horizontalSpacing(17),
             ClipOval(
               child: SizedBox(
                   width: 150.w,

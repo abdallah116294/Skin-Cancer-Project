@@ -8,6 +8,7 @@ import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/date_converter.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
+import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class PatientSelectedClinic extends StatefulWidget {
@@ -18,6 +19,17 @@ class PatientSelectedClinic extends StatefulWidget {
 }
 
 class _PatientSelectedClinicState extends State<PatientSelectedClinic> {
+  bool isWithinNext24Hours(DateTime date) {
+    final now = DateTime.now();
+    final twentyFourHoursFromNow = now.add(Duration(hours: 24));
+
+    // Check if the given date is within the next 24 hours from now
+    bool within24Hours =
+        date.isAfter(now) && date.isBefore(twentyFourHoursFromNow);
+    log('Is within next 24 hours: $within24Hours');
+    return within24Hours;
+  }
+
   @override
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
@@ -26,8 +38,8 @@ class _PatientSelectedClinicState extends State<PatientSelectedClinic> {
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return Scaffold(
       body: BlocProvider(
-          create: (context) => di.sl<ClinicCubit>()
-            ..getSelectedClinic(patientId),
+          create: (context) =>
+              di.sl<ClinicCubit>()..getSelectedClinic(patientId),
           child: BlocConsumer<ClinicCubit, ClinicState>(
             listener: (context, state) {
               if (state is GetSelectedClinicIsLoading) {
@@ -72,10 +84,12 @@ class _PatientSelectedClinicState extends State<PatientSelectedClinic> {
                         children: [
                           Expanded(
                             child: ListView.separated(
+                                addAutomaticKeepAlives: true,
                                 itemBuilder: (context, index) {
                                   DateTime dateTime = DateTime.parse(state
                                       .selectedClinic[index].date
                                       .toString());
+
                                   return Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Container(
@@ -94,11 +108,13 @@ class _PatientSelectedClinicState extends State<PatientSelectedClinic> {
                                           ]),
                                       child: ListTile(
                                         title: Text(state
-                                            .selectedClinic[index].name
-                                            .toString()),
-                                        subtitle: Text(DateConverter.getDateTimeWithMonth(dateTime)),
-                                        trailing: Text(state
                                             .selectedClinic[index].clinicName
+                                            .toString()),
+                                        subtitle: Text(
+                                            DateConverter.getDateTimeWithMonth(
+                                                dateTime)),
+                                        trailing: Text(state
+                                            .selectedClinic[index].patientName
                                             .toString()),
                                       ),
                                     ),
@@ -112,7 +128,21 @@ class _PatientSelectedClinicState extends State<PatientSelectedClinic> {
                       );
                     }
                   } else if (state is GetSelectedClinicIsError) {
-                    return Text(state.error);
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "You don't have book in any clinic yet",
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Center(
+                          child: Lottie.asset('assets/animation/empty.json'),
+                        )
+                      ],
+                    );
                   }
                   return const Column(
                     children: [

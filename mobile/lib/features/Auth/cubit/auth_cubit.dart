@@ -6,6 +6,8 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/core/widgets/error_text_widgte.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
+import 'package:mobile/features/Auth/data/model/patient_details._model.dart';
 import 'package:mobile/features/Auth/data/model/user_model.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
 
@@ -109,7 +111,26 @@ class AuthCubit extends Cubit<AuthState> {
           message: extractErrorMessage(error.toString())));
     }
   }
-
+  Future<void> getDoctorDetials(String docId) async {
+    try {
+      Either<String, DoctorDetails> response =
+          await authRepo.getDoctorDetails(docId);
+      emit(response.fold((l) => GetDoctorDetialsError(error: l),
+          (r) => GetDoctorDetialsSuccess(doctorModel: r)));
+    } catch (error) {
+      emit(GetDoctorDetialsError(error: error.toString()));
+    }
+  }
+    Future<void> getPatientDetails(String patientId) async {
+    try {
+      Either<String, PatientDetails> response =
+          await authRepo.getPatientDetails(patientId);
+      emit(response.fold((l) => GetPatientDetialsError(error: l),
+          (r) => GetPatientDetialsSuccess(doctorModel: r)));
+    } catch (error) {
+      emit(GetPatientDetialsError(error: error.toString()));
+    }
+  }
   String extractPasswordUpdatedMessage(String responseText) {
     final RegExp regex = RegExp(r'Password Updated Successfully');
     final match = regex.firstMatch(responseText);

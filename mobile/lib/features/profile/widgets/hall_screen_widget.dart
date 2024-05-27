@@ -4,7 +4,9 @@ import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/text_styles.dart';
+import 'package:mobile/core/widgets/custom_dailog.dart';
 import 'package:mobile/features/appointment/screen/appointment_screen.dart';
+import 'package:mobile/features/payments/screens/register_to_payment.dart';
 import 'package:mobile/features/profile/widgets/profile_widget.dart';
 
 import '../../../config/routes/app_routes.dart';
@@ -53,7 +55,7 @@ class HallProfileScreenWidget extends StatelessWidget {
                 left: 20.w,
                 child: InkWell(
                   onTap: () {
-                    context.pop();
+                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
                   },
                   child: Container(
                     height: 42.h,
@@ -78,7 +80,7 @@ class HallProfileScreenWidget extends StatelessWidget {
                 child: CircleAvatar(
                   radius: 80.r,
                   backgroundImage: NetworkImage(
-                      'https://i.pinimg.com/236x/cf/9b/8d/cf9b8d7501016b56d552e154e096b46e.jpg'),
+                      'https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=1024x1024&w=is&k=20&c=oGqYHhfkz_ifeE6-dID6aM7bLz38C6vQTy1YcbgZfx8='),
                 ),
               ),
               Positioned(
@@ -172,10 +174,10 @@ class HallProfileScreenWidget extends StatelessWidget {
                       const Icon(color: Color(0xFF6671EB), Icons.credit_card),
                   title: 'Payment Method',
                   onTap: () {
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: (context) => const RegisterPayment()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPayment()));
                   },
                 ),
                 ProfileWidget(
@@ -189,14 +191,18 @@ class HallProfileScreenWidget extends StatelessWidget {
                 ),
                 ProfileWidget(
                   onTap: () {
-                    // BlocProvider.of<AuthCubit>(context)
-                    //     .userSignout()
-                    //     .then((value) {
-                    //   Navigator.of(context).pushReplacement(
-                    //       MaterialPageRoute(
-                    //           builder: (context) =>
-                    //               const OnBoardingScreen()));
-                    // });
+                    DailogAlertFun.showMyDialog(
+                        daliogContent: "Are you sure?",
+                        actionName: "Logout",
+                        context: context,
+                        onTap: () {
+                     CacheHelper.removeData(key: 'token');
+                    CacheHelper.removeData(key: 'email');
+                    if (dotoctorRole != null) {
+                      CacheHelper.removeData(key: 'doctor_role');
+                    }
+                    context.pushReplacementNamed(Routes.choseUserRoutes,);
+                        });
                   },
                   leading: const Icon(
                       color: Color(0xFF6671EB), Icons.lock_outline_rounded),

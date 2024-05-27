@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/create_clinic_model.dart';
@@ -23,5 +24,6 @@ abstract class ClinicRepo {
 
   Future<Either<String,AddClinicSuccessModel >> docCreateSchedule(
       String date, bool isBook, int clinicId);
+  Future<Either<String,DoctorDetails>>getDoctorDetails(String docId);    
 
 }

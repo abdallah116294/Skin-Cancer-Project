@@ -89,7 +89,7 @@ class DocDetailsScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        "Ahmed Khaled",
+                                      "Dr "+  state.clinicInfoModel.doctorName.toString(),
                                         style: TextStyles.font20whiteW700,
                                       ),
                                       Text(
