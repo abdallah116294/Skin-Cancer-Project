@@ -20,6 +20,7 @@ import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/data/model/clinic_schedual_model.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
 import 'package:mobile/features/explore/widgets/action_widgets.dart';
+import 'package:mobile/features/payments/screens/register_to_payment.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class PatientCheckDate extends StatefulWidget {
@@ -60,7 +61,12 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                   actionName: "Go Back",
                   context: context,
                   onTap: () {
-                    context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,arguments: widget.clinicId,predicate:(route)=>route.settings.name==Routes.bottomNavScreenRoutes );
+                    context.pushNamedAndRemoveUntil(
+                        Routes.bottomNavScreenRoutes,
+                        arguments: widget.clinicId,
+                        predicate: (route) =>
+                            route.settings.name ==
+                            Routes.bottomNavScreenRoutes);
                   });
             } else {
               DailogAlertFun.showMyDialog(
@@ -68,7 +74,8 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                   actionName: "Go Back",
                   context: context,
                   onTap: () {
-                    context.pop();
+                    Navigator.push(
+                        context, MaterialPageRoute(builder: (context)=>RegisterPayment()));
                   });
             }
           }
@@ -123,14 +130,11 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                                 log('change');
                                 setState(() {
                                   date = availableSchedules[index].date;
-                                  // selectedIndex = index + 1;
-                                  // selectedIndex = availableSchedules.indexWhere(
-                                  //     (schedule) => schedule.date == date);
-                                  selectedIndex = widget.availableDates
-                                      .indexWhere((element) => element == date);
+                                  selectedIndex = availableSchedules[index].id;
                                   log(selectedIndex.toString());
                                   log(date.toString());
                                 });
+                                // log(selectedIndex.toString());
                               },
                               icondata2: Icons.calendar_month,
                             );

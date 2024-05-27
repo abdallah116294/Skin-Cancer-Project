@@ -72,7 +72,7 @@ class _AIItemHistoryDetailsScreenState
                 widget.outpus['diagnosis'].isEmpty
                     ? Container(
                         width: double.infinity,
-                        padding: const EdgeInsets.all(20),
+                        padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
@@ -87,18 +87,20 @@ class _AIItemHistoryDetailsScreenState
                           style: TextStyles.font20whiteW700
                               .copyWith(color: Colors.red),
                         ))
-                    : Container(
-                        padding: const EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 5.0,
-                                  spreadRadius: 0.0)
-                            ]),
-                        child: Text(widget.outpus['diagnosis'])),
+                    : Expanded(
+                      child: Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 0.0)
+                              ]),
+                          child: Text(widget.outpus['diagnosis'])),
+                    ),
                 Spacer(),
                 doctorrole != null
                     ? AppButton(

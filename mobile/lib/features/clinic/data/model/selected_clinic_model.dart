@@ -1,25 +1,25 @@
 class SelectedClinicModel {
     SelectedClinicModel({
-        required this.id,
-        required this.name,
+        required this.patientId,
+        required this.patientName,
         required this.date,
         required this.clinicName,
-        required this.userId,
+        required this.scheduleId,
     });
 
-    final int? id;
-    final String? name;
+    final String? patientId;
+    final String? patientName;
     final DateTime? date;
     final String? clinicName;
-    final String? userId;
+    final int? scheduleId;
 
     factory SelectedClinicModel.fromJson(Map<String, dynamic> json){ 
         return SelectedClinicModel(
-            id: json["id"],
-            name: json["name"],
+            patientId: json["patientId"],
+            patientName: json["patientName"],
             date: DateTime.tryParse(json["date"] ?? ""),
             clinicName: json["clinicName"],
-            userId: json["userId"],
+            scheduleId: json["scheduleId"],
         );
     }
 

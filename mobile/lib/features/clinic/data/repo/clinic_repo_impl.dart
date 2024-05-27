@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:mobile/core/error/exception.dart';
 import 'package:mobile/core/network/api_constant.dart';
 import 'package:mobile/core/network/api_consumer.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/create_clinic_model.dart';
@@ -92,7 +93,7 @@ class ClinicRepoImpl implements ClinicRepo {
       String userId) async {
     try {
       final response = await apiConsumer.get(ApiConstant.getPatinetAppointment,
-          queryParameters: {"userId": userId});
+          queryParameters: {"patientId": userId});
       //final list = response.map((e) => SelectedClinicModel.fromJson(e)).toList();
       List<SelectedClinicModel> list = (response as List)
           .map((e) => SelectedClinicModel.fromJson(e))
@@ -134,5 +135,17 @@ class ClinicRepoImpl implements ClinicRepo {
     } on ServerException catch (error) {
       return Left(error.toString());
     }
+  }
+
+  @override
+  Future<Either<String, DoctorDetails>> getDoctorDetails(String docId)async {
+   try{
+    final response=await apiConsumer.get(ApiConstant.doctDetails,
+    queryParameters: {"doctorId":docId});
+    final result=DoctorDetails.fromJson(response);
+    return Right(result);
+   }on ServerException catch(error){
+    return Left(error.toString());
+   }
   }
 }

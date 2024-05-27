@@ -11,28 +11,26 @@ import 'package:mobile/injection_container.dart' as di;
 
 import '../../../core/cach_helper/cach_helper.dart';
 
-class AiHistoryScreen extends StatelessWidget {
-  final String userId;
-  const AiHistoryScreen({super.key, required this.userId});
+class AiHistoryScreen extends StatefulWidget {
+   //String userId=" ";
+   AiHistoryScreen({super.key,  });
 
+  @override
+  State<AiHistoryScreen> createState() => _AiHistoryScreenState();
+}
+
+class _AiHistoryScreenState extends State<AiHistoryScreen> {
   @override
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
-     var doctorrole = CacheHelper.getData(key: 'doctor_role');
-    String patientId =doctorrole!=null?userId:  data[
-        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
-   
-    getHistory(String userId,String patientId)async{
-       if(doctorrole!=null){
-      Future<void>getHistorybyDictor()async=>di.sl<AiPeredictionCubit>().getAiHistory(userId);
-    }else{
-      Future<void>getHistorybyPatient()async=>di.sl<AiPeredictionCubit>().getAiHistory(patientId);
-    }
-     }
+    var doctorrole = CacheHelper.getData(key: 'doctor_role');
+    String actualpatientId =  data[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return Scaffold(
       body: BlocProvider(
-        create: (context) =>di.sl<AiPeredictionCubit>()..getAiHistory(patientId),
+        create: (context) =>
+            di.sl<AiPeredictionCubit>()..getAiHistory(actualpatientId),
         child: BlocConsumer<AiPeredictionCubit, AiPeredictionState>(
           listener: (context, state) {},
           builder: (context, state) {

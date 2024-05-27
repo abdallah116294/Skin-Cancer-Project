@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/core/cach_helper/cach_helper.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_history_by_doctor.dart';
 import 'package:mobile/features/AI_scan/scressns/ai_history_screen.dart';
 import 'package:mobile/features/AI_scan/scressns/ai_item_history_details.dart';
 import 'package:mobile/features/AI_scan/scressns/ai_scan_screen.dart';
@@ -8,6 +11,7 @@ import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
 import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
+import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/clinic/screens/add_clinic_screen.dart';
 import 'package:mobile/features/clinic/screens/doc_clinic_details.dart';
 import 'package:mobile/features/clinic/screens/patient_selected_clinic.dart';
@@ -60,6 +64,7 @@ class Routes {
   static const String patientSelectedClinic = "/PatientSelectedClinic";
   static const String aIItemHistoryDetailsScreen =
       "/AIItemHistoryDetailsScreen";
+  static const String aiHistoryByDoctor = "/AiHistoryByDoctor";
 }
 
 class AppRoutes {
@@ -101,7 +106,24 @@ class AppRoutes {
                   role: routeSettings.arguments as Map<String, String>,
                 ));
       case Routes.homeScreenRoutes:
-        return MaterialPageRoute(builder: (context) => const HomeScreen());
+        var token = CacheHelper.getData(key: 'token');
+        Map<String, dynamic> data = Jwt.parseJwt(token);
+        String docId = data[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) =>
+                          di.sl<ClinicCubit>()..getDocHasClinic(docId: docId),
+                    ),
+                    // BlocProvider(
+                    //   create: (context) =>
+                    //       di.sl<AuthCubit>()..getDoctorDetials(docId),
+                    // ),
+                  ],
+                  child: const HomeScreen(),
+                ));
       case Routes.bottomNavScreenRoutes:
         return MaterialPageRoute(builder: (context) => const BottomGNav());
       case Routes.exploreScreenRoutes:
@@ -109,7 +131,22 @@ class AppRoutes {
           builder: (context) => const ExploreScreen(),
         );
       case Routes.profileScreenRoutes:
-        return MaterialPageRoute(builder: (context) => const ProfileScreen());
+      var token = CacheHelper.getData(key: 'token');
+        Map<String, dynamic> data = Jwt.parseJwt(token);
+        String docId = data[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) => di.sl<AuthCubit>()..getDoctorDetials(docId),
+                    ),
+                    BlocProvider(
+                      create: (context) => di.sl<AuthCubit>()..getPatientDetails(docId),
+                    ),
+                  ],
+                  child: const ProfileScreen(),
+                ));
       case Routes.whatSkinCanerScreenRoutes:
         return MaterialPageRoute(builder: (context) => const WhatSkinCaner());
       case Routes.factsAndStatisticScreen:
@@ -150,12 +187,21 @@ class AppRoutes {
       case Routes.aIScanScreen:
         return MaterialPageRoute(builder: (context) => const AIScanScreen());
       case Routes.aIHistoryScreen:
-        return MaterialPageRoute(builder: (context) =>  AiHistoryScreen(userId:routeSettings.arguments as String ,));
+        return MaterialPageRoute(builder: (context) => AiHistoryScreen());
       case Routes.patientSelectedClinic:
         return MaterialPageRoute(
             builder: (context) => const PatientSelectedClinic());
       case Routes.aIItemHistoryDetailsScreen:
-        return MaterialPageRoute(builder: (context)=>AIItemHistoryDetailsScreen(outpus: routeSettings.arguments as Map<String,dynamic>,));
+        return MaterialPageRoute(
+            builder: (context) => AIItemHistoryDetailsScreen(
+                  outpus: routeSettings.arguments as Map<String, dynamic>,
+                ));
+      case Routes.aiHistoryByDoctor:
+        return MaterialPageRoute(
+            builder: (context) => AiHistoryByDoctor(
+                  userId: routeSettings.arguments as String,
+                ));
+
       default:
         return null;
     }

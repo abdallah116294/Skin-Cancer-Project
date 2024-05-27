@@ -7,6 +7,7 @@ import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/widgets/app_button.dart';
+import 'package:mobile/core/widgets/validatort.dart';
 import 'package:mobile/features/Auth/widgets/double_text.dart';
 import 'package:mobile/features/Auth/widgets/terms_and_conditions.dart';
 import '../../../../core/utils/app_color.dart';
@@ -56,7 +57,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         daliogContent: state.error.toString(),
                         actionName: "Go back",
                         context: context,
-                        onTap: () {});
+                        onTap: () {
+                          context.pushReplacementNamed(
+                              Routes.singInScreenRoutes,
+                              arguments: widget.role);
+                        });
                     log(state.error);
                   } else if (state is AddRoleSuccesState) {
                     if (widget.role.containsKey('role1')) {
@@ -65,7 +70,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           actionName: "Confirm email",
                           context: context,
                           onTap: () {
-                            context.pushNamed(Routes.singInScreenRoutes,
+                            context.pushReplacementNamed(
+                                Routes.singInScreenRoutes,
                                 arguments: widget.role);
                           });
                     } else if (widget.role.containsKey('role2')) {
@@ -74,7 +80,8 @@ class _SignupScreenState extends State<SignupScreen> {
                           actionName: "Go Home",
                           context: context,
                           onTap: () {
-                             context.pushNamed(Routes.singInScreenRoutes,
+                            context.pushReplacementNamed(
+                                Routes.singInScreenRoutes,
                                 arguments: widget.role);
                           });
                     }
@@ -158,16 +165,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                           : Icons.visibility_off),
                                     ),
                                     validator: (String? value) {
-                                      String check = passwordController.text;
-                                      // List<String>valid=check.split();
-
-                                      if (check.isEmpty) {
-                                        return "Please enter your password";
-                                      } else {
-                                        if (value!.length < 8) {
-                                          return "Please enter at least 8 characters";
-                                        }
-                                      }
+                                     return MyValidators.passwordValidator(value);
                                     },
                                     textInputType:
                                         TextInputType.visiblePassword,

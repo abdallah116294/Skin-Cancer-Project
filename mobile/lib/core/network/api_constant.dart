@@ -29,9 +29,12 @@ class ApiConstant {
   static const String uploadAiResult = "/api/Detection";
   static const String getAiResult = "/api/Detection";
   static const String getPatinetAppointment =
-      "/api/Schedule/GetUserAppointments";
+      "/api/Schedule/GetPatientSchedules";
   static const String getClinicAppointments =
-      "/api/Schedule/GetClinicAppointments";
+      "/api/Schedule/GetClinicBookedSchedules";
   static const String addDiagnosis = "/api/Detection/AddDiagnosis";
   static const String docCreateSchedule = "/api/Schedule/DoctorCreateSchedule";
+  static const String doctDetails = "/api/Account/GetDoctorDetails";
+  static const String patientDetails = "/api/Account/GetPatientDetails";
+  
 }

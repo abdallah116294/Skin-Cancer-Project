@@ -32,6 +32,33 @@ class StringManager {
   static const String alreadyHaveAccount = "Already have an account?";
   static const String userIdKey =
       "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid";
+    static const String paymobApiKey =
+      "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T0RneE9UazVMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuMTVYRjdYd0ItUElrQWZkUkZOX1FvSTZCZmJLZVBDaHpaUWI5R3pXbG1TaUxXUzRIVlhfbFVSMGlMcGIwUHA3bG1xejB3NWxIUFBwNFE5cDh4a0U0anc=";
+  //payment constent
+  //https://accept.paymob.com/api/auth/tokens
+  static const String visaImage =
+      "https://cdn-icons-png.flaticon.com/128/349/349221.png";
+  static const String refCodeImage =
+      "https://cdn-icons-png.flaticon.com/128/4090/4090458.png";
+  static const String baseApiPayment = "https://accept.paymob.com/api";
+  static const String getAuthToken = "/auth/tokens";
+  static const String paymentAPIkey =
+      'ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RZd05ESTRMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkuemNhOUMwd0dMaWVud211dXZrcDhrbW4yc2dPaFZ3VWVOVkVFMzJ0TjFtUUNaQUtma29TRi1kaHlVZUUxVk91TDNiVnhVaWJkWk1GSzZEYUMxNjVTZGc=';
+  static const String getOrderId = "/ecommerce/orders";
+  static const String paymentKeyRequeset = "/acceptance/payment_keys";
+  static const String getRefCode = "/acceptance/payments/pay";
+  static String paymentFirstToken = "";
+  static String paymentOrderId = "";
+  static String paymentIntegrationCardId = "4487449";
+  static String paymentIntegrationKisokId = "4487460";
+  static String finalToken = " ";
+  static String refCode = "";
+  static String visaUrl =
+      'https://accept.paymob.com/api/acceptance/iframes/782498?payment_token=ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SjFjMlZ5WDJsa0lqb3hOVFUwTmpBd0xDSmhiVzkxYm5SZlkyVnVkSE1pT2pFd01Dd2lZM1Z5Y21WdVkza2lPaUpGUjFBaUxDSnBiblJsWjNKaGRHbHZibDlwWkNJNk5ERXhOVFV6TWl3aWIzSmtaWEpmYVdRaU9qRTBOalEwTlRjeE9Td2lZbWxzYkdsdVoxOWtZWFJoSWpwN0ltWnBjbk4wWDI1aGJXVWlPaUpEYkdsbVptOXlaQ0lzSW14aGMzUmZibUZ0WlNJNklrNXBZMjlzWVhNaUxDSnpkSEpsWlhRaU9pSkZkR2hoYmlCTVlXNWtJaXdpWW5WcGJHUnBibWNpT2lJNE1ESTRJaXdpWm14dmIzSWlPaUkwTWlJc0ltRndZWEowYldWdWRDSTZJamd3TXlJc0ltTnBkSGtpT2lKS1lYTnJiMnh6YTJsaWRYSm5hQ0lzSW5OMFlYUmxJam9pVlhSaGFDSXNJbU52ZFc1MGNua2lPaUpEVWlJc0ltVnRZV2xzSWpvaVkyeGhkV1JsZEhSbE1EbEFaWGhoTG1OdmJTSXNJbkJvYjI1bFgyNTFiV0psY2lJNklpczROaWc0S1RreE16VXlNVEEwT0RjaUxDSndiM04wWVd4ZlkyOWtaU0k2SWpBeE9EazRJaXdpWlhoMGNtRmZaR1Z6WTNKcGNIUnBiMjRpT2lKT1FTSjlMQ0pzYjJOclgyOXlaR1Z5WDNkb1pXNWZjR0ZwWkNJNlptRnNjMlVzSW1WNGRISmhJanA3ZlN3aWMybHVaMnhsWDNCaGVXMWxiblJmWVhSMFpXMXdkQ0k2Wm1Gc2MyVXNJbVY0Y0NJNk1UWTVNekl4TmpFNU15d2ljRzFyWDJsd0lqb2lNVFUwTGpFNE1pNDJPUzR5TlRJaWZRLmhuUXVhUF9wNkx6NDktZ0NhZVlTdkdpeWtnd1M4eTBUZDJIWUx4THhudi1keTlkQy0tQ1lqenZVOGhoMXFEblNlbEJFTl9xZXUtRURBQTd0NDNsRjdR';
+  static String visaUrl2 =
+      '$baseApiPayment/acceptance/iframes/782498?payment_token=$finalToken';
+  static String visaurl3 =
+      "https://accept.paymob.com/api/acceptance/iframes/825680?payment_token=$finalToken";    
   static const List<Map<String, String>> diseaes = [
     {
       "name": "Actinic Keratosis",
@@ -102,6 +129,11 @@ class StringManager {
           "Melanocytic nevi, commonly known as moles, are benign growths of melanocytes, the cells that produce pigment in the skin. They are very common and can appear anywhere on the skin. Most people have between 10 and 40 moles. While most moles are harmless, some can develop into melanoma, a serious form of skin cancer.",
       "symptoms":
           "Small, dark brown spots caused by clusters of pigmented cells; can be flesh-colored, pink, red, blue, or black; usually round or oval and can be flat or raised; may have hair growing from them; changes in color, size, or shape should be monitored."
+    },
+    {
+     "name":"Couldn't identify lesion",
+     "description":"",
+     "symptoms":""
     }
   ];
 }

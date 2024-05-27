@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
 import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
 import 'package:mobile/features/clinic/data/model/clinic_model.dart';
 import 'package:mobile/features/clinic/data/model/create_clinic_model.dart';
@@ -92,7 +93,8 @@ class ClinicCubit extends Cubit<ClinicState> {
       emit(GetSelectedClinicIsError(error: error.toString()));
     }
   }
-    Future<void> getClinicAppointments(int clincId) async {
+
+  Future<void> getClinicAppointments(int clincId) async {
     emit(GetSelectedClinicIsLoading());
     try {
       Either<String, List<SelectedClinicModel>> response =
@@ -104,7 +106,7 @@ class ClinicCubit extends Cubit<ClinicState> {
     }
   }
 
-    Future<void> docCreateSchadual(String date ,bool isBook ,int clinicId ) async {
+  Future<void> docCreateSchadual(String date, bool isBook, int clinicId) async {
     emit(DocCreateSchedualLoading());
     try {
       Either<String, AddClinicSuccessModel> response =
@@ -115,4 +117,15 @@ class ClinicCubit extends Cubit<ClinicState> {
       emit(DocCreateSchedualError(error: error.toString()));
     }
   }
+
+  // Future<void> getDoctorDetials(String docId) async {
+  //   try {
+  //     Either<String, DoctorDetails> response =
+  //         await clinicRepo.getDoctorDetails(docId);
+  //     emit(response.fold((l) => GetDoctorDetialsError(error: l),
+  //         (r) => GetDoctorDetialsSuccess(doctorModel: r)));
+  //   } catch (error) {
+  //     emit(GetDoctorDetialsError(error: error.toString()));
+  //   }
+  // }
 }
