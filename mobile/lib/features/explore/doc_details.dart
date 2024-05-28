@@ -231,9 +231,7 @@ class DocDetailsScreen extends StatelessWidget {
                                                     patientId,
                                                     id);
                                           },
-                                          initialRating: state
-                                              .clinicInfoModel.rate!
-                                              .toDouble(),
+                                          initialRating:state.clinicInfoModel.rate!.toDouble()==null?0:state.clinicInfoModel.rate!.toDouble(),
                                           actionName: "Rate",
                                           context: context,
                                           onTap: () {
