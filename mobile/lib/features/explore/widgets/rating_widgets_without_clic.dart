@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class RatingStarsWidgetWithoutClick extends StatelessWidget {
-  final double rating; // Rating value between 0 and 5
+  final double rating; // Rating value between 0 and 10
   final int starCount; // Total number of stars (typically 5)
   final Color starColor; // Color of the stars
   final double starSize; // Size of the stars
@@ -14,18 +14,20 @@ class RatingStarsWidgetWithoutClick extends StatelessWidget {
     this.starSize = 24.0,
   }) : super(key: key);
 
+  double get convertedRating => rating / 2.0; // Convert 10-point rating to 5-point rating
+
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: List.generate(starCount, (index) {
-        if (index < rating.floor()) {
+        if (index < convertedRating.floor()) {
           return Icon(
             Icons.star,
             color: starColor,
             size: starSize,
           );
-        } else if (index < rating) {
+        } else if (index < convertedRating) {
           return Icon(
             Icons.star_half,
             color: starColor,
