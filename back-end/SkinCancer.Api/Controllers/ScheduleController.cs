@@ -112,7 +112,7 @@ namespace SkinCancer.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { Message = "An error occurred while fetching patient schedules." });
+                return StatusCode(500, new { Message = "An error occurred while fetching patient schedules." + ex.Message });
             }
         }
 

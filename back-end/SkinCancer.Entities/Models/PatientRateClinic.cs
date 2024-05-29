@@ -17,7 +17,6 @@ namespace SkinCancer.Entities.Models
         public Clinic Clinic { get; set; }
   
 
-
         [ForeignKey("Patient")]
         public string PatientId { get; set; }
         public ApplicationUser Patient { get; set; }
