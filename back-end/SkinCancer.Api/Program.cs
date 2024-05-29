@@ -14,6 +14,7 @@ using SkinCancer.Services.DoctorServices;
 using SkinCancer.Repositories.Repository;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.ScheduleServices;
+using Stripe;
 namespace SkinCancer.Api
 {
     public class Program
@@ -32,6 +33,22 @@ namespace SkinCancer.Api
                 cfg.AddDebug();
                 cfg.AddConsole();
             });
+
+            // Add Stripe Configurations for Payment
+            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+
+            // Add CorsPolicy to Payment
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin();
+                    builder.AllowAnyHeader();
+                    builder.AllowAnyMethod();
+                });
+            });
+
+            builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
@@ -154,6 +171,9 @@ namespace SkinCancer.Api
 			app.UseAuthentication();
             app.UseAuthorization();
 
+            // Payment Cors Policy
+            app.UseCors();
+            app.UseRouting();
 
             app.MapControllers();
 
