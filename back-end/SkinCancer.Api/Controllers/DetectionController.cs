@@ -59,8 +59,6 @@ namespace SkinCancer.Api.Controllers
 			var url = Request.Scheme + "://" + Request.Host + Request.PathBase;
 			var data = await _unitOfWork.detectionRepositoty.Get(userID, url);
 			return Ok(data);
-
-
 		}
 
 		[HttpPost("AddDiagnosis")]
@@ -82,7 +80,6 @@ namespace SkinCancer.Api.Controllers
 
 				return BadRequest(ex);
 			}
-			
 		}
 	}
 }

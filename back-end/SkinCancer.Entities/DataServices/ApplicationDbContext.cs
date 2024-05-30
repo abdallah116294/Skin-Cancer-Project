@@ -24,6 +24,8 @@ namespace SkinCancer.Entities
         public DbSet<Schedule> Schedules { get; set; }
         public DbSet<Clinic> Clinics { get; set; }
         public DbSet<DetectionData> DetectionsData { get; set; }
+        public DbSet<PatientRateClinic> PatientRateClinics { get; set; }
+
        /* public DbSet<Appointment> Appointments { get; set; }*/
     }
 }

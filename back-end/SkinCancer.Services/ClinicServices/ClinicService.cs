@@ -1,11 +1,12 @@
-﻿using AutoMapper;
+﻿// File: SkinCancer.Services.ClinicServices/ClinicService.cs
+
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
-using SkinCancer.Entities.ModelsDtos.DoctorDtos;
 using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Repositories.Interface;
 using System;
@@ -22,19 +23,16 @@ namespace SkinCancer.Services.ClinicServices
         private readonly IMapper _mapper;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IClinicRepository _clinicRepository;
 
         public ClinicService(IUnitOfWork unitOfWork, IMapper mapper,
                              RoleManager<IdentityRole> roleManager,
                              UserManager<ApplicationUser> userManager,
-                             IClinicRepository clinicRepository,
                              ILogger<ClinicService> logger)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _roleManager = roleManager;
             _userManager = userManager;
-            _clinicRepository = clinicRepository;
             _logger = logger;
         }
 
@@ -46,8 +44,7 @@ namespace SkinCancer.Services.ClinicServices
                 await _unitOfWork.Reposirory<Clinic>().AddAsync(clinic);
                 await _unitOfWork.CompleteAsync();
 
-                UpdateAverageRate(clinic);
-                await _unitOfWork.CompleteAsync();
+
 
                 return new ProcessResult
                 {
@@ -106,10 +103,10 @@ namespace SkinCancer.Services.ClinicServices
                                                         .Include(c => c.PatientRates)
                                                         .ToListAsync();
 
-            foreach(var item in clinicsWithSchedules)
+            /*foreach (var item in clinicsWithSchedules)
             {
                 UpdateAverageRate(item);
-            }
+            }*/
             var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinicsWithSchedules);
             return dtos;
         }
@@ -119,11 +116,11 @@ namespace SkinCancer.Services.ClinicServices
             try
             {
                 var clinic = await _unitOfWork.Include<Clinic>
-                                   (id , c => c.Schedules , c => c.PatientRates)                                    ??
+                                   (id, c => c.Schedules, c => c.PatientRates) ??
                                    throw new ClinicNotFoundException($"Clinic with ID {id} not found.");
 
+                //UpdateAverageRate(clinic);
 
-               
                 var dto = _mapper.Map<DoctorClinicDetailsDto>(clinic);
                 return dto;
             }
@@ -145,9 +142,8 @@ namespace SkinCancer.Services.ClinicServices
             try
             {
                 var clinics = await _unitOfWork.Include<Clinic>(c => c.Schedules)
-                                                        .Include(c => c.PatientRates)
-                                                        .ToListAsync();
-
+                                               .Include(c => c.PatientRates)
+                                               .ToListAsync();
 
                 if (clinics == null || !clinics.Any())
                 {
@@ -208,20 +204,21 @@ namespace SkinCancer.Services.ClinicServices
                     Message = "This Doctor has already clinic"
                 };
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ProcessResult
                 {
                     Message = "An error occurred while processing the request"
                 };
             }
-
-           
         }
 
         public async Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto)
         {
-            var clinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(dto.ClinicId);
+            var clinic = await _unitOfWork.Include<Clinic>
+                                   (dto.ClinicId, c => c.Schedules, c => c.PatientRates) ??
+                                   throw new ClinicNotFoundException($"Clinic with ID {dto.ClinicId} not found.");
+
             if (clinic == null)
             {
                 return new ProcessResult
@@ -233,6 +230,18 @@ namespace SkinCancer.Services.ClinicServices
             bool isPatientInClinic = _unitOfWork.scheduleRepository.IsPatientInClinic(dto);
             var patient = await _userManager.FindByIdAsync(dto.PatientId);
 
+            var isPatientRateSameClinicBefore =  await _unitOfWork.clinicRepository
+                    .IsPatientRateSameClinicBefore(dto.ClinicId, dto.PatientId);
+
+            if (isPatientInClinic)
+            {
+                return new ProcessResult
+                {
+                    Message = "This Patient has rated this clinic before"
+                };
+            }
+
+
             if (!isPatientInClinic)
             {
                 return new ProcessResult
@@ -241,14 +250,14 @@ namespace SkinCancer.Services.ClinicServices
                 };
             }
 
+           
             var patientRateClinic = _mapper.Map<PatientRateClinic>(dto);
-            clinic.PatientRates.Add(patientRateClinic);
+            // clinic.PatientRates.Add(patientRateClinic);
 
             await _unitOfWork.Reposirory<PatientRateClinic>().AddAsync(patientRateClinic);
             await _unitOfWork.CompleteAsync();
 
-            UpdateAverageRate(clinic);
-            await _unitOfWork.CompleteAsync();
+            UpdateAverageRate(clinic , dto.Rate);
 
             return new ProcessResult
             {
@@ -283,23 +292,34 @@ namespace SkinCancer.Services.ClinicServices
                 _logger.LogError(ex, "An error occurred while updating the Clinic");
                 return new ProcessResult
                 {
-                    Message = "An error occured while updating the clinic"
+                    Message = "An error occurred while updating the clinic"
                 };
             }
         }
-        private void UpdateAverageRate(Clinic clinic)
+
+        private async Task UpdateAverageRate(Clinic clinic , double rate)
         {
             double totalRate = 0;
             int numberOfRatings = clinic.PatientRates.Count;
 
-            foreach (var patientRate in clinic.PatientRates)
+            var checkClinic = await _unitOfWork.Reposirory<Clinic>().GetByIdAsync(clinic.Id);
+
+            var newAverage = _unitOfWork.clinicRepository.GetClinicAverageRate(clinic.Id);
+
+            checkClinic.Rate = newAverage;
+               
+            /*foreach (var patientRate in clinic.PatientRates)
             {
                 totalRate += patientRate.Rate;
             }
-
+*/
+        /*    totalRate += rate;
             // Calculate the average rate only if there are ratings
-            clinic.Rate = numberOfRatings > 0 ? Math.Floor(totalRate / numberOfRatings) : 0;
+            clinic.Rate = numberOfRatings > 0 ? Math.Floor(totalRate / numberOfRatings) : 0;*/
 
+            // Update the clinic entity to reflect the new average rate
+            _unitOfWork.Reposirory<Clinic>().Update(clinic);
+            await _unitOfWork.CompleteAsync();
         }
     }
 }

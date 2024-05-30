@@ -47,7 +47,7 @@ namespace SkinCancer.Api.Controllers
 
         [HttpPost("PaymentOrder")]
         public async Task<ActionResult> PaymentOrder([FromBody] PaymentDto paymentDto,
-                                             [FromServices] IServiceProvider sp)
+                                                     [FromServices] IServiceProvider sp)
         {
             try
             {
@@ -72,7 +72,7 @@ namespace SkinCancer.Api.Controllers
                     var publishKey = _configuration["Stripe:PublishKey"];
 
                     // Construct the URL with query parameters
-                    var returnUrl = $"{thisApiUrl}/checkout/success?sessionId={sessionId}&publishKey={publishKey}";
+                    var returnUrl = $"{thisApiUrl}/api/payment/success?sessionId={sessionId}&publishKey={publishKey}";
 
                     // Construct the response object
                     var paymentOrderResponse = new PaymentOrderResponse
@@ -83,7 +83,7 @@ namespace SkinCancer.Api.Controllers
                     };
 
 
-                    return Ok(new { SessionId = sessionId, PublishKey = publishKey , Url = returnUrl});
+                    return Ok(new { SessionId = sessionId, PublishKey = publishKey, Url = returnUrl });
                 }
                 else
                 {
@@ -171,7 +171,7 @@ namespace SkinCancer.Api.Controllers
             catch (StripeException ex)
             {
                 _logger.LogError(ex, "Stripe error occurred while creating the payment session.");
-                throw new Exception( "An error occurred while creating the payment session with Stripe. Please try again.");
+                throw new Exception("An error occurred while creating the payment session with Stripe. Please try again.");
             }
             catch (Exception ex)
             {
@@ -181,7 +181,7 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpGet("Success")]
-        public ActionResult PaymentSuccess(string sessionId)
+        public ActionResult success(string sessionId , string publishKey)
         {
             try
             {

@@ -21,6 +21,13 @@ namespace SkinCancer.Repositories.Repository
             _context = context;
         }
 
+        public int GetClinicAverageRate(int clinicId)
+        {
+            var average = (int) _context.PatientRateClinics.Where(c => c.ClinicId == clinicId).Average(c => c.Rate);
+
+            return average;
+        }
+
         public async Task<Clinic> GetClinicByNameAsync(string name)
             => await _context.Clinics.FirstOrDefaultAsync(c => c.Name == name);
 
@@ -36,6 +43,12 @@ namespace SkinCancer.Repositories.Repository
             }
 
             return await query.FirstOrDefaultAsync(e => e.Name == name);
+        }
+
+        public async Task<bool> IsPatientRateSameClinicBefore(int clinicId, string patientId)
+        {
+            return await _context.PatientRateClinics.AnyAsync(r => r.ClinicId == clinicId && 
+                                                              r.PatientId == patientId);
         }
     }
 }

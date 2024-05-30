@@ -20,12 +20,14 @@ namespace SkinCancer.Repositories.Repository
 
         public IScheduleRepository scheduleRepository { get; set;}
         public IDetectionRepository detectionRepositoty { get; set;}
+        public IClinicRepository clinicRepository { get; set; }
 
         public UnitOfWork(ApplicationDbContext context)
         {
             this.context = context;
             this.scheduleRepository = new ScheduleRepository(context);
             this.detectionRepositoty = new DetectionRepository(context);
+            this.clinicRepository = new ClinicRepository(context);
         }
 
         public async Task<int> CompleteAsync() => await context.SaveChangesAsync();

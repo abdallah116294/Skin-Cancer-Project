@@ -13,6 +13,7 @@ namespace SkinCancer.Repositories.Interface
         IGenericRepository<TEntity> Reposirory<TEntity>() where TEntity : BaseEntity;
         IScheduleRepository scheduleRepository { get; set; }
 		IDetectionRepository detectionRepositoty { get; set; }
+        IClinicRepository clinicRepository { get; set; }
 
         Task<int> CompleteAsync();
 
@@ -28,6 +29,8 @@ namespace SkinCancer.Repositories.Interface
 
         Task<List<T>> SelectItemAsync<T>(Expression<Func<T, bool>> predicate,
             params Expression<Func<T, object>>[] includes) where T : class;
+
+
 
 
     }

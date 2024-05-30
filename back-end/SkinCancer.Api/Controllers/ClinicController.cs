@@ -224,7 +224,7 @@ namespace SkinCancer.Api.Controllers
             var result = await _clinicService.PatientRateClinicAsync(dto);
             if (!result.IsSucceeded)
             {
-                return BadRequest(ModelState);
+                return BadRequest(result);
             }
 
             return Ok(result);
