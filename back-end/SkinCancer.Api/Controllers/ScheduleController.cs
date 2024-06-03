@@ -22,7 +22,7 @@ namespace SkinCancer.Api.Controllers
         {
             _scheduleService = scheduleService;
             _context = context;
-            unitOfWork=new UnitOfWork(_context);
+            unitOfWork = new UnitOfWork(_context);
         }
 
 
@@ -138,6 +138,5 @@ namespace SkinCancer.Api.Controllers
                 return StatusCode(500, "An error occurred while fetching clinic appointments");
             }
         }	
-
 	}
 }

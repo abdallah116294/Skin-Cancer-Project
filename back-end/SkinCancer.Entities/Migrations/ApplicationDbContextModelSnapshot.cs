@@ -296,7 +296,7 @@ namespace SkinCancer.Entities.Migrations
                     b.HasIndex("DoctorId")
                         .IsUnique();
 
-                    b.ToTable("Clinics");
+                    b.ToTable("Clinics", (string)null);
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
@@ -329,7 +329,7 @@ namespace SkinCancer.Entities.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DetectionsData");
+                    b.ToTable("DetectionsData", (string)null);
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
@@ -356,7 +356,7 @@ namespace SkinCancer.Entities.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("PatientRateClinics");
+                    b.ToTable("PatientRateClinics", (string)null);
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Schedule", b =>
@@ -385,7 +385,7 @@ namespace SkinCancer.Entities.Migrations
 
                     b.HasIndex("PatientId");
 
-                    b.ToTable("Schedules");
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
