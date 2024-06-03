@@ -231,9 +231,9 @@ namespace SkinCancer.Services.ClinicServices
             var patient = await _userManager.FindByIdAsync(dto.PatientId);
 
             var isPatientRateSameClinicBefore =  await _unitOfWork.clinicRepository
-                    .IsPatientRateSameClinicBefore(dto.ClinicId, dto.PatientId);
+                                                                                                .IsPatientRateSameClinicBefore(dto.ClinicId, dto.PatientId);
 
-            if (isPatientInClinic)
+            if (isPatientRateSameClinicBefore)
             {
                 return new ProcessResult
                 {
