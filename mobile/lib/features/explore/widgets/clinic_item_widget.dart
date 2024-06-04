@@ -30,7 +30,7 @@ class _ClinicItemWidgetState extends State<ClinicItemWidget> {
       padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
       child: Container(
         width: 343.w,
-        height: 86.h,
+        height: 100.h,
         decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(17),
