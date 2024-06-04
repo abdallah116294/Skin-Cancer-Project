@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
@@ -24,28 +25,46 @@ import 'package:mobile/features/explore/widgets/action_widgets.dart';
 import 'package:mobile/features/explore/widgets/select_appoint_ment.dart';
 import 'package:mobile/injection_container.dart' as di;
 
-class DocDetailsScreen extends StatelessWidget {
+class DocDetailsScreen extends StatefulWidget {
   // final Map<String, int>? value;
   final int id;
   const DocDetailsScreen({super.key, required this.id});
+
+  @override
+  State<DocDetailsScreen> createState() => _DocDetailsScreenState();
+}
+
+class _DocDetailsScreenState extends State<DocDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
+    double? ratingvalue;
     Map<String, dynamic> data = Jwt.parseJwt(token);
     String patientId = data[
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return BlocProvider(
-      create: (context) => di.sl<PatientClinicCubit>()..getClinicDetails(id),
+      create: (context) =>
+          di.sl<PatientClinicCubit>()..getClinicDetails(widget.id),
       child: BlocConsumer<PatientClinicCubit, PatientClinicState>(
         listener: (context, state) {
           if (state is PatientRatingClinicIsSuccess) {
-            DailogAlertFun.showMyDialog(
-                daliogContent: state.patientBookSuccess.message.toString(),
-                actionName: 'Go Home',
-                context: context,
-                onTap: () {
-                  context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
-                });
+            if (state.patientBookSuccess.message ==
+                "This Patient has rated this clinic before") {
+            
+              Fluttertoast.showToast(backgroundColor: Colors.red,
+              textColor: Colors.white,
+                  toastLength: Toast.LENGTH_LONG,
+                msg: "You rating this clinic before",
+              );
+            } else {
+              DailogAlertFun.showMyDialog(
+                  daliogContent: state.patientBookSuccess.message.toString(),
+                  actionName: 'Go Home',
+                  context: context,
+                  onTap: () {
+                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                  });
+            }
           }
         },
         builder: (context, state) {
@@ -89,7 +108,9 @@ class DocDetailsScreen extends StatelessWidget {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                      "Dr "+  state.clinicInfoModel.doctorName.toString(),
+                                        "Dr " +
+                                            state.clinicInfoModel.doctorName
+                                                .toString(),
                                         style: TextStyles.font20whiteW700,
                                       ),
                                       Text(
@@ -158,15 +179,14 @@ class DocDetailsScreen extends StatelessWidget {
                                                   Colors.black.withOpacity(0.1),
                                               blurRadius: 5.0,
                                               spreadRadius: 0.0)
-                                        ]
-                                        ),
+                                        ]),
                                     child: Center(
                                         child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                              DateConverter.getDateTimeWithMonth(
-                                                  dateTime)),
-                                        )),
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                          DateConverter.getDateTimeWithMonth(
+                                              dateTime)),
+                                    )),
                                   ),
                                 );
                               },
@@ -223,22 +243,32 @@ class DocDetailsScreen extends StatelessWidget {
                                           onRatingChanged: (double value) {
                                             log(value.toString());
                                             double intivalue = value * 2;
+                                            setState(() {
+                                              ratingvalue = intivalue;
+                                            });
+                                          },
+                                          initialRating: state
+                                                      .clinicInfoModel.rate!
+                                                      .toDouble() ==
+                                                  null
+                                              ? 0
+                                              : state.clinicInfoModel.rate!
+                                                  .toDouble(),
+                                          actionName: "Rate",
+                                          context: context,
+                                          onTap: () {
                                             BlocProvider.of<PatientClinicCubit>(
                                                     context)
                                                 .patientRateClinic(
                                                     token,
-                                                    intivalue.toInt(),
+                                                    ratingvalue!.toInt(),
                                                     patientId,
-                                                    id);
-                                          },
-                                          initialRating:state.clinicInfoModel.rate!.toDouble()==null?0:state.clinicInfoModel.rate!.toDouble(),
-                                          actionName: "Rate",
-                                          context: context,
-                                          onTap: () {
+                                                    widget.id);
                                             log(token);
                                             log(patientId);
-                                            context.pushNamed(
-                                                Routes.bottomNavScreenRoutes);
+                                            context.pushReplacementNamed(
+                                                Routes.docDetailsScreen,
+                                                arguments: widget.id);
                                           });
                                     },
                                     textColor: Colors.white,

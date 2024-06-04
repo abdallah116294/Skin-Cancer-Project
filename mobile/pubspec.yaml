@@ -39,6 +39,7 @@ dependencies:
   flutter_bloc: ^8.1.5
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.3.10
+  flutter_network_connectivity: ^0.0.6
   flutter_rating_bar: ^4.0.1
   flutter_screenutil: ^5.9.0
   flutter_svg: ^2.0.9

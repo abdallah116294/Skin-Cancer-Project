@@ -63,7 +63,7 @@ class _ClinicItemWidgetState extends State<ClinicItemWidget> {
                   style: TextStyles.font14BlackW300
                       .copyWith(color: Color(0xFF828BE7)),
                 ),
-                 RatingStarsWidgetWithoutClick(rating: widget.rate/2,)
+                 RatingStarsWidgetWithoutClick(rating: widget.rate,)
               ],
             )
           ],
