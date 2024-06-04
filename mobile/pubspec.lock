@@ -302,6 +302,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.10"
+  flutter_network_connectivity:
+    dependency: "direct main"
+    description:
+      name: flutter_network_connectivity
+      sha256: "3dddee42e06f8479b021cc17b60ea891cf71b124c03896d4fedec366671cb623"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.6"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

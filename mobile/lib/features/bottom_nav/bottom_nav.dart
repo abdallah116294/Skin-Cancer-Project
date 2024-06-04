@@ -1,8 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_network_connectivity/flutter_network_connectivity.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
+import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/features/appointment/screen/appointment_screen.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/home/home_screen.dart';
@@ -21,13 +27,61 @@ class BottomGNav extends StatefulWidget {
 
 class _BottomGNavState extends State<BottomGNav> {
   int _selectedIndex = 0;
+  final FlutterNetworkConnectivity _flutterNetworkConnectivity =
+      FlutterNetworkConnectivity(
+    isContinousLookUp: true,
+    lookUpDuration: const Duration(seconds: 3),
+  );
+
+  bool? _isInternetAvailableOnCall;
+
+  bool? _isInternetAvailableStreamStatus;
+
+  StreamSubscription<bool>? _networkConnectionStream;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _flutterNetworkConnectivity.getInternetAvailabilityStream().listen((event) {
+      _isInternetAvailableStreamStatus = event;
+      setState(() {});
+    });
+
+    init();
+  }
+
+  @override
+  void dispose() async {
+    _networkConnectionStream?.cancel();
+    _flutterNetworkConnectivity.unregisterAvailabilityListener();
+
+    super.dispose();
+  }
+
+  void init() async {
+    await _flutterNetworkConnectivity.registerAvailabilityListener();
+  }
+
+  Future<void> _checkInternetAvailability() async {
+    try {
+      _isInternetAvailableOnCall =
+          await _flutterNetworkConnectivity.isInternetConnectionAvailable();
+    } on PlatformException {
+      _isInternetAvailableOnCall = null;
+    }
+
+    if (!mounted) return;
+
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
     String docId = data[
-    "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
 
     var doctor_role = CacheHelper.getData(key: 'doctor_role');
     List<Widget> _widgetOptions = <Widget>[
@@ -38,10 +92,25 @@ class _BottomGNavState extends State<BottomGNav> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      body: IndexedStack(
-        index: _selectedIndex,
-       children : _widgetOptions,
-      ),
+      body: _isInternetAvailableStreamStatus == null
+          ? const Center(
+              child: CireProgressIndecatorWidget(),
+            )
+          : _isInternetAvailableStreamStatus!
+              ? IndexedStack(
+                  index: _selectedIndex,
+                  children: _widgetOptions,
+                )
+              : Center(
+                  child: Text(
+                    "🌐 Check your internet and try latter 🔄",
+                    style: TextStyle(
+                      fontSize: 17.0.sp,
+                      color: AppColor.primaryColor,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(10),
         child: Container(
@@ -94,7 +163,6 @@ class _BottomGNavState extends State<BottomGNav> {
                 onTabChange: (index) {
                   setState(() {
                     _selectedIndex = index;
-    
                   });
                 },
               ),
