@@ -225,7 +225,10 @@ class _AIScanScreenState extends State<AIScanScreen> {
                               "${state.peredictionModel.prediction}",
                               style: TextStyles.font26BlackW700,
                             )
-                          : const SizedBox(): SizedBox(),
+                          :  Text(
+                              "${state.peredictionModel.prediction}",
+                              style: TextStyles.font26BlackW700,
+                            ) : SizedBox(),
                       SizedBox(
                         height: 20.h,
                       ),

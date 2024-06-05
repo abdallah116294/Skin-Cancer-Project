@@ -14,6 +14,7 @@ import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
+import 'package:mobile/core/widgets/validatort.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/features/Auth/widgets/double_text.dart';
@@ -60,7 +61,8 @@ class _SingInScreenState extends State<SingInScreen> {
                       actionName: "Go to Home",
                       context: context,
                       onTap: () {
-                        context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                        context
+                            .pushReplacementNamed(Routes.bottomNavScreenRoutes);
                       });
                 } else {
                   CacheHelper.saveData(
@@ -70,7 +72,8 @@ class _SingInScreenState extends State<SingInScreen> {
                       actionName: " Go to Home",
                       context: context,
                       onTap: () {
-                        context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                        context
+                            .pushReplacementNamed(Routes.bottomNavScreenRoutes);
                       });
                 }
               } else if (widget.roles['role1'] != state.userModel.roles[0] ||
@@ -126,11 +129,9 @@ class _SingInScreenState extends State<SingInScreen> {
                               controller: passwordController,
                               inputFiled: "Enter your password",
                               isObscureText: isObscureText,
-                              validator: (String? valeue) {
-                                if (valeue!.isEmpty) {
-                                  return "Please enter password";
-                                }
-                                return null;
+                              validator: (String? value) {
+                                MyValidators.passwordValidator(value);
+                              
                               },
                               prefixIcon: Icons.lock,
                               textInputType: TextInputType.visiblePassword,

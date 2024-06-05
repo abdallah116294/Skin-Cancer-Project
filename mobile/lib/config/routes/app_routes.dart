@@ -23,6 +23,7 @@ import 'package:mobile/features/explore/doc_details.dart';
 import 'package:mobile/features/home/home_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_auth_fun_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_user.dart';
+import 'package:mobile/features/onBoarding/screens/developer_screen.dart';
 import 'package:mobile/features/onBoarding/screens/on_boarding_screen.dart';
 import 'package:mobile/features/profile/screens/profile_screen.dart';
 import 'package:mobile/features/splash/splash_screen.dart';
@@ -65,6 +66,7 @@ class Routes {
   static const String aIItemHistoryDetailsScreen =
       "/AIItemHistoryDetailsScreen";
   static const String aiHistoryByDoctor = "/AiHistoryByDoctor";
+  static const String developerScreen = "/DeveloperScreen";
 }
 
 class AppRoutes {
@@ -131,7 +133,7 @@ class AppRoutes {
           builder: (context) => const ExploreScreen(),
         );
       case Routes.profileScreenRoutes:
-      var token = CacheHelper.getData(key: 'token');
+        var token = CacheHelper.getData(key: 'token');
         Map<String, dynamic> data = Jwt.parseJwt(token);
         String docId = data[
             "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
@@ -139,10 +141,12 @@ class AppRoutes {
             builder: (context) => MultiBlocProvider(
                   providers: [
                     BlocProvider(
-                      create: (context) => di.sl<AuthCubit>()..getDoctorDetials(docId),
+                      create: (context) =>
+                          di.sl<AuthCubit>()..getDoctorDetials(docId),
                     ),
                     BlocProvider(
-                      create: (context) => di.sl<AuthCubit>()..getPatientDetails(docId),
+                      create: (context) =>
+                          di.sl<AuthCubit>()..getPatientDetails(docId),
                     ),
                   ],
                   child: const ProfileScreen(),
@@ -201,6 +205,8 @@ class AppRoutes {
             builder: (context) => AiHistoryByDoctor(
                   userId: routeSettings.arguments as String,
                 ));
+      case Routes.developerScreen:
+        return MaterialPageRoute(builder: (context) => DeveloperScreen());
 
       default:
         return null;

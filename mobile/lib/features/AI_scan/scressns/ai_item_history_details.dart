@@ -12,6 +12,7 @@ import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/core/widgets/app_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
 import 'package:mobile/features/AI_scan/cubit/ai_perediction_cubit.dart';
+import 'package:mobile/features/AI_scan/scressns/widget/expanded_text_widget.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class AIItemHistoryDetailsScreen extends StatefulWidget {
@@ -87,7 +88,7 @@ class _AIItemHistoryDetailsScreenState
                           style: TextStyles.font20whiteW700
                               .copyWith(color: Colors.red),
                         ))
-                    : Expanded(
+                    :widget.outpus['diagnosis'].toString().toString().length>=941? Expanded(
                       child: Container(
                           padding: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
@@ -99,8 +100,19 @@ class _AIItemHistoryDetailsScreenState
                                     blurRadius: 5.0,
                                     spreadRadius: 0.0)
                               ]),
+                          child:SingleChildScrollView(child: ExpandableText(trimLines: 3,widget.outpus['diagnosis'].toString()))),
+                    ):Container(
+                          padding: const EdgeInsets.all(20),
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 5.0,
+                                    spreadRadius: 0.0)
+                              ]),
                           child: Text(widget.outpus['diagnosis'])),
-                    ),
                 Spacer(),
                 doctorrole != null
                     ? AppButton(

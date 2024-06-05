@@ -182,6 +182,7 @@ class HallProfileScreenWidget extends StatelessWidget {
                 ),
                 ProfileWidget(
                   onTap: () {
+                    context.pushNamed(Routes.developerScreen);
                     // Navigator.push(
                     //     context, MaterialPageRoute(builder: (context)=>const DeveloperScreen()));
                   },
@@ -196,12 +197,14 @@ class HallProfileScreenWidget extends StatelessWidget {
                         actionName: "Logout",
                         context: context,
                         onTap: () {
-                     CacheHelper.removeData(key: 'token');
-                    CacheHelper.removeData(key: 'email');
-                    if (dotoctorRole != null) {
-                      CacheHelper.removeData(key: 'doctor_role');
-                    }
-                    context.pushReplacementNamed(Routes.choseUserRoutes,);
+                          CacheHelper.removeData(key: 'token');
+                          CacheHelper.removeData(key: 'email');
+                          if (dotoctorRole != null) {
+                            CacheHelper.removeData(key: 'doctor_role');
+                          }
+                          context.pushReplacementNamed(
+                            Routes.choseUserRoutes,
+                          );
                         });
                   },
                   leading: const Icon(

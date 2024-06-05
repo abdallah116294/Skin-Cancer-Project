@@ -70,12 +70,12 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                   });
             } else {
               DailogAlertFun.showMyDialog(
-                  daliogContent: "Booked Successfull",
-                  actionName: "Go Back",
+                  daliogContent: "Booked Successful",
+                  actionName: "Start Pay",
                   context: context,
                   onTap: () {
-                    Navigator.push(
-                        context, MaterialPageRoute(builder: (context)=>RegisterPayment()));
+                    Navigator.pushReplacement(
+                        context, MaterialPageRoute(builder: (context)=>const  RegisterPayment()));
                   });
             }
           }
@@ -143,7 +143,7 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                       );
                     }
                   } else if (state is GetClinicSchedualIsError) {
-                    log("Error State: " + state.error);
+                    log("Error State: ${state.error}");
                     return Text(state.error.toString());
                   }
                   return SizedBox();
