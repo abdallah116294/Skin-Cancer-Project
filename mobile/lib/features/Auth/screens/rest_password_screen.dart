@@ -152,9 +152,10 @@ class _RestPasswordScreenState extends State<RestPasswordScreen> {
                                               rePasswordController.text,
                                         )
                                             .then((value) {
-                                          context.pushReplacementNamed(
-                                              Routes.singInScreenRoutes,
-                                              arguments: {"role2": "Doctor"});
+                                           context.pushNamedAndRemoveUntil(
+                              Routes.singInScreenRoutes,
+                              predicate: (Route<dynamic> route) => false,
+                              arguments:{"role1":"Doctor","role2":"Patient"});
                                         });
                                       }
                                     },

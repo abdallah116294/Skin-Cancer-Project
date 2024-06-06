@@ -152,7 +152,7 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
               verticalSpacing(10),
               state is PatientBookSchedualIsLoading
                   ? const CireProgressIndecatorWidget()
-                  : AppButton(
+                  :  AppButton(
                       buttonColor: const Color(0xFF0010B2),
                       gradient: const LinearGradient(colors: [
                         Color(0xFF7E87E2),

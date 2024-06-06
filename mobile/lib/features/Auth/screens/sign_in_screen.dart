@@ -62,7 +62,7 @@ class _SingInScreenState extends State<SingInScreen> {
                       context: context,
                       onTap: () {
                         context
-                            .pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                            .pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                       });
                 } else {
                   CacheHelper.saveData(
@@ -73,7 +73,7 @@ class _SingInScreenState extends State<SingInScreen> {
                       context: context,
                       onTap: () {
                         context
-                            .pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                            .pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                       });
                 }
               } else if (widget.roles['role1'] != state.userModel.roles[0] ||
@@ -83,7 +83,7 @@ class _SingInScreenState extends State<SingInScreen> {
                     actionName: " Go Backe",
                     context: context,
                     onTap: () {
-                      context.pushReplacementNamed(Routes.choseUserRoutes);
+                      context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,predicate: (Route<dynamic> route) => false);
                     });
               }
             } else if (state is LoginUserIsErrorState) {
@@ -129,7 +129,7 @@ class _SingInScreenState extends State<SingInScreen> {
                               controller: passwordController,
                               inputFiled: "Enter your password",
                               isObscureText: isObscureText,
-                              validator: (String? value) {
+                              validator: (String?value ) {
                                 MyValidators.passwordValidator(value);
                               
                               },

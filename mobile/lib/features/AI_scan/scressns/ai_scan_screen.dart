@@ -187,7 +187,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                   actionName: 'Go Back',
                   context: context,
                   onTap: () {
-                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                     context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                   });
             }
           },

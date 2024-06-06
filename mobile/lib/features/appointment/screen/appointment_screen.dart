@@ -150,8 +150,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    height: size.height * .7,
+                                  Expanded(
+                                  //  height: size.height * .8,
                                     child: TabBarView(children: [
                                      state.selectedClinic.isNotEmpty? AppointmentWidget(
                                         clincs: state.selectedClinic,

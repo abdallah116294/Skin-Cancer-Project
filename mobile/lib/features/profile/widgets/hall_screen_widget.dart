@@ -202,8 +202,9 @@ class HallProfileScreenWidget extends StatelessWidget {
                           if (dotoctorRole != null) {
                             CacheHelper.removeData(key: 'doctor_role');
                           }
-                          context.pushReplacementNamed(
+                          context.pushNamedAndRemoveUntil(
                             Routes.choseUserRoutes,
+                            predicate: (Route<dynamic> route) => false
                           );
                         });
                   },

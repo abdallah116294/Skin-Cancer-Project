@@ -113,7 +113,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                       actionName: "Go Home",
                       context: context,
                       onTap: () {
-                        context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                        context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                       });
                 } else if (state is CreateClinicIsError) {
                   DailogAlertFun.showMyDialog(
@@ -121,7 +121,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                       actionName: "Go Home",
                       context: context,
                       onTap: () {
-                        context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                        context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                       });
                 } else if (state is UpdateClinicSuccess) {
                   DailogAlertFun.showMyDialog(
@@ -129,8 +129,7 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
                       actionName: "Go Home",
                       context: context,
                       onTap: () {
-                        context
-                            .pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                         context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                       });
                 }
               },

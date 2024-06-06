@@ -55,14 +55,16 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
               textColor: Colors.white,
                   toastLength: Toast.LENGTH_LONG,
                 msg: "You rating this clinic before",
-              );
+              ).then((value) {
+                 context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+              });
             } else {
               DailogAlertFun.showMyDialog(
                   daliogContent: state.patientBookSuccess.message.toString(),
                   actionName: 'Go Home',
                   context: context,
                   onTap: () {
-                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                     context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                   });
             }
           }
@@ -266,9 +268,6 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                                     widget.id);
                                             log(token);
                                             log(patientId);
-                                            context.pushReplacementNamed(
-                                                Routes.docDetailsScreen,
-                                                arguments: widget.id);
                                           });
                                     },
                                     textColor: Colors.white,
