@@ -57,6 +57,11 @@ class _HomeScreenState extends State<HomeScreen>
                         child: BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
                             if (state is GetDoctorDetialsSuccess) {
+                              CacheHelper.saveData(
+                                  key: 'doctor_name',
+                                  value: state.doctorModel.firstName!+
+                                      " " +
+                                      state.doctorModel.lastName!);
                               return Padding(
                                 padding: EdgeInsets.only(top: 40.h, left: 30.w),
                                 child: Column(
@@ -83,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen>
                         ),
                       )
                     : BlocProvider(
-                        create: (context) => di.sl<AuthCubit>()..getPatientDetails(docId),
+                        create: (context) =>
+                            di.sl<AuthCubit>()..getPatientDetails(docId),
                         child: BlocBuilder<AuthCubit, AuthState>(
                           builder: (context, state) {
                             if (state is GetPatientDetialsSuccess) {

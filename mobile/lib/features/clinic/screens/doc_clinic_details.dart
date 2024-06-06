@@ -37,6 +37,7 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
 
     var clinicName = CacheHelper.getData(key: 'clinicName');
     var token = CacheHelper.getData(key: 'token');
+    var doctorname = CacheHelper.getData(key: 'doctor_name');
     return MultiBlocProvider(
       providers: [
         BlocProvider(
@@ -135,7 +136,7 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
                           ),
                           verticalSpacing(10),
                           Text(
-                            "Dr. Ahmed Khaled ",
+                            "Dr. $doctorname",
                             style: TextStyles.font20BlackW700,
                           ),
                           verticalSpacing(10),

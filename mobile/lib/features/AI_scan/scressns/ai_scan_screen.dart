@@ -187,7 +187,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                   actionName: 'Go Back',
                   context: context,
                   onTap: () {
-                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes);
+                     context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
                   });
             }
           },
@@ -225,7 +225,10 @@ class _AIScanScreenState extends State<AIScanScreen> {
                               "${state.peredictionModel.prediction}",
                               style: TextStyles.font26BlackW700,
                             )
-                          : const SizedBox(): SizedBox(),
+                          :  Text(
+                              "${state.peredictionModel.prediction}",
+                              style: TextStyles.font26BlackW700,
+                            ) : SizedBox(),
                       SizedBox(
                         height: 20.h,
                       ),

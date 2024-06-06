@@ -112,14 +112,15 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                               .toList();
                           List<SelectedClinicModel> selectedClinictomoro = state
                               .selectedClinic
-                              .where((element) => isTomorrow(element.date!))
+                              .where((element) => element.date!=null&&
+                                          element.date!.isAfter(DateTime.now()) )
                               .toList();
                           List<SelectedClinicModel> selectedClinicfeature =
                               state.selectedClinic
                                   .where(
                                       (element) =>
-                                          element.date!.day >
-                                          DateTime.now().day + 1)
+                                          element.date!=null&&
+                                          element.date!.isAfter(DateTime.now()))
                                   .toList();
                           return Padding(
                             padding: const EdgeInsets.only(
@@ -142,18 +143,18 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                       onTap: (index) {},
                                       tabs: const [
                                         Tab(
-                                          text: 'Today',
+                                          text: 'All',
                                         ),
                                         Tab(text: 'Tomorrow'),
-                                        Tab(text: 'Near Future'),
+                                        Tab(text: 'Next'),
                                       ],
                                     ),
                                   ),
-                                  Container(
-                                    height: size.height * .7,
+                                  Expanded(
+                                  //  height: size.height * .8,
                                     child: TabBarView(children: [
-                                     selectedClinictody.isNotEmpty? AppointmentWidget(
-                                        clincs: selectedClinictody,
+                                     state.selectedClinic.isNotEmpty? AppointmentWidget(
+                                        clincs: state.selectedClinic,
                                       ): Center(
                                               child: Lottie.asset(
                                                   'assets/animation/empty.json'),

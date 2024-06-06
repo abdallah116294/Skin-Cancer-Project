@@ -58,8 +58,9 @@ class _SignupScreenState extends State<SignupScreen> {
                         actionName: "Go back",
                         context: context,
                         onTap: () {
-                          context.pushReplacementNamed(
+                          context.pushNamedAndRemoveUntil(
                               Routes.singInScreenRoutes,
+                              predicate: (Route<dynamic> route) => false,
                               arguments: widget.role);
                         });
                     log(state.error);
@@ -70,9 +71,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           actionName: "Confirm email",
                           context: context,
                           onTap: () {
-                            context.pushReplacementNamed(
-                                Routes.singInScreenRoutes,
-                                arguments: widget.role);
+                            context.pushNamedAndRemoveUntil(
+                              Routes.singInScreenRoutes,
+                              predicate: (Route<dynamic> route) => false,
+                              arguments: widget.role);
                           });
                     } else if (widget.role.containsKey('role2')) {
                       DailogAlertFun.showMyDialog(
@@ -80,9 +82,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           actionName: "Go Home",
                           context: context,
                           onTap: () {
-                            context.pushReplacementNamed(
-                                Routes.singInScreenRoutes,
-                                arguments: widget.role);
+                             context.pushNamedAndRemoveUntil(
+                              Routes.singInScreenRoutes,
+                              predicate: (Route<dynamic> route) => false,
+                              arguments: widget.role);
                           });
                     }
                     log(state.respons.userName);

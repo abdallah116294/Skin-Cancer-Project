@@ -13,6 +13,7 @@ import 'package:mobile/core/widgets/app_button.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
+import 'package:mobile/core/widgets/validatort.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/injection_container.dart' as di;
@@ -127,10 +128,8 @@ class _RestPasswordScreenState extends State<RestPasswordScreen> {
                               inputFiled: "Confirm new password",
                               isObscureText: true,
                               validator: (String? value) {
-                                if (value!.isEmpty) {
-                                  return "Passwords must not be empty";
-                                }
-                                return null;
+                                MyValidators.passwordValidator(value);
+                               
                               },
                               prefixIcon: Icons.lock,
                               textInputType: TextInputType.visiblePassword,
@@ -153,8 +152,10 @@ class _RestPasswordScreenState extends State<RestPasswordScreen> {
                                               rePasswordController.text,
                                         )
                                             .then((value) {
-                                          context.pushReplacementNamed(
-                                              Routes.singInScreenRoutes,arguments: {"role2": "Doctor"});
+                                           context.pushNamedAndRemoveUntil(
+                              Routes.singInScreenRoutes,
+                              predicate: (Route<dynamic> route) => false,
+                              arguments:{"role1":"Doctor","role2":"Patient"});
                                         });
                                       }
                                     },
