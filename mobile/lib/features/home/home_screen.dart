@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,17 +6,14 @@ import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/text_styles.dart';
-import 'package:mobile/core/widgets/app_button.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
-import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/home/widget/add_clinic_widget.dart';
-import 'package:mobile/features/home/widget/row_of_icon_text_arrow.dart';
-import 'package:mobile/features/home/widget/skin_cancer_section.dart';
+import 'package:mobile/features/home/widget/info_center.dart';
+import 'package:mobile/injection_container.dart' as di;
 
 import '../../config/routes/app_routes.dart';
 import '../../core/utils/app_color.dart';
 import 'widget/ai_section.dart';
-import 'package:mobile/injection_container.dart' as di;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,6 +26,43 @@ class _HomeScreenState extends State<HomeScreen>
     with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
+    List<Widget> infoList = [
+      InfoCenter(
+        imagePath: "assets/image/cancer.png",
+        title: "What is Skin Cancer?",
+        onTap: () {
+          context.pushNamed(Routes.whatSkinCanerScreenRoutes);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/cancer_facts.png",
+        title: "Facts and Statistics",
+        onTap: () {
+          context.pushNamed(Routes.factsAndStatisticScreen);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/risk_factors.png",
+        title: "Risk Factors",
+        onTap: () {
+          context.pushNamed(Routes.riskFactorsScreen);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/cancer_prevention.png",
+        title: "Prevention",
+        onTap: () {
+          context.pushNamed(Routes.preventionScreen);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/early_detection.png",
+        title: "Early Detection",
+        onTap: () {
+          context.pushNamed(Routes.earlyDetectionScreen);
+        },
+      ),
+    ];
     // log('home token' + getToken());
     super.build(context);
     var doctor_role = CacheHelper.getData(key: 'doctor_role');
@@ -44,12 +76,9 @@ class _HomeScreenState extends State<HomeScreen>
         child: SafeArea(
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 width: 390.w,
-                height: 130.h,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFD6D9F4),
-                ),
+                height: 120.h,
                 child: doctor_role != null
                     ? BlocProvider(
                         create: (context) =>
@@ -59,7 +88,7 @@ class _HomeScreenState extends State<HomeScreen>
                             if (state is GetDoctorDetialsSuccess) {
                               CacheHelper.saveData(
                                   key: 'doctor_name',
-                                  value: state.doctorModel.firstName!+
+                                  value: state.doctorModel.firstName! +
                                       " " +
                                       state.doctorModel.lastName!);
                               return Padding(
@@ -69,15 +98,20 @@ class _HomeScreenState extends State<HomeScreen>
                                   children: [
                                     Text(
                                         style: TextStyles.font24PrimaryW700
+                                            .copyWith(color: Colors.black)
                                             .copyWith(
+                                                fontSize: 22.sp,
                                                 fontWeight: FontWeight.w600),
-                                        "welcome"),
+                                        "Hi,${state.doctorModel.firstName}"),
+                                    verticalSpacing(5),
                                     Text(
-                                        style: TextStyles.font20BlackW700,
-                                        state.doctorModel.firstName.toString() +
-                                            " " +
-                                            state.doctorModel.lastName
-                                                .toString()),
+                                      style: TextStyles.font20BlackW700
+                                          .copyWith(
+                                              color: const Color(0xFF616161),
+                                              fontSize: 12.sp,
+                                              fontWeight: FontWeight.w400),
+                                      "How are you today?",
+                                    ),
                                   ],
                                 ),
                               );
@@ -100,37 +134,41 @@ class _HomeScreenState extends State<HomeScreen>
                                   children: [
                                     Text(
                                         style: TextStyles.font24PrimaryW700
+                                            .copyWith(color: Colors.black)
                                             .copyWith(
+                                                fontSize: 22.sp,
                                                 fontWeight: FontWeight.w600),
-                                        "welcome"),
+                                        "Hi,${state.doctorModel.firstName}"),
+                                    verticalSpacing(3),
                                     Text(
-                                        style: TextStyles.font20BlackW700,
-                                        "${state.doctorModel.firstName} ${state.doctorModel.lastName}"),
+                                        style: TextStyles.font20BlackW700
+                                            .copyWith(
+                                                color: const Color(0xFF616161),
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w400),
+                                        "How are you today?"),
                                   ],
                                 ),
                               );
                             } else {
-                              return SizedBox();
+                              return const SizedBox();
                             }
                           },
                         ),
                       ),
               ),
               doctor_role != null
-                  ? verticalSpacing(20)
+                  ? verticalSpacing(10)
                   : const SizedBox(
                       height: 0.0,
                     ),
               doctor_role != null
                   ? const AddClinicWidget()
-                  : const SizedBox(
-                      height: 0,
-                    ),
-              verticalSpacing(20),
+                  : verticalSpacing(0),
+              doctor_role != null ? verticalSpacing(15) : verticalSpacing(0),
               const AISection(),
-              verticalSpacing(20),
-              const SkinCancerSection(),
-              verticalSpacing(20),
+              verticalSpacing(10),
+              verticalSpacing(10),
               Padding(
                 padding: EdgeInsets.only(left: 15.w),
                 child: Column(
@@ -148,34 +186,29 @@ class _HomeScreenState extends State<HomeScreen>
                         )
                       ],
                     ),
-                    RowOfIconTextArrow(
-                      text: "Skin Cancer Facts and Statistics",
-                      onTap: () {
-                        context.pushNamed(Routes.factsAndStatisticScreen);
-                      },
-                    ),
-                    RowOfIconTextArrow(
-                      text: "Risk Factors",
-                      onTap: () {
-                        context.pushNamed(Routes.riskFactorsScreen);
-                      },
-                    ),
-                    RowOfIconTextArrow(
-                      text: "Prevention",
-                      onTap: () {
-                        context.pushNamed(Routes.preventionScreen);
-                      },
-                    ),
-                    RowOfIconTextArrow(
-                        text: "Early Detection",
-                        iconPath: "assets/image/alarm.png",
-                        onTap: () {
-                          context.pushNamed(Routes.earlyDetectionScreen);
-                        }),
                   ],
                 ),
               ),
               verticalSpacing(20),
+              Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 14.w),
+                  child: SizedBox(
+                    height: 800.h,
+                    child: GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: infoList.length,
+                      itemBuilder: (context, index) {
+                        return infoList[index];
+                      },
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 10,
+                              childAspectRatio: .78),
+                    ),
+                  ))
             ],
           ),
         ),

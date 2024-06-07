@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_network_connectivity/flutter_network_connectivity.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -10,13 +9,11 @@ import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/features/appointment/screen/appointment_screen.dart';
-import 'package:mobile/features/explore/explore_screen.dart';
+import 'package:mobile/features/explore/top_doc_screen.dart';
 import 'package:mobile/features/home/home_screen.dart';
 
 import '../../core/utils/app_color.dart';
-import '../clinic/cubit/clinic_cubit.dart';
 import '../profile/screens/profile_screen.dart';
-import 'package:mobile/injection_container.dart' as di;
 
 class BottomGNav extends StatefulWidget {
   const BottomGNav({super.key});
@@ -86,7 +83,7 @@ class _BottomGNavState extends State<BottomGNav> {
     var doctor_role = CacheHelper.getData(key: 'doctor_role');
     List<Widget> _widgetOptions = <Widget>[
       const HomeScreen(),
-      doctor_role != null ? const AppointmentScreen() : const ExploreScreen(),
+      doctor_role != null ? const AppointmentScreen() : TopDocScreen(),
       const ProfileScreen(),
     ];
 
