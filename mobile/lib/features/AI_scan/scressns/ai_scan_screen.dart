@@ -1,10 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -153,7 +150,9 @@ class _AIScanScreenState extends State<AIScanScreen> {
     String patientId = data[
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios),
           onPressed: () {
@@ -187,7 +186,9 @@ class _AIScanScreenState extends State<AIScanScreen> {
                   actionName: 'Go Back',
                   context: context,
                   onTap: () {
-                     context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                    context.pushNamedAndRemoveUntil(
+                        Routes.bottomNavScreenRoutes,
+                        predicate: (Route<dynamic> route) => false);
                   });
             }
           },
@@ -199,7 +200,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       state is PeredictionCancerTypeIsSuccess
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Text(
                               "Upload a photo of your skin lesion",
                               style: TextStyle(
@@ -207,11 +208,11 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                   fontSize: 22.sp,
                                   fontWeight: FontWeight.bold),
                             ),
-                      SizedBox(
-                        height: 5.h,
+                      verticalSpacing(
+                        5,
                       ),
                       state is PeredictionCancerTypeIsSuccess
-                          ? SizedBox()
+                          ? const SizedBox()
                           : Text(
                               " Our AI will detect potential skin cancer type",
                               style: TextStyle(
@@ -221,20 +222,23 @@ class _AIScanScreenState extends State<AIScanScreen> {
                             ),
                       verticalSpacing(10),
                       state is PeredictionCancerTypeIsSuccess
-                          ?state.peredictionModel.prediction=="Couldn\'t identify lesion"? Text(
-                              "${state.peredictionModel.prediction}",
-                              style: TextStyles.font26BlackW700,
-                            )
-                          :  Text(
-                              "${state.peredictionModel.prediction}",
-                              style: TextStyles.font26BlackW700,
-                            ) : SizedBox(),
+                          ? state.peredictionModel.prediction ==
+                                  "Couldn't identify lesion"
+                              ? Text(
+                                  state.peredictionModel.prediction,
+                                  style: TextStyles.font26BlackW700,
+                                )
+                              : Text(
+                                  state.peredictionModel.prediction,
+                                  style: TextStyles.font26BlackW700,
+                                )
+                          : const SizedBox(),
                       SizedBox(
                         height: 20.h,
                       ),
                       Center(
                         child: _loading
-                            ? Container(
+                            ? SizedBox(
                                 width: 356.w,
                                 child: Column(children: [
                                   Image.asset(
@@ -247,32 +251,54 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                   )
                                 ]),
                               )
-                            : Container(
-                                child: Column(children: [
-                                  Container(
-                                    width: double.infinity,
-                                    height: 400.h,
-                                    child: Image.file(
-                                      _image,
-                                      fit: BoxFit.cover,
-                                    ),
+                            : Column(children: [
+                                SizedBox(
+                                  width: double.infinity,
+                                  height: 400.h,
+                                  child: Image.file(
+                                    _image,
+                                    fit: BoxFit.cover,
                                   ),
-                                  SizedBox(
-                                    height: 20.h,
-                                  ),
-                                  BlocBuilder<AiPeredictionCubit,
-                                          AiPeredictionState>(
-                                      builder: (context, state) {
-                                    if (state is PeredictonSkinOrNotIsloading) {
-                                      return const CireProgressIndecatorWidget();
-                                    } else if (state
-                                        is PeredictionCancerTypeIsSuccess) {
-                                      Map<String, String> disease =
-                                          findDiseaseByName(state
-                                              .peredictionModel.prediction);
-                                      if (disease['name'] ==
-                                          "Couldn't identify lesion") {
-                                        return Container(
+                                ),
+                                verticalSpacing(20),
+                                BlocBuilder<AiPeredictionCubit,
+                                        AiPeredictionState>(
+                                    builder: (context, state) {
+                                  if (state is PeredictonSkinOrNotIsloading) {
+                                    return const CireProgressIndecatorWidget();
+                                  } else if (state
+                                      is PeredictionCancerTypeIsSuccess) {
+                                    Map<String, String> disease =
+                                        findDiseaseByName(
+                                            state.peredictionModel.prediction);
+                                    if (disease['name'] ==
+                                        "Couldn't identify lesion") {
+                                      return Container(
+                                        padding: const EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.black
+                                                      .withOpacity(0.1),
+                                                  blurRadius: 5.0,
+                                                  spreadRadius: 0.0)
+                                            ]),
+                                        child: Column(
+                                          children: [
+                                            Text(
+                                              'AI Couldn\'t identify your Image ,\n You can Explore Doctor\'s Clinic to get Private Dignonoses',
+                                              style: TextStyle(
+                                                  fontSize: 27.sp,
+                                                  color: Colors.red),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      return Container(
                                           padding: const EdgeInsets.all(20),
                                           decoration: BoxDecoration(
                                               color: Colors.white,
@@ -287,85 +313,58 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                               ]),
                                           child: Column(
                                             children: [
-                                              Text(
-                                                'AI Couldn\'t identify your Image ,\n You can Explore Doctor\'s Clinic to get Private Dignonoses',
-                                                style: TextStyle(
-                                                    fontSize: 27.sp,
-                                                    color: Colors.red),
-                                              )
-                                            ],
-                                          ),
-                                        );
-                                      } else {
-                                        return Container(
-                                            padding: const EdgeInsets.all(20),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
-                                                boxShadow: [
-                                                  BoxShadow(
-                                                      color: Colors.black
-                                                          .withOpacity(0.1),
-                                                      blurRadius: 5.0,
-                                                      spreadRadius: 0.0)
-                                                ]),
-                                            child: Column(
-                                              children: [
-                                                Align(
+                                              Align(
+                                                alignment: Alignment.centerLeft,
+                                                child: Text(
+                                                  'What is ${disease['name'].toString()}?',
+                                                  style: TextStyle(
+                                                      fontSize: 27.sp,
+                                                      color: Colors.red),
+                                                ),
+                                              ),
+                                              verticalSpacing(10),
+                                              Text(disease['description']
+                                                  .toString()),
+                                              verticalSpacing(10),
+                                              Align(
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: Text(
-                                                    'What is ${disease['name'].toString()}?',
+                                                    'What are the Symptoms?',
                                                     style: TextStyle(
                                                         fontSize: 27.sp,
                                                         color: Colors.red),
-                                                  ),
-                                                ),
-                                                verticalSpacing(10),
-                                                Text(disease['description']
-                                                    .toString()),
-                                                verticalSpacing(10),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.centerLeft,
-                                                    child: Text(
-                                                      'What are the Symptoms?',
-                                                      style: TextStyle(
-                                                          fontSize: 27.sp,
-                                                          color: Colors.red),
-                                                    )),
-                                                Text(disease['description']
-                                                    .toString()),
-                                              ],
-                                            ));
-                                      }
-                                    } else if (state
-                                        is PeredictionCancerTypeIsSuccess) {
-                                      if (state.peredictionModel.prediction ==
-                                          "Not Skin") {
-                                        return Container(
-                                            padding: EdgeInsets.all(10.w),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(20.r),
-                                              color: AppColor.buttonChoseuser,
-                                            ),
-                                            child: const Text(
-                                              'Pleas Enter Skin Image',
-                                              style: TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 24),
-                                            ));
-                                      }
+                                                  )),
+                                              Text(disease['description']
+                                                  .toString()),
+                                            ],
+                                          ));
                                     }
-                                    return const SizedBox();
-                                  }),
-                                  const SizedBox(
-                                    height: 15,
-                                  )
-                                ]),
-                              ),
+                                  } else if (state
+                                      is PeredictionCancerTypeIsSuccess) {
+                                    if (state.peredictionModel.prediction ==
+                                        "Not Skin") {
+                                      return Container(
+                                          padding: EdgeInsets.all(10.w),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(20.r),
+                                            color: AppColor.buttonChoseuser,
+                                          ),
+                                          child: const Text(
+                                            'Pleas Enter Skin Image',
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 24),
+                                          ));
+                                    }
+                                  }
+                                  return const SizedBox();
+                                }),
+                                const SizedBox(
+                                  height: 15,
+                                )
+                              ]),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -373,36 +372,40 @@ class _AIScanScreenState extends State<AIScanScreen> {
                           state is PeredictionCancerTypeIsSuccess
                               ? state.peredictionModel.prediction ==
                                       'Couldn\'t identify lesion'
-                                  ? doctor_role!=null?Expanded(
-                                  child: CustomButton(
-                                      buttoncolor:
-                                          const Color.fromRGBO(88, 99, 203, 1),
-                                      width: 300.w,
-                                      height: 60.h,
-                                      buttonName: "Upload",
-                                      onTap: () {
-                                        pickGallery().then((value) {
-                                          context
-                                              .read<AiPeredictionCubit>()
-                                              .peredictonSkinorNot(_image);
-                                        });
-                                      },
-                                      textColor: Colors.white,
-                                      white: false),
-                                ): Expanded(
-                                      child: CustomButton(
-                                          buttoncolor: const Color.fromRGBO(
-                                              88, 99, 203, 1),
-                                          width: 300.w,
-                                          height: 60.h,
-                                          buttonName: "Explore Clinics",
-                                          onTap: () {
-                                            context
-                                                .pushNamed(Routes.topDocScreen);
-                                          },
-                                          textColor: Colors.white,
-                                          white: false),
-                                    )
+                                  ? doctor_role != null
+                                      ? Expanded(
+                                          child: CustomButton(
+                                              buttoncolor:
+                                                  AppColor.primaryColor,
+                                              width: 300.w,
+                                              height: 60.h,
+                                              buttonName: "Upload",
+                                              onTap: () {
+                                                pickGallery().then((value) {
+                                                  context
+                                                      .read<
+                                                          AiPeredictionCubit>()
+                                                      .peredictonSkinorNot(
+                                                          _image);
+                                                });
+                                              },
+                                              textColor: Colors.white,
+                                              white: false),
+                                        )
+                                      : Expanded(
+                                          child: CustomButton(
+                                              buttoncolor: const Color.fromRGBO(
+                                                  88, 99, 203, 1),
+                                              width: 300.w,
+                                              height: 60.h,
+                                              buttonName: "Explore Clinics",
+                                              onTap: () {
+                                                context.pushNamed(
+                                                    Routes.topDocScreen);
+                                              },
+                                              textColor: Colors.white,
+                                              white: false),
+                                        )
                                   : Expanded(
                                       child: CustomButton(
                                           buttoncolor: const Color.fromRGBO(
@@ -422,8 +425,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                     )
                               : Expanded(
                                   child: CustomButton(
-                                      buttoncolor:
-                                          const Color.fromRGBO(88, 99, 203, 1),
+                                      buttoncolor: AppColor.primaryColor,
                                       width: 300.w,
                                       height: 60.h,
                                       buttonName: "Upload",

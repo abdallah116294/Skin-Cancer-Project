@@ -88,9 +88,8 @@ class _HomeScreenState extends State<HomeScreen>
                             if (state is GetDoctorDetialsSuccess) {
                               CacheHelper.saveData(
                                   key: 'doctor_name',
-                                  value: state.doctorModel.firstName! +
-                                      " " +
-                                      state.doctorModel.lastName!);
+                                  value:
+                                      "${state.doctorModel.firstName!} ${state.doctorModel.lastName!}");
                               return Padding(
                                 padding: EdgeInsets.only(top: 40.h, left: 30.w),
                                 child: Column(
@@ -116,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen>
                                 ),
                               );
                             } else {
-                              return SizedBox();
+                              return const SizedBox();
                             }
                           },
                         ),

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/helper/exetentions.dart';
@@ -10,15 +10,15 @@ import 'package:mobile/core/widgets/app_button.dart';
 import 'package:mobile/core/widgets/validatort.dart';
 import 'package:mobile/features/Auth/widgets/double_text.dart';
 import 'package:mobile/features/Auth/widgets/terms_and_conditions.dart';
+import 'package:mobile/injection_container.dart' as di;
+
 import '../../../../core/utils/app_color.dart';
 import '../../../../core/utils/string_manager.dart';
 import '../../../core/utils/text_styles.dart';
 import '../../../core/widgets/circle_progress_widget.dart';
 import '../../../core/widgets/custom_dailog.dart';
-import '../widgets/custom_text_feild.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/injection_container.dart' as di;
 import '../cubit/auth_cubit.dart';
+import '../widgets/custom_text_feild.dart';
 
 class SignupScreen extends StatefulWidget {
   final Map<String, String> role;
@@ -72,9 +72,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           context: context,
                           onTap: () {
                             context.pushNamedAndRemoveUntil(
-                              Routes.singInScreenRoutes,
-                              predicate: (Route<dynamic> route) => false,
-                              arguments: widget.role);
+                                Routes.singInScreenRoutes,
+                                predicate: (Route<dynamic> route) => false,
+                                arguments: widget.role);
                           });
                     } else if (widget.role.containsKey('role2')) {
                       DailogAlertFun.showMyDialog(
@@ -82,10 +82,10 @@ class _SignupScreenState extends State<SignupScreen> {
                           actionName: "Go Home",
                           context: context,
                           onTap: () {
-                             context.pushNamedAndRemoveUntil(
-                              Routes.singInScreenRoutes,
-                              predicate: (Route<dynamic> route) => false,
-                              arguments: widget.role);
+                            context.pushNamedAndRemoveUntil(
+                                Routes.singInScreenRoutes,
+                                predicate: (Route<dynamic> route) => false,
+                                arguments: widget.role);
                           });
                     }
                     log(state.respons.userName);
@@ -98,141 +98,157 @@ class _SignupScreenState extends State<SignupScreen> {
                     child: SingleChildScrollView(
                       child: Padding(
                         padding: EdgeInsets.symmetric(
-                            horizontal: 16.w, vertical: 12.h),
-                        child: Column(children: [
-                          verticalSpacing(30),
-                          Text(
-                            'Create Account',
-                            style: TextStyles.font24PrimaryW700,
-                          ),
-                          verticalSpacing(10),
-                          verticalSpacing(20),
-                          Form(
-                              key: _formKey,
-                              child: Column(
-                                children: [
-                                  CustomTextFormFiled(
-                                    controller: nameController,
-                                    inputFiled: "Enter your full  name",
-                                    isObscureText: false,
-                                    validator: (String? value) {
-                                      if (value!.isEmpty) {
-                                        return "Please enter name";
-                                      }
-                                      return null;
-                                    },
-                                    textInputType: TextInputType.emailAddress,
-                                  ),
-                                  verticalSpacing(20),
-                                  CustomTextFormFiled(
-                                    controller: emailController,
-                                    inputFiled: "Enter your email",
-                                    isObscureText: false,
-                                    validator: (String? value) {
-                                      if (value!.isEmpty) {
-                                        return "Pleas enter email";
-                                      }
-                                      return null;
-                                    },
-                                    textInputType: TextInputType.emailAddress,
-                                  ),
-                                  verticalSpacing(3),
-                                  verticalSpacing(17),
-                                  CustomTextFormFiled(
-                                    controller: phoneNumController,
-                                    inputFiled: "Enter your phone number",
-                                    isObscureText: false,
-                                    validator: (String? value) {
-                                      if (value!.isEmpty) {
-                                        return "Please enter phone number";
-                                      }
-                                      return null;
-                                    },
-                                    textInputType: TextInputType.number,
-                                  ),
-                                  verticalSpacing(20),
-                                  CustomTextFormFiled(
-                                    controller: passwordController,
-                                    inputFiled: "Enter your password",
-                                    isObscureText: isObscureText,
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        setState(() {
-                                          setState(() {
-                                            isObscureText = !isObscureText;
-                                          });
-                                        });
-                                      },
-                                      icon: Icon(isObscureText
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
-                                    ),
-                                    validator: (String? value) {
-                                     return MyValidators.passwordValidator(value);
-                                    },
-                                    textInputType:
-                                        TextInputType.visiblePassword,
-                                  ),
-                                  verticalSpacing(30),
-                                  state is RegisterUserIsLoadingState
-                                      ? const CireProgressIndecatorWidget()
-                                      : AppButton(
-                                          buttonColor: AppColor.primaryColor,
-                                          width: 358.w,
-                                          height: 61.h,
-                                          buttonName: StringManager.signUp,
-                                          onTap: () {
-                                            if (_formKey.currentState!
-                                                .validate()) {
-                                              context
-                                                  .read<AuthCubit>()
-                                                  .userRegister(
-                                                    firstname: nameController
-                                                        .text
-                                                        .split(" ")[0],
-                                                    lastname: nameController
-                                                        .text
-                                                        .split(" ")[1],
-                                                    phoneNumber:
-                                                        phoneNumController.text,
-                                                    email: emailController.text,
-                                                    userName: emailController
-                                                        .text
-                                                        .split("@")[0],
-                                                    password:
-                                                        passwordController.text,
-                                                  )
-                                                  .then((value) {
-                                                if (widget.role
-                                                    .containsKey("role1")) {
-                                                } else if (widget.role
-                                                    .containsKey("role2")) {
+                            horizontal: 20.w, vertical: 12.h),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              verticalSpacing(30),
+                              Text(
+                                'Create Account',
+                                style: TextStyles.font24PrimaryW700,
+                              ),
+                              verticalSpacing(10),
+                              Text(
+                                "Sign up now and start exploring all that our app has to offer. We're excited to welcome you to our community!",
+                                style: TextStyles.font14BlackW600
+                                    .copyWith(color: Color(0xFF757575)),
+                              ),
+                              verticalSpacing(20),
+                              Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      CustomTextFormFiled(
+                                        controller: nameController,
+                                        inputFiled: "Enter your full  name",
+                                        isObscureText: false,
+                                        validator: (String? value) {
+                                          if (value!.isEmpty) {
+                                            return "Please enter name";
+                                          }
+                                          return null;
+                                        },
+                                        textInputType:
+                                            TextInputType.emailAddress,
+                                      ),
+                                      verticalSpacing(20),
+                                      CustomTextFormFiled(
+                                        controller: emailController,
+                                        inputFiled: "Enter your email",
+                                        isObscureText: false,
+                                        validator: (String? value) {
+                                          if (value!.isEmpty) {
+                                            return "Pleas enter email";
+                                          }
+                                          return null;
+                                        },
+                                        textInputType:
+                                            TextInputType.emailAddress,
+                                      ),
+                                      verticalSpacing(3),
+                                      verticalSpacing(17),
+                                      CustomTextFormFiled(
+                                        controller: phoneNumController,
+                                        inputFiled: "Enter your phone number",
+                                        isObscureText: false,
+                                        validator: (String? value) {
+                                          if (value!.isEmpty) {
+                                            return "Please enter phone number";
+                                          }
+                                          return null;
+                                        },
+                                        textInputType: TextInputType.number,
+                                      ),
+                                      verticalSpacing(20),
+                                      CustomTextFormFiled(
+                                        controller: passwordController,
+                                        inputFiled: "Enter your password",
+                                        isObscureText: isObscureText,
+                                        suffixIcon: IconButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              setState(() {
+                                                isObscureText = !isObscureText;
+                                              });
+                                            });
+                                          },
+                                          icon: Icon(isObscureText
+                                              ? Icons.visibility
+                                              : Icons.visibility_off),
+                                        ),
+                                        validator: (String? value) {
+                                          return MyValidators.passwordValidator(
+                                              value);
+                                        },
+                                        textInputType:
+                                            TextInputType.visiblePassword,
+                                      ),
+                                      verticalSpacing(30),
+                                      state is RegisterUserIsLoadingState
+                                          ? const CireProgressIndecatorWidget()
+                                          : AppButton(
+                                              buttonColor:
+                                                  AppColor.primaryColor,
+                                              width: 358.w,
+                                              height: 61.h,
+                                              buttonName: StringManager.signUp,
+                                              onTap: () {
+                                                if (_formKey.currentState!
+                                                    .validate()) {
                                                   context
                                                       .read<AuthCubit>()
-                                                      .addRole(
-                                                          "Doctor",
-                                                          emailController.text
-                                                              .split("@")[0]);
+                                                      .userRegister(
+                                                        firstname:
+                                                            nameController.text
+                                                                .split(" ")[0],
+                                                        lastname: nameController
+                                                            .text
+                                                            .split(" ")[1],
+                                                        phoneNumber:
+                                                            phoneNumController
+                                                                .text,
+                                                        email: emailController
+                                                            .text,
+                                                        userName:
+                                                            emailController.text
+                                                                .split("@")[0],
+                                                        password:
+                                                            passwordController
+                                                                .text,
+                                                      )
+                                                      .then((value) {
+                                                    if (widget.role
+                                                        .containsKey("role1")) {
+                                                    } else if (widget.role
+                                                        .containsKey("role2")) {
+                                                      context
+                                                          .read<AuthCubit>()
+                                                          .addRole(
+                                                              "Doctor",
+                                                              emailController
+                                                                  .text
+                                                                  .split(
+                                                                      "@")[0]);
+                                                    }
+                                                  });
                                                 }
-                                              });
-                                            }
-                                          },
-                                          textColor: Colors.white,
-                                          white: false,
-                                        ),
-                                ],
-                              )),
-                          verticalSpacing(20),
-                          DoubleText(
-                            firstText: StringManager.alreadyHaveAccount,
-                            secondText: StringManager.signIn,
-                            onTap: () {
-                              context.pushNamed(Routes.singInScreenRoutes);
-                            },
-                          ),
-                          verticalSpacing(20),
-                          const TermsAndConditions(),
-                        ]),
+                                              },
+                                              textColor: Colors.white,
+                                              white: false,
+                                            ),
+                                    ],
+                                  )),
+                              verticalSpacing(20),
+                              DoubleText(
+                                firstText: StringManager.alreadyHaveAccount,
+                                secondText: StringManager.signIn,
+                                onTap: () {
+                                  context.pushNamed(Routes.singInScreenRoutes);
+                                },
+                              ),
+                              verticalSpacing(20),
+                              const TermsAndConditions(),
+                            ]),
                       ),
                     ),
                   );

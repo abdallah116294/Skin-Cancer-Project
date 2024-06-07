@@ -15,7 +15,7 @@ class AISection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 365.w,
-      height: 190.h,
+      height: 200.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
         color: AppColor.primaryColor,
@@ -25,7 +25,7 @@ class AISection extends StatelessWidget {
         child: Row(
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
@@ -42,16 +42,18 @@ class AISection extends StatelessWidget {
                     "Get a first look with our machine Learning model"),
                 verticalSpacing(5),
                 AppButton(
-                    borderRadius: 20.r,
+                    borderRadius: 48.r,
                     buttonColor: Colors.white,
-                    width: 120,
+                    width: 110,
                     height: 40,
-                    textOfButtonStyle: TextStyles.font14BlackW600,
+                    textOfButtonStyle: TextStyles.font14BlackW600.copyWith(
+                      color: AppColor.primaryColor,
+                    ),
                     buttonName: "Start Now",
                     onTap: () {
                       context.pushNamed(Routes.aIScanScreen);
                     },
-                    textColor: Colors.black,
+                    textColor: AppColor.primaryColor,
                     white: false)
               ],
             ),

@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
@@ -57,12 +55,13 @@ class _SingInScreenState extends State<SingInScreen> {
                   CacheHelper.saveData(
                       key: 'doctor_role', value: state.userModel.roles[0]);
                   DailogAlertFun.showMyDialog(
-                      daliogContent: "Welecome Doctor",
+                      daliogContent: "Welcome Doctor",
                       actionName: "Go to Home",
                       context: context,
                       onTap: () {
-                        context
-                            .pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                        context.pushNamedAndRemoveUntil(
+                            Routes.bottomNavScreenRoutes,
+                            predicate: (Route<dynamic> route) => false);
                       });
                 } else {
                   CacheHelper.saveData(
@@ -72,8 +71,9 @@ class _SingInScreenState extends State<SingInScreen> {
                       actionName: " Go to Home",
                       context: context,
                       onTap: () {
-                        context
-                            .pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                        context.pushNamedAndRemoveUntil(
+                            Routes.bottomNavScreenRoutes,
+                            predicate: (Route<dynamic> route) => false);
                       });
                 }
               } else if (widget.roles['role1'] != state.userModel.roles[0] ||
@@ -83,7 +83,8 @@ class _SingInScreenState extends State<SingInScreen> {
                     actionName: " Go Backe",
                     context: context,
                     onTap: () {
-                      context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,predicate: (Route<dynamic> route) => false);
+                      context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,
+                          predicate: (Route<dynamic> route) => false);
                     });
               }
             } else if (state is LoginUserIsErrorState) {
@@ -95,12 +96,21 @@ class _SingInScreenState extends State<SingInScreen> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      verticalSpacing(30),
-                      Lottie.asset("assets/animation/login_animation.json"),
+                      verticalSpacing(40),
+                      Text(
+                        "Welcome Back",
+                        style: TextStyles.font24PrimaryW700,
+                      ),
+                      verticalSpacing(10),
+                      Text(
+                        "We're excited to have you back, can't wait to see what you've been up to since you last logged in.",
+                        style: TextStyles.font14BlackW600
+                            .copyWith(color: Color(0xFF757575)),
+                      ),
                       verticalSpacing(30),
                       Form(
                         key: _formKey,
@@ -129,9 +139,8 @@ class _SingInScreenState extends State<SingInScreen> {
                               controller: passwordController,
                               inputFiled: "Enter your password",
                               isObscureText: isObscureText,
-                              validator: (String?value ) {
+                              validator: (String? value) {
                                 MyValidators.passwordValidator(value);
-                              
                               },
                               prefixIcon: Icons.lock,
                               textInputType: TextInputType.visiblePassword,
@@ -169,7 +178,7 @@ class _SingInScreenState extends State<SingInScreen> {
                                 ),
                               ),
                             ),
-                            verticalSpacing(10),
+                            verticalSpacing(15),
                             state is LoginUserIsLoadingState
                                 ? const CireProgressIndecatorWidget()
                                 : CustomButton(

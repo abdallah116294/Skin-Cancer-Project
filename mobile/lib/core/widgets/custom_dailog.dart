@@ -19,6 +19,7 @@ class DailogAlertFun {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
@@ -26,10 +27,12 @@ class DailogAlertFun {
                   CircleAvatar(
                     maxRadius: 50,
                     backgroundColor: const Color(0xffEAEAEA),
-                    child: SvgPicture.asset(
-                      AssetsManager.done,
-                      width: 30.w,
-                      height: 30.h,
+                    child: Center(
+                      child: Icon(
+                        Icons.check,
+                        size: 40,
+                        color: AppColor.primaryColor,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -114,13 +117,13 @@ class DailogAlertFun {
       },
     );
   }
-static Future<void> showaddDignosis(
-      {
-      required String actionName,
-      required BuildContext context,
-      required VoidCallback onTap,
-      required TextEditingController controller,
-      }) async {
+
+  static Future<void> showaddDignosis({
+    required String actionName,
+    required BuildContext context,
+    required VoidCallback onTap,
+    required TextEditingController controller,
+  }) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
@@ -130,11 +133,18 @@ static Future<void> showaddDignosis(
             child: ListBody(
               children: <Widget>[
                 Column(children: [
-                 Text("Add Dignosis ",style: TextStyles.font20BlackW700,),
+                  Text(
+                    "Add Dignosis ",
+                    style: TextStyles.font20BlackW700,
+                  ),
                   SizedBox(
                     height: 16.h,
                   ),
-                   CustomTextFormFiled(controller:controller ,isObscureText: false,textInputType: TextInputType.text,),
+                  CustomTextFormFiled(
+                    controller: controller,
+                    isObscureText: false,
+                    textInputType: TextInputType.text,
+                  ),
                   SizedBox(
                     height: 30.h,
                   ),

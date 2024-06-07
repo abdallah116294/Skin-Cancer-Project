@@ -73,7 +73,7 @@ class _AddClinicWidgetState extends State<AddClinicWidget>
                 height: 190.h,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
-                  color: const Color(0xFFC5CAFB),
+                  color: AppColor.primaryColor,
                 ),
                 child: Padding(
                   padding: EdgeInsets.only(top: 5.h, left: 10.w),
@@ -82,7 +82,6 @@ class _AddClinicWidgetState extends State<AddClinicWidget>
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
                               maxLines: 2,
@@ -96,10 +95,10 @@ class _AddClinicWidgetState extends State<AddClinicWidget>
                           AppButton(
                               borderRadius: 8.r,
                               buttonColor: Colors.white,
-                              width: 120,
+                              width: 110,
                               height: 40,
                               textOfButtonStyle: TextStyles.font14BlackW600,
-                              buttonName: "Add Your Clinic ",
+                              buttonName: "Add Your Clinic",
                               onTap: () {
                                 context.pushNamed(Routes.addClinicScreenRoutes,
                                     arguments: {
@@ -107,7 +106,7 @@ class _AddClinicWidgetState extends State<AddClinicWidget>
                                       "clinicId": null,
                                     });
                               },
-                              textColor: Colors.black,
+                              textColor: AppColor.primaryColor,
                               white: false)
                         ],
                       ),
@@ -191,11 +190,14 @@ class ShowClinicDetails extends StatelessWidget {
                             "Reach more patients\nto better healthcare\nby adding your clinic "),
                         verticalSpacing(5),
                         AppButton(
-                            borderRadius: 20.r,
+                            borderRadius: 48.r,
                             buttonColor: Colors.white,
-                            width: 120,
+                            width: 110,
                             height: 40,
-                            textOfButtonStyle: TextStyles.font14BlackW600,
+                            textOfButtonStyle:
+                                TextStyles.font14BlackW600.copyWith(
+                              color: AppColor.primaryColor,
+                            ),
                             buttonName: "My Clinic ",
                             onTap: () {
                               context.pushNamed(
