@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile/core/helper/spacing.dart';
+import 'package:mobile/core/utils/text_styles.dart';
 
 class ProfileWidget extends StatelessWidget {
   //final void Function()? onTap;
   final String title;
-  final Widget? leading;
+  final String iconPath;
+  final Color backgroundColor;
   final VoidCallback? onTap;
 
   const ProfileWidget(
-      {super.key, this.onTap, this.leading, required this.title});
+      {super.key,
+      this.onTap,
+      required this.iconPath,
+      required this.title,
+      required this.backgroundColor});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3,
-      shadowColor: Colors.grey.shade100,
-      color: Colors.white,
-      child: ListTile(
-        splashColor: const Color(0xFF6671EB).withOpacity(.5),
-        onTap:onTap,
-        leading: leading,
-        title: Text(title),
-        trailing: const Icon(Icons.arrow_forward_ios, color: Color(0xFF6671EB)),
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: EdgeInsets.all(18.w),
+        child: Row(
+          children: [
+            Container(
+              width: 40.w,
+              height: 40.h,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(16.r),
+                color: backgroundColor,
+              ),
+              child: Center(
+                child: SvgPicture.asset(iconPath),
+              ),
+            ),
+            horizontalSpacing(10),
+            Text(
+              title,
+              style: TextStyles.font14BlackW600,
+            )
+          ],
+        ),
       ),
     );
   }

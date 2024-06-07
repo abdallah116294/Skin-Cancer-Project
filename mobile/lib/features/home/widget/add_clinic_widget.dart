@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -7,9 +6,9 @@ import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
+import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/core/widgets/app_button.dart';
-import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/injection_container.dart' as di;
 
@@ -166,7 +165,7 @@ class ShowClinicDetails extends StatelessWidget {
               height: 190.h,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20.r),
-                color: const Color(0xFFC5CAFB),
+                color: AppColor.primaryColor,
               ),
               child: Padding(
                 padding: EdgeInsets.only(top: 5.h, left: 10.w),
@@ -180,15 +179,19 @@ class ShowClinicDetails extends StatelessWidget {
                         Text(
                           clinicInfoModel.first.name.toString(),
                           maxLines: 2,
-                          style: TextStyles.font16BlackW500,
+                          style: TextStyles.font16BlackW500.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                         verticalSpacing(5),
                         Text(
-                            style: TextStyles.font14BlackW300,
+                            style: TextStyles.font14BlackW300.copyWith(
+                              color: Colors.white,
+                            ),
                             "Reach more patients\nto better healthcare\nby adding your clinic "),
                         verticalSpacing(5),
                         AppButton(
-                            borderRadius: 8.r,
+                            borderRadius: 20.r,
                             buttonColor: Colors.white,
                             width: 120,
                             height: 40,
@@ -204,8 +207,8 @@ class ShowClinicDetails extends StatelessWidget {
                     ),
                     horizontalSpacing(0),
                     SizedBox(
-                       width: 150.w,
-                  height: 160.h,
+                      width: 150.w,
+                      height: 160.h,
                       child: ClipOval(
                         child: Image.network(
                           fit: BoxFit.cover,

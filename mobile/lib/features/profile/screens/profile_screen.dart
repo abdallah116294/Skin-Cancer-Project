@@ -31,15 +31,17 @@ class _ProfileScreenState extends State<ProfileScreen>
             builder: (context, state) {
               if (state is GetDoctorDetialsSuccess) {
                 return Scaffold(
+                    backgroundColor: Colors.white,
                     body: HallProfileScreenWidget(
-                  name:
-                      "${state.doctorModel.firstName} ${state.doctorModel.lastName}",
-                ));
+                      name:
+                          "${state.doctorModel.firstName} ${state.doctorModel.lastName}",
+                    ));
               } else {
                 return Scaffold(
+                    backgroundColor: Colors.white,
                     body: HallProfileScreenWidget(
-                  name: username,
-                ));
+                      name: username,
+                    ));
               }
             },
           ));
@@ -50,15 +52,17 @@ class _ProfileScreenState extends State<ProfileScreen>
             builder: (context, state) {
               if (state is GetPatientDetialsSuccess) {
                 return Scaffold(
+                    backgroundColor: Colors.white,
                     body: HallProfileScreenWidget(
-                  name:
-                      "${state.doctorModel.firstName} ${state.doctorModel.lastName}",
-                ));
+                      name:
+                          "${state.doctorModel.firstName} ${state.doctorModel.lastName}",
+                    ));
               } else {
                 return Scaffold(
+                    backgroundColor: Colors.white,
                     body: HallProfileScreenWidget(
-                  name: username,
-                ));
+                      name: username,
+                    ));
               }
             },
           ));
