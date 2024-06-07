@@ -11,6 +11,8 @@ namespace SkinCancer.Repositories.Interface
     public interface IUnitOfWork
     {
         IGenericRepository<TEntity> Reposirory<TEntity>() where TEntity : BaseEntity;
+        IScheduleRepository scheduleRepository { get; set; }
+		IDetectionRepository detectionRepositoty { get; set; }
 
         Task<int> CompleteAsync();
 
@@ -20,7 +22,9 @@ namespace SkinCancer.Repositories.Interface
 
         Task<TEntity> Include<TEntity>(int id, 
             params Expression<Func<TEntity, object>>[] includes) where TEntity : BaseEntity;
+        List<T> SelectItem<T>(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes) where T : class;
 
 
-    }
+
+	}
 }

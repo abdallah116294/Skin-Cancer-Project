@@ -13,6 +13,7 @@ using SkinCancer.Repositories.Interface;
 using SkinCancer.Services.DoctorServices;
 using SkinCancer.Repositories.Repository;
 using SkinCancer.Services.ClinicServices;
+using SkinCancer.Services.ScheduleServices;
 namespace SkinCancer.Api
 {
     public class Program
@@ -21,11 +22,13 @@ namespace SkinCancer.Api
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            //test
             builder.Services.AddDbContext<ApplicationDbContext>(o => o.UseSqlServer(
                   builder.Configuration.GetConnectionString("DefaultConnection")
                 ));
             builder.Services.AddLogging(cfg =>
             {
+                //auth
                 cfg.AddDebug();
                 cfg.AddConsole();
             });
@@ -34,6 +37,9 @@ namespace SkinCancer.Api
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IClinicService, ClinicService>();
             builder.Services.AddScoped<IClinicRepository , ClinicRepository>();
+            builder.Services.AddScoped<IScheduleService, ScheduleService>();
+
+            builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
            // builder.Services.AddScoped<IAppointmentClinicService , AppointmentClinicService>();
                                        
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -139,12 +145,13 @@ namespace SkinCancer.Api
                 app.UseSwaggerUI();
             
             app.UseHttpsRedirection();
+			app.UseStaticFiles();
 
-            // Required to allow CORS
-            //app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-            
-            
-            app.UseAuthentication();
+			// Required to allow CORS
+			//app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+
+
+			app.UseAuthentication();
             app.UseAuthorization();
 
 

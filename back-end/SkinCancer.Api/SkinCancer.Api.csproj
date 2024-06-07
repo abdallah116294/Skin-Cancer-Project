@@ -30,4 +30,8 @@
     <ProjectReference Include="..\SkinCancer.Services\SkinCancer.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\detections\" />
+  </ItemGroup>
+
 </Project>

@@ -35,7 +35,7 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
                 height: 730.h,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: AppColor.buttonChoseuser,
+                  color: AppColor.primaryColor,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Padding(
