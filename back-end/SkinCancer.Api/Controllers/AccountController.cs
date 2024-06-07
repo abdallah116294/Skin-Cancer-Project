@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SkinCancer.Entities.Models;
 using SkinCancer.Services.AuthServices.Interfaces;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using SkinCancer.Entities.UserDtos;
+using SkinCancer.Entities.AuthenticationUserDtos;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
 using System.ComponentModel.DataAnnotations;
@@ -114,9 +114,9 @@ namespace SkinCancer.Api.Controllers
         [HttpPost("ResendEmailConfirmation")]
         public async Task<IActionResult> ResendEmailConfirmation(
             [EmailAddress, Required] string email)
-        {
+        {      //sdfsdf
             if (!ModelState.IsValid)
-            {
+            {      
                 return BadRequest(ModelState);
             }
 
@@ -164,17 +164,13 @@ namespace SkinCancer.Api.Controllers
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
         {
            
-           var userId =  Request.Cookies["UserId"];
-            
-            if (string.IsNullOrEmpty(userId))
-                return BadRequest("Send Code Again!");
+           var user=await userManager.FindByEmailAsync (dto.Email);
 
-            if (userId == null)
-            {
-                return BadRequest("User ID not found");
-            }
 
-            var result = await authService.ResetPasswordAsync(userId, dto.Code, dto.newPassword);
+			if (user==null)
+                return BadRequest("User Not Found");
+
+            var result = await authService.ResetPasswordAsync(user.Id, dto.Code, dto.newPassword);
 
             if (!result.IsSucceeded)
             {

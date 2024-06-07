@@ -1,5 +1,5 @@
 ﻿using SkinCancer.Entities.Models;
-using SkinCancer.Entities.UserDtos;
+using SkinCancer.Entities.AuthenticationUserDtos;
 using AutoMapper;
 
 namespace SkinCancer.Entities.MappingProfiles

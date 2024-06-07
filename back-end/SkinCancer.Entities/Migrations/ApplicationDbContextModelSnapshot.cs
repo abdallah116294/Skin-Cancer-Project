@@ -164,6 +164,7 @@ namespace SkinCancer.Entities.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Code")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -171,7 +172,11 @@ namespace SkinCancer.Entities.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DetectoinImage")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool?>("DoctorHasClinic")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -223,7 +228,7 @@ namespace SkinCancer.Entities.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<short>("YearsOfExperiences")
+                    b.Property<short?>("YearsOfExperiences")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -239,34 +244,6 @@ namespace SkinCancer.Entities.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SkinCancer.Entities.Models.Appointment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClinicId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Date1")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date2")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Date3")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClinicId")
-                        .IsUnique();
-
-                    b.ToTable("Appointments", (string)null);
-                });
-
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
                 {
                     b.Property<int>("Id")
@@ -277,15 +254,22 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("DoctorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DoctorName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Image")
                         .IsRequired()
@@ -293,25 +277,117 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(25)
+                        .HasColumnType("nvarchar(25)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<double?>("Rate")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId")
+                        .IsUnique();
+
+                    b.ToTable("Clinics", (string)null);
+                });
+
+            modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Diagnosis")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Result")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("Clinics", (string)null);
+                    b.ToTable("DetectionsData", (string)null);
+                });
+
+            modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<byte>("Rate")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("PatientRateClinic", (string)null);
+                });
+
+            modelBuilder.Entity("SkinCancer.Entities.Models.Schedule", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClinicId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsBooked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PatientId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClinicId");
+
+                    b.HasIndex("PatientId")
+                        .IsUnique()
+                        .HasFilter("[PatientId] IS NOT NULL");
+
+                    b.ToTable("Schedules", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -365,35 +441,81 @@ namespace SkinCancer.Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SkinCancer.Entities.Models.Appointment", b =>
+            modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
                 {
-                    b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
-                        .WithOne("Appointment")
-                        .HasForeignKey("SkinCancer.Entities.Models.Appointment", "ClinicId")
+                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "Doctor")
+                        .WithOne("Clinic")
+                        .HasForeignKey("SkinCancer.Entities.Models.Clinic", "DoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Clinic");
+                    b.Navigation("Doctor");
                 });
 
-            modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
+            modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
                 {
                     b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "User")
-                        .WithOne("Clinic")
-                        .HasForeignKey("SkinCancer.Entities.Models.Clinic", "UserId");
+                        .WithMany("detections")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SkinCancer.Entities.Models.PatientRateClinic", b =>
+                {
+                    b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
+                        .WithMany("PatientRates")
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "Patient")
+                        .WithMany("PatientRates")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Clinic");
+
+                    b.Navigation("Patient");
+                });
+
+            modelBuilder.Entity("SkinCancer.Entities.Models.Schedule", b =>
+                {
+                    b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
+                        .WithMany("Schedules")
+                        .HasForeignKey("ClinicId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "Patient")
+                        .WithOne("Schedule")
+                        .HasForeignKey("SkinCancer.Entities.Models.Schedule", "PatientId");
+
+                    b.Navigation("Clinic");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("SkinCancer.Entities.Models.ApplicationUser", b =>
                 {
-                    b.Navigation("Clinic")
+                    b.Navigation("Clinic");
+
+                    b.Navigation("PatientRates");
+
+                    b.Navigation("Schedule")
                         .IsRequired();
+
+                    b.Navigation("detections");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
                 {
-                    b.Navigation("Appointment");
+                    b.Navigation("PatientRates");
+
+                    b.Navigation("Schedules");
                 });
 #pragma warning restore 612, 618
         }

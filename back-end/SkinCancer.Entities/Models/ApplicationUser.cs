@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -16,13 +17,27 @@ namespace SkinCancer.Entities.Models
         [Required, MinLength(3), MaxLength(30)]
         public string LastName { get; set; } = string.Empty;
 
-        public string? Code { get; set; }
+        // [ValidateNever]
+        public string Code { get; set; } = string.Empty;
         
-        public short YearsOfExperiences { get; set; }
-        
-        public string? DetectoinImage { get; set; }
+        public short? YearsOfExperiences { get; set; }
+
+        public string DetectoinImage { get; set; } = string.Empty;
+
+        public bool? DoctorHasClinic { get; set; } = false;
+
+        //       [ValidateNever]
+        public Clinic? Clinic { get; set; }
 
 
-        public Clinic Clinic { get; set; }
+        public List<PatientRateClinic> PatientRates { get; set; } = new List<PatientRateClinic>();
+        
+            
+        //public ICollection<Schedule> Schedules { get; set; }    
+        public Schedule Schedule { get; set; }
+
+        public ICollection<DetectionData> detections { get; set; }
+
+
     }
 }
