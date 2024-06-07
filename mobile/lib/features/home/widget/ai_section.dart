@@ -4,6 +4,7 @@ import 'package:mobile/core/helper/exetentions.dart';
 
 import '../../../config/routes/app_routes.dart';
 import '../../../core/helper/spacing.dart';
+import '../../../core/utils/app_color.dart';
 import '../../../core/utils/text_styles.dart';
 import '../../../core/widgets/app_button.dart';
 
@@ -12,53 +13,59 @@ class AISection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       width: 365.w,
       height: 190.h,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20.r),
-        color: const Color(0xFFC5CAFB),
+        color: AppColor.primaryColor,
       ),
       child: Padding(
-        padding: EdgeInsets.only(top: 5.h, left: 10.w),
+        padding: EdgeInsets.only(top: 5.h, left: 22.w),
         child: Row(
           children: [
             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
                     maxLines: 2,
-                    style: TextStyles.font16BlackW500,
+                    style: TextStyles.font16BlackW500.copyWith(
+                      color: Colors.white,
+                    ),
                     "Test Your skin lesion \nwith AI"),
                 verticalSpacing(5),
                 Text(
-                    style: TextStyles.font14BlackW300,
+                    style: TextStyles.font14BlackW300.copyWith(
+                      color: Colors.white,
+                    ),
                     "Get a first look with our machine Learning model"),
                 verticalSpacing(5),
                 AppButton(
-                    borderRadius: 8.r,
+                    borderRadius: 20.r,
                     buttonColor: Colors.white,
                     width: 120,
                     height: 40,
                     textOfButtonStyle: TextStyles.font14BlackW600,
                     buttonName: "Start Now",
                     onTap: () {
-
+                      context.pushNamed(Routes.aIScanScreen);
                     },
                     textColor: Colors.black,
                     white: false)
               ],
             ),
-            horizontalSpacing(30),
-           ClipOval(
-                  child: SizedBox(
-                      width: 150.w,
-                      height: 160.h,
-                      child: Image.network(
-                          fit: BoxFit.cover,
-                          "https://i.pinimg.com/564x/09/4f/16/094f164882a08da22b56b246a2f4c2ec.jpg")),
-                ),
+            horizontalSpacing(10),
+            ClipOval(
+              child: SizedBox(
+                  width: 150.w,
+                  height: 160.h,
+                  child: Image.network(
+                      fit: BoxFit.cover,
+                      "https://img.freepik.com/free-photo/doctor-from-future-concept_23-2151111130.jpg?t=st=1717706012~exp=1717709612~hmac=9d62f2b9e7a19b9d183a4325ffbd2bce9fc5c5667919c44df29216dac0b4f28a&w=360"
+                      // "https://i.pinimg.com/564x/09/4f/16/094f164882a08da22b56b246a2f4c2ec.jpg"
+                      )),
+            ),
           ],
         ),
       ),

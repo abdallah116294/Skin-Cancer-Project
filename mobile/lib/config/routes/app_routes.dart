@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/core/cach_helper/cach_helper.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_history_by_doctor.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_history_screen.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_item_history_details.dart';
+import 'package:mobile/features/AI_scan/scressns/ai_scan_screen.dart';
 import 'package:mobile/features/Auth/screens/forget_password_screen.dart';
 import 'package:mobile/features/Auth/screens/otp_code_screen.dart';
 import 'package:mobile/features/Auth/screens/rest_password_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_in_screen.dart';
 import 'package:mobile/features/Auth/screens/sign_up_screen.dart';
+import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
+import 'package:mobile/features/clinic/screens/add_clinic_screen.dart';
+import 'package:mobile/features/clinic/screens/doc_clinic_details.dart';
+import 'package:mobile/features/clinic/screens/patient_selected_clinic.dart';
 import 'package:mobile/features/disease_info/screens/early_detection.dart';
+import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
 import 'package:mobile/features/explore/doc_details.dart';
 import 'package:mobile/features/home/home_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_auth_fun_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_user.dart';
+import 'package:mobile/features/onBoarding/screens/developer_screen.dart';
 import 'package:mobile/features/onBoarding/screens/on_boarding_screen.dart';
-import 'package:mobile/features/profile/profile_screen.dart';
+import 'package:mobile/features/profile/screens/profile_screen.dart';
 import 'package:mobile/features/splash/splash_screen.dart';
 
 import '../../features/Auth/cubit/auth_cubit.dart';
@@ -25,7 +37,7 @@ import '../../features/disease_info/screens/what_is_cancer.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class Routes {
-  static const String SplashScreenRoutes = "/SplashScreen";
+  static const String splashScreenRoutes = "/SplashScreen";
   static const String onBoardingRoutes = "/OnBoardingScreen";
   static const String choseUserRoutes = "/ChoseUser";
   static const String choseAuthFunScreenRoutes = "/ChoseAuthFunScreen";
@@ -45,12 +57,22 @@ class Routes {
   static const String earlyDetectionScreen = "/EarlyDetectionScreen";
   static const String topDocScreen = "/TopDocScreen";
   static const String docDetailsScreen = "/DocDetailsScreen";
+  static const String addClinicScreenRoutes = "/AddClinicScreen";
+  static const String docClinicDetailsScreenRoutes =
+      "/DocClinicDetailsScreenRoutes";
+  static const String aIScanScreen = "/AIScanScreen";
+  static const String aIHistoryScreen = "/AIHistoryScreen";
+  static const String patientSelectedClinic = "/PatientSelectedClinic";
+  static const String aIItemHistoryDetailsScreen =
+      "/AIItemHistoryDetailsScreen";
+  static const String aiHistoryByDoctor = "/AiHistoryByDoctor";
+  static const String developerScreen = "/DeveloperScreen";
 }
 
 class AppRoutes {
   static Route? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case Routes.SplashScreenRoutes:
+      case Routes.splashScreenRoutes:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
       case Routes.onBoardingRoutes:
         return MaterialPageRoute(
@@ -76,7 +98,7 @@ class AppRoutes {
           builder: (context) => BlocProvider(
             create: (context) => di.sl<AuthCubit>(),
             child: RestPasswordScreen(
-              routeSettings.arguments as String ,
+              routeSettings.arguments as String,
             ),
           ),
         );
@@ -86,7 +108,24 @@ class AppRoutes {
                   role: routeSettings.arguments as Map<String, String>,
                 ));
       case Routes.homeScreenRoutes:
-        return MaterialPageRoute(builder: (context) => const HomeScreen());
+        var token = CacheHelper.getData(key: 'token');
+        Map<String, dynamic> data = Jwt.parseJwt(token);
+        String docId = data[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) =>
+                          di.sl<ClinicCubit>()..getDocHasClinic(docId: docId),
+                    ),
+                    // BlocProvider(
+                    //   create: (context) =>
+                    //       di.sl<AuthCubit>()..getDoctorDetials(docId),
+                    // ),
+                  ],
+                  child: const HomeScreen(),
+                ));
       case Routes.bottomNavScreenRoutes:
         return MaterialPageRoute(builder: (context) => const BottomGNav());
       case Routes.exploreScreenRoutes:
@@ -94,7 +133,24 @@ class AppRoutes {
           builder: (context) => const ExploreScreen(),
         );
       case Routes.profileScreenRoutes:
-        return MaterialPageRoute(builder: (context) => const ProfileScreen());
+        var token = CacheHelper.getData(key: 'token');
+        Map<String, dynamic> data = Jwt.parseJwt(token);
+        String docId = data[
+            "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+        return MaterialPageRoute(
+            builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider(
+                      create: (context) =>
+                          di.sl<AuthCubit>()..getDoctorDetials(docId),
+                    ),
+                    BlocProvider(
+                      create: (context) =>
+                          di.sl<AuthCubit>()..getPatientDetails(docId),
+                    ),
+                  ],
+                  child: const ProfileScreen(),
+                ));
       case Routes.whatSkinCanerScreenRoutes:
         return MaterialPageRoute(builder: (context) => const WhatSkinCaner());
       case Routes.factsAndStatisticScreen:
@@ -112,10 +168,48 @@ class AppRoutes {
             builder: (context) => const EarlyDetectionScreen());
 
       case Routes.topDocScreen:
-        return MaterialPageRoute(builder: (context) => const TopDocScreen());
-      case Routes.docDetailsScreen:
         return MaterialPageRoute(
-            builder: (context) => const DocDetailsScreen());
+            builder: (context) => BlocProvider(
+                  create: (context) =>
+                      di.sl<PatientClinicCubit>()..getAllClinics(),
+                  child: TopDocScreen(),
+                ));
+      case Routes.docDetailsScreen:
+        final arg = routeSettings.arguments as int;
+        return MaterialPageRoute(
+            builder: (context) => DocDetailsScreen(
+                  id: arg,
+                ));
+      case Routes.addClinicScreenRoutes:
+        return MaterialPageRoute(
+            builder: (context) => AddClinicScreen(
+                  values: routeSettings.arguments as Map<String, int?>,
+                ));
+      case Routes.docClinicDetailsScreenRoutes:
+        return MaterialPageRoute(
+            builder: (context) => const DocClinicDetailsScreen());
+      case Routes.aIScanScreen:
+        return MaterialPageRoute(builder: (context) => const AIScanScreen());
+      case Routes.aIHistoryScreen:
+        return MaterialPageRoute(builder: (context) => AiHistoryScreen());
+      case Routes.patientSelectedClinic:
+        return MaterialPageRoute(
+            builder: (context) => const PatientSelectedClinic());
+      case Routes.aIItemHistoryDetailsScreen:
+        return MaterialPageRoute(
+            builder: (context) => AIItemHistoryDetailsScreen(
+                  outpus: routeSettings.arguments as Map<String, dynamic>,
+                ));
+      case Routes.aiHistoryByDoctor:
+        return MaterialPageRoute(
+            builder: (context) => AiHistoryByDoctor(
+                  userId: routeSettings.arguments as String,
+                ));
+      case Routes.developerScreen:
+        return MaterialPageRoute(builder: (context) => DeveloperScreen());
+
+      default:
+        return null;
     }
   }
 }

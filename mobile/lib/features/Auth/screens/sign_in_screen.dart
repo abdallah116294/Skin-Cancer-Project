@@ -14,6 +14,7 @@ import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
+import 'package:mobile/core/widgets/validatort.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/features/Auth/widgets/double_text.dart';
@@ -48,25 +49,41 @@ class _SingInScreenState extends State<SingInScreen> {
             if (state is LoginUserIsLoadingState) {
               log('loading');
             } else if (state is LoginUserIsSuccessSetate) {
-              if (state.userModel.roles[0] == "Doctor") {
-                CacheHelper.saveData(key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(key: 'doctor_role', value: state.userModel.roles[0]);
+              if (widget.roles['role1'] == state.userModel.roles[0] ||
+                  widget.roles['role2'] == state.userModel.roles[0]) {
+                CacheHelper.saveData(
+                    key: 'token', value: state.userModel.token);
+                if (state.userModel.roles[0] == 'Doctor') {
+                  CacheHelper.saveData(
+                      key: 'doctor_role', value: state.userModel.roles[0]);
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Welecome Doctor",
+                      actionName: "Go to Home",
+                      context: context,
+                      onTap: () {
+                        context
+                            .pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                      });
+                } else {
+                  CacheHelper.saveData(
+                      key: 'patient_role', value: state.userModel.roles[0]);
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Welecome",
+                      actionName: " Go to Home",
+                      context: context,
+                      onTap: () {
+                        context
+                            .pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                      });
+                }
+              } else if (widget.roles['role1'] != state.userModel.roles[0] ||
+                  widget.roles["role2"] != state.userModel.roles[0]) {
                 DailogAlertFun.showMyDialog(
-                    daliogContent: "Welecome Doctor",
-                    actionName: "Go to Home",
+                    daliogContent: "You don't allow",
+                    actionName: " Go Backe",
                     context: context,
                     onTap: () {
-                      context.pushNamed(Routes.bottomNavScreenRoutes);
-                    });
-              } else {
-                 CacheHelper.saveData(key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(key: 'patient_role', value: state.userModel.roles[0]);
-                DailogAlertFun.showMyDialog(
-                    daliogContent: "Welecome",
-                    actionName: " Go to Home",
-                    context: context,
-                    onTap: () {
-                      context.pushNamed(Routes.bottomNavScreenRoutes);
+                      context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,predicate: (Route<dynamic> route) => false);
                     });
               }
             } else if (state is LoginUserIsErrorState) {
@@ -112,11 +129,9 @@ class _SingInScreenState extends State<SingInScreen> {
                               controller: passwordController,
                               inputFiled: "Enter your password",
                               isObscureText: isObscureText,
-                              validator: (String? valeue) {
-                                if (valeue!.isEmpty) {
-                                  return "Please enter password";
-                                }
-                                return null;
+                              validator: (String?value ) {
+                                MyValidators.passwordValidator(value);
+                              
                               },
                               prefixIcon: Icons.lock,
                               textInputType: TextInputType.visiblePassword,
@@ -164,9 +179,13 @@ class _SingInScreenState extends State<SingInScreen> {
                                     buttonName: StringManager.signIn,
                                     onTap: () {
                                       if (_formKey.currentState!.validate()) {
+                                        log(emailController.text);
+                                        log(passwordController.text);
                                         BlocProvider.of<AuthCubit>(context)
-                                            .userlogin(emailController.text,
-                                                passwordController.text);
+                                            .userlogin(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text);
                                       }
                                     },
                                     textColor: Colors.white,
