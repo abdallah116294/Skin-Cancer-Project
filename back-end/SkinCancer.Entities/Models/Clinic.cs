@@ -27,6 +27,8 @@ namespace SkinCancer.Entities.Models
         [MaxLength(500)]
         public string Description { get; set; }
 
+/*        public decimal? TotalAmountReceived { get; set; }   
+*/
         [Required, MaxLength(100)]
         public string DoctorName { get; set; }
 

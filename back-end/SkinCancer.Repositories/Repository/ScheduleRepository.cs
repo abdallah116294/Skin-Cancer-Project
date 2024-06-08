@@ -21,6 +21,17 @@ namespace SkinCancer.Repositories.Repository
             _context = context;
         }
 
+        public async Task<int?> GetClinicId(int scheduleId)
+        {
+            var schedule = await _context.Schedules.
+               FirstOrDefaultAsync(x => x.Id == scheduleId);
+            if (schedule == null)
+            {
+                return null;
+            }
+            return schedule.ClinicId;
+        }
+
         public async Task<IEnumerable<Schedule>> GetClinicSchedulesById(int clinicId)
         => await _context.Schedules.Where(s=>s.ClinicId == clinicId).ToListAsync();
 

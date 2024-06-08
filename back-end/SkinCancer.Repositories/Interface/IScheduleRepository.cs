@@ -15,5 +15,8 @@ namespace SkinCancer.Repositories.Interface
 
         bool IsPatientInClinic(PatientRateDto dto);
 
+        Task<int?> GetClinicId(int scheduleId);
+
+
     }
 }
