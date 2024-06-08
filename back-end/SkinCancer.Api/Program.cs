@@ -15,6 +15,7 @@ using SkinCancer.Repositories.Repository;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.ScheduleServices;
 using Stripe;
+
 namespace SkinCancer.Api
 {
     public class Program
@@ -53,16 +54,13 @@ namespace SkinCancer.Api
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IClinicService, ClinicService>();
-            builder.Services.AddScoped<IClinicRepository , ClinicRepository>();
+            builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
             builder.Services.AddScoped<IScheduleService, ScheduleService>();
 
             builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
-           // builder.Services.AddScoped<IAppointmentClinicService , AppointmentClinicService>();
-                                       
+
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-/*            builder.Services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-*/           
             builder.Services.AddDataProtection();
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
@@ -73,9 +71,6 @@ namespace SkinCancer.Api
 
             builder.Services.AddScoped<IEmailSender, EmailSender>();
 
-            // Add CORS for (CORS Policy To allow the localhost run within any frontend technology)
-            //builder.Services.AddCors();
-            
             builder.Services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -127,9 +122,7 @@ namespace SkinCancer.Api
                     Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 12345abcdef\""
                 });
 
-
-
-                o.AddSecurityRequirement(new OpenApiSecurityRequirement() 
+                o.AddSecurityRequirement(new OpenApiSecurityRequirement()
                 {
                     {
                        new OpenApiSecurityScheme()
@@ -147,33 +140,23 @@ namespace SkinCancer.Api
                 });
             });
 
-
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            /*if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }*/
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            
             app.UseHttpsRedirection();
-			app.UseStaticFiles();
+            app.UseStaticFiles();
 
-			// Required to allow CORS
-			//app.UseCors(c => c.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
-
-
-			app.UseAuthentication();
-            app.UseAuthorization();
-
-            // Payment Cors Policy
+            // Required to allow CORS
             app.UseCors();
+
             app.UseRouting();
+
+            // Add authentication and authorization middleware
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
