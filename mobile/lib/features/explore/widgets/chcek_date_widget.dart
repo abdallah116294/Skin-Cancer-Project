@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,6 +25,7 @@ import 'package:mobile/injection_container.dart' as di;
 class PatientCheckDate extends StatefulWidget {
   List<String> availableDates;
   final int clinicId;
+
   PatientCheckDate(
       {super.key, required this.clinicId, required this.availableDates});
 
@@ -42,8 +42,10 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
       ProfileActionState(iconData: Icons.radio_button_off, isSelected: false);
   ProfileActionState profileActionState3 =
       ProfileActionState(iconData: Icons.radio_button_off, isSelected: false);
+
   @override
   Widget build(BuildContext context) {
+    List<ClinicSchedualModel>? avaliblity;
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
     String patientId = data[
@@ -75,7 +77,9 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                   context: context,
                   onTap: () {
                     Navigator.pushReplacement(
-                        context, MaterialPageRoute(builder: (context)=>const  RegisterPayment()));
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RegisterPayment()));
                   });
             }
           }
@@ -97,7 +101,7 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
               BlocBuilder<PatientClinicCubit, PatientClinicState>(
                 builder: (context, state) {
                   if (state is GetClinicSchedualIsLoading) {
-                    return CireProgressIndecatorWidget();
+                    return const CireProgressIndecatorWidget();
                   } else if (state is GetClinicSchedualIsSuccess) {
                     // Filter the clinic schedule to only include items where isBooked is false
                     List<ClinicSchedualModel> availableSchedules = state
@@ -110,68 +114,77 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                         child: Lottie.asset('assets/animation/empty.json'),
                       );
                     } else {
-                      return Expanded(
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: availableSchedules.length,
-                          itemBuilder: (context, index) {
-                            DateTime dateTime =
-                                DateTime.parse(availableSchedules[index].date);
-                            bool isSelected =
-                                availableSchedules[index].date == date;
+                      return Column(
+                        children: [
+                          SizedBox(
+                            height: 270,
+                            child: Expanded(
+                              child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: availableSchedules.length,
+                                itemBuilder: (context, index) {
+                                  DateTime dateTime = DateTime.parse(
+                                      availableSchedules[index].date);
+                                  bool isSelected =
+                                      availableSchedules[index].date == date;
 
-                            return ProfileAction(
-                              title:
-                                  DateConverter.getDateTimeWithMonth(dateTime),
-                              icondata: isSelected
-                                  ? Icons.radio_button_checked
-                                  : Icons.radio_button_off,
-                              function: () {
-                                log('change');
-                                setState(() {
-                                  date = availableSchedules[index].date;
-                                  selectedIndex = availableSchedules[index].id;
-                                  log(selectedIndex.toString());
-                                  log(date.toString());
-                                });
-                                // log(selectedIndex.toString());
-                              },
-                              icondata2: Icons.calendar_month,
-                            );
-                          },
-                        ),
+                                  return ProfileAction(
+                                    title: DateConverter.getDateTimeWithMonth(
+                                        dateTime),
+                                    icondata: isSelected
+                                        ? Icons.radio_button_checked
+                                        : Icons.radio_button_off,
+                                    function: () {
+                                      log('change');
+                                      setState(() {
+                                        date = availableSchedules[index].date;
+                                        selectedIndex =
+                                            availableSchedules[index].id;
+                                        log(selectedIndex.toString());
+                                        log(date.toString());
+                                      });
+                                      // log(selectedIndex.toString());
+                                    },
+                                    icondata2: Icons.calendar_month,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          state is PatientBookSchedualIsLoading
+                              ? const CireProgressIndecatorWidget()
+                              : widget.availableDates.isEmpty
+                                  ? const SizedBox()
+                                  : AppButton(
+                                      buttonColor: AppColor.primaryColor,
+                                      width: 170,
+                                      height: 50,
+                                      textOfButtonStyle:
+                                          TextStyles.font15BlackW500.copyWith(
+                                              fontWeight: FontWeight.w600,
+                                              color: Colors.white),
+                                      buttonName: "Book Appointment",
+                                      onTap: () {
+                                        log(patientId);
+                                        BlocProvider.of<PatientClinicCubit>(
+                                                context)
+                                            .patienBookSchedual(selectedIndex!,
+                                                patientId, token);
+                                      },
+                                      textColor: Colors.white,
+                                      white: false,
+                                    ),
+                        ],
                       );
                     }
                   } else if (state is GetClinicSchedualIsError) {
                     log("Error State: ${state.error}");
                     return Text(state.error.toString());
                   }
-                  return SizedBox();
+                  return const SizedBox();
                 },
               ),
               verticalSpacing(10),
-              state is PatientBookSchedualIsLoading
-                  ? const CireProgressIndecatorWidget()
-                  :  AppButton(
-                      buttonColor: const Color(0xFF0010B2),
-                      gradient: const LinearGradient(colors: [
-                        Color(0xFF7E87E2),
-                        Color(0xFF0010B2),
-                      ]),
-                      width: 170,
-                      height: 50,
-                      textOfButtonStyle: TextStyles.font15BlackW500.copyWith(
-                          fontWeight: FontWeight.w600, color: Colors.white),
-                      buttonName: "Book Appointment",
-                      onTap: () {
-                        log(patientId);
-                        BlocProvider.of<PatientClinicCubit>(context)
-                            .patienBookSchedual(
-                                selectedIndex!, patientId, token);
-                      },
-                      textColor: Colors.white,
-                      white: false,
-                    ),
             ],
           );
         },

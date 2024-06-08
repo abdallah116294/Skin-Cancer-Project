@@ -1,12 +1,8 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/config/routes/app_routes.dart';
@@ -21,13 +17,13 @@ import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
 import 'package:mobile/core/widgets/sub_title_widgets.dart';
 import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
-import 'package:mobile/features/explore/widgets/action_widgets.dart';
 import 'package:mobile/features/explore/widgets/select_appoint_ment.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class DocDetailsScreen extends StatefulWidget {
   // final Map<String, int>? value;
   final int id;
+
   const DocDetailsScreen({super.key, required this.id});
 
   @override
@@ -50,13 +46,14 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
           if (state is PatientRatingClinicIsSuccess) {
             if (state.patientBookSuccess.message ==
                 "This Patient has rated this clinic before") {
-            
-              Fluttertoast.showToast(backgroundColor: Colors.red,
-              textColor: Colors.white,
-                  toastLength: Toast.LENGTH_LONG,
+              Fluttertoast.showToast(
+                backgroundColor: Colors.red,
+                textColor: Colors.white,
+                toastLength: Toast.LENGTH_LONG,
                 msg: "You rating this clinic before",
               ).then((value) {
-                 context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,
+                    predicate: (Route<dynamic> route) => false);
               });
             } else {
               DailogAlertFun.showMyDialog(
@@ -64,7 +61,9 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                   actionName: 'Go Home',
                   context: context,
                   onTap: () {
-                     context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,predicate: (Route<dynamic> route) => false);
+                    context.pushNamedAndRemoveUntil(
+                        Routes.bottomNavScreenRoutes,
+                        predicate: (Route<dynamic> route) => false);
                   });
             }
           }
@@ -80,204 +79,204 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                 );
               } else if (state is GetClinicDetailsIsSuccess) {
                 return Scaffold(
+                  backgroundColor: Colors.white,
                   body: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Image.network(
-                              height: 327.h,
-                              width: 390.w,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Container(
+                          clipBehavior: Clip.antiAlias,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(20.r),
+                              bottomLeft: Radius.circular(20.r),
+                            ),
+                          ),
+                          child: Image.network(
+                              height: 250.h,
+                              width: double.infinity,
                               fit: BoxFit.cover,
-                              "https://i.pinimg.com/564x/0c/cb/ee/0ccbeed7579bab12f78b5ed9e41660da.jpg"),
-                          verticalSpacing(14),
-                          Container(
-                            width: double.infinity,
-                            height: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: const BorderRadius.only(
-                                    topLeft: Radius.circular(20),
-                                    topRight: Radius.circular(20)),
-                                color: AppColor.primaryColor),
-                            child: Padding(
-                              padding: const EdgeInsets.all(20.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              "https://i.pinimg.com/originals/1e/14/5b/1e145b7b9133b8d24cd7184a8208621d.jpg"),
+                        ),
+                        verticalSpacing(14),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 16.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        "Dr " +
-                                            state.clinicInfoModel.doctorName
-                                                .toString(),
-                                        style: TextStyles.font20whiteW700,
-                                      ),
-                                      Text(
-                                        '${state.clinicInfoModel.rate}⭐',
-                                        style: TextStyles.font20whiteW700,
-                                      )
-                                      // RatingBar(ratingWidget: state.clinicInfoModel.rate!.toInt().toString(), onRatingUpdate: )
-                                    ],
+                                  Text(
+                                    "Dr ${state.clinicInfoModel.doctorName!.split(" ").take(7).join(" ").toString()}",
+                                    style: TextStyles.font20whiteW700.copyWith(
+                                        overflow: TextOverflow.ellipsis,
+                                        color: AppColor.primaryColor,
+                                        fontSize: 23.sp),
                                   ),
-                                  verticalSpacing(8),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        state.clinicInfoModel.name.toString(),
-                                        style: TextStyles.font14BlackW300
-                                            .copyWith(color: Colors.white),
-                                      ),
-                                      Text(
-                                        state.clinicInfoModel.address
-                                            .toString()
-                                            .split(" ")
-                                            .take(7)
-                                            .join(''),
-                                        style: TextStyles.font14BlackW300
-                                            .copyWith(color: Colors.white),
-                                      ),
-                                    ],
+                                  Text(
+                                    '⭐${state.clinicInfoModel.rate}',
+                                    style: TextStyles.font20whiteW700.copyWith(
+                                      color: AppColor.primaryColor,
+                                      fontSize: 25.sp,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              verticalSpacing(8),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    state.clinicInfoModel.name.toString(),
+                                    style: TextStyles.font14BlackW300.copyWith(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                  Text(
+                                    state.clinicInfoModel.address
+                                        .toString()
+                                        .split(" ")
+                                        .take(7)
+                                        .join(''),
+                                    style: TextStyles.font14BlackW300.copyWith(
+                                        color: Colors.grey,
+                                        fontWeight: FontWeight.w500),
                                   ),
                                 ],
                               ),
+                              verticalSpacing(40),
+                              Text(
+                                "About",
+                                style: TextStyles.font24PrimaryW700.copyWith(
+                                    fontSize: 20.sp,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                              verticalSpacing(14),
+                              Text(
+                                state.clinicInfoModel.description.toString(),
+                                style: TextStyles.font24PrimaryW700.copyWith(
+                                    fontSize: 18.sp,
+                                    color: Colors.grey,
+                                    fontWeight: FontWeight.w400),
+                              ),
+                              verticalSpacing(10),
+                              const SubtitleTextWidget(label: 'Schedule Dates'),
+                              verticalSpacing(10),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 140.h,
+                          width: double.infinity,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              DateTime dateTime = DateTime.parse(state
+                                  .clinicInfoModel.availableDates[index]
+                                  .toString());
+                              return Padding(
+                                padding: EdgeInsets.all(8.w),
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color:
+                                                Colors.black.withOpacity(0.5),
+                                            blurRadius: 5.0,
+                                            spreadRadius: 0.0)
+                                      ]),
+                                  child: Center(
+                                      child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                        DateConverter.getDateTimeWithMonth(
+                                            dateTime)),
+                                  )),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) =>
+                                const Divider(),
+                            itemCount:
+                                state.clinicInfoModel.availableDates.length,
+                          ),
+                        ),
+                        const Spacer(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: AppButton(
+                                buttonColor: AppColor.primaryColor,
+                                width: 170,
+                                height: 60,
+                                textOfButtonStyle: TextStyles.font15BlackW500
+                                    .copyWith(
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.white),
+                                buttonName: "Book Appointment",
+                                onTap: () {
+                                  ModalBottomSheet.addAppointment(
+                                      context,
+                                      state.clinicInfoModel.id!,
+                                      state.clinicInfoModel.availableDates);
+                                },
+                                textColor: Colors.white,
+                                white: false,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "About",
-                            style: TextStyles.font24PrimaryW700.copyWith(
-                                fontSize: 20.sp, fontWeight: FontWeight.w600),
-                          ),
-                          verticalSpacing(14),
-                          Text(
-                            state.clinicInfoModel.description.toString(),
-                            style: TextStyles.font24PrimaryW700.copyWith(
-                                fontSize: 18.sp, fontWeight: FontWeight.w400),
-                          ),
-                          verticalSpacing(10),
-                          const SubtitleTextWidget(label: 'Sechdule Dates'),
-                          verticalSpacing(10),
-                          Expanded(
-                            child: ListView.separated(
-                              scrollDirection: Axis.horizontal,
-                              itemBuilder: (context, index) {
-                                DateTime dateTime = DateTime.parse(state
-                                    .clinicInfoModel.availableDates[index]
-                                    .toString());
-                                return Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Container(
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                              color:
-                                                  Colors.black.withOpacity(0.1),
-                                              blurRadius: 5.0,
-                                              spreadRadius: 0.0)
-                                        ]),
-                                    child: Center(
-                                        child: Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          DateConverter.getDateTimeWithMonth(
-                                              dateTime)),
-                                    )),
-                                  ),
-                                );
-                              },
-                              separatorBuilder: (context, index) =>
-                                  const Divider(),
-                              itemCount:
-                                  state.clinicInfoModel.availableDates.length,
-                            ),
-                          ),
-                          //const Spacer(),
-                          Row(
-                            children: [
-                              Expanded(
-                                child: AppButton(
-                                  buttonColor: const Color(0xFF0010B2),
-                                  gradient: const LinearGradient(colors: [
-                                    Color(0xFF7E87E2),
-                                    Color(0xFF0010B2),
-                                  ]),
+                            horizontalSpacing(10),
+                            Expanded(
+                              child: AppButton(
+                                  buttonColor: AppColor.primaryColor,
                                   width: 170,
-                                  height: 50,
+                                  height: 60,
                                   textOfButtonStyle: TextStyles.font15BlackW500
                                       .copyWith(
                                           fontWeight: FontWeight.w600,
                                           color: Colors.white),
-                                  buttonName: "Book Appointment",
+                                  buttonName: "Rating",
                                   onTap: () {
-                                    ModalBottomSheet.addAppointment(
-                                        context,
-                                        state.clinicInfoModel.id!,
-                                        state.clinicInfoModel.availableDates);
+                                    DailogAlertFun.showRationgDialog(
+                                        onRatingChanged: (double value) {
+                                          log(value.toString());
+                                          double intivalue = value * 2;
+                                          setState(() {
+                                            ratingvalue = intivalue;
+                                          });
+                                        },
+                                        initialRating: state
+                                                    .clinicInfoModel.rate!
+                                                    .toDouble() ==
+                                                null
+                                            ? 0
+                                            : state.clinicInfoModel.rate!
+                                                .toDouble(),
+                                        actionName: "Rate",
+                                        context: context,
+                                        onTap: () {
+                                          BlocProvider.of<PatientClinicCubit>(
+                                                  context)
+                                              .patientRateClinic(
+                                                  token,
+                                                  ratingvalue!.toInt(),
+                                                  patientId,
+                                                  widget.id);
+                                          log(token);
+                                          log(patientId);
+                                        });
                                   },
                                   textColor: Colors.white,
-                                  white: false,
-                                ),
-                              ),
-                              horizontalSpacing(10),
-                              Expanded(
-                                child: AppButton(
-                                    buttonColor: const Color(0xFF0010B2),
-                                    width: 170,
-                                    height: 50,
-                                    gradient: const LinearGradient(colors: [
-                                      Color(0xFF7E87E2),
-                                      Color(0xFF0010B2),
-                                    ]),
-                                    textOfButtonStyle:
-                                        TextStyles.font15BlackW500.copyWith(
-                                            fontWeight: FontWeight.w600,
-                                            color: Colors.white),
-                                    buttonName: "Rating",
-                                    onTap: () {
-                                      DailogAlertFun.showRationgDialog(
-                                          onRatingChanged: (double value) {
-                                            log(value.toString());
-                                            double intivalue = value * 2;
-                                            setState(() {
-                                              ratingvalue = intivalue;
-                                            });
-                                          },
-                                          initialRating: state
-                                                      .clinicInfoModel.rate!
-                                                      .toDouble() ==
-                                                  null
-                                              ? 0
-                                              : state.clinicInfoModel.rate!
-                                                  .toDouble(),
-                                          actionName: "Rate",
-                                          context: context,
-                                          onTap: () {
-                                            BlocProvider.of<PatientClinicCubit>(
-                                                    context)
-                                                .patientRateClinic(
-                                                    token,
-                                                    ratingvalue!.toInt(),
-                                                    patientId,
-                                                    widget.id);
-                                            log(token);
-                                            log(patientId);
-                                          });
-                                    },
-                                    textColor: Colors.white,
-                                    white: false),
-                              ),
-                            ],
-                          ),
-                          verticalSpacing(20),
-                        ],
-                      ),
+                                  white: false),
+                            ),
+                          ],
+                        ),
+                        verticalSpacing(50),
+                      ],
                     ),
                   ),
                 );

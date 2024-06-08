@@ -17,9 +17,9 @@ import 'package:mobile/features/clinic/screens/doc_clinic_details.dart';
 import 'package:mobile/features/clinic/screens/patient_selected_clinic.dart';
 import 'package:mobile/features/disease_info/screens/early_detection.dart';
 import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
+import 'package:mobile/features/explore/doc_details.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
-import 'package:mobile/features/explore/doc_details.dart';
 import 'package:mobile/features/home/home_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_auth_fun_screen.dart';
 import 'package:mobile/features/onBoarding/screens/chose_user.dart';
@@ -27,6 +27,7 @@ import 'package:mobile/features/onBoarding/screens/developer_screen.dart';
 import 'package:mobile/features/onBoarding/screens/on_boarding_screen.dart';
 import 'package:mobile/features/profile/screens/profile_screen.dart';
 import 'package:mobile/features/splash/splash_screen.dart';
+import 'package:mobile/injection_container.dart' as di;
 
 import '../../features/Auth/cubit/auth_cubit.dart';
 import '../../features/bottom_nav/bottom_nav.dart';
@@ -34,7 +35,6 @@ import '../../features/disease_info/screens/facts_statistics.dart';
 import '../../features/disease_info/screens/prevention.dart';
 import '../../features/disease_info/screens/risk_factors.dart';
 import '../../features/disease_info/screens/what_is_cancer.dart';
-import 'package:mobile/injection_container.dart' as di;
 
 class Routes {
   static const String splashScreenRoutes = "/SplashScreen";
@@ -75,8 +75,7 @@ class AppRoutes {
       case Routes.splashScreenRoutes:
         return MaterialPageRoute(builder: (context) => const SplashScreen());
       case Routes.onBoardingRoutes:
-        return MaterialPageRoute(
-            builder: (context) => const OnBoardingScreen());
+        return MaterialPageRoute(builder: (context) => OnBoardingScreen());
       case Routes.choseUserRoutes:
         return MaterialPageRoute(builder: (context) => const ChoseUser());
       case Routes.choseAuthFunScreenRoutes:
