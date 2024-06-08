@@ -1,6 +1,8 @@
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decode/jwt_decode.dart';
@@ -30,6 +32,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
+    Color tapColor = Color(0xffDEE9F1);
     var clinicid = CacheHelper.getData(key: 'clinic_id');
     String patientId = data[
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
@@ -41,7 +44,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     final tomorrow = DateTime(now.year, now.month, now.day + 1);
     bool isWithinNext24Hours(DateTime date) {
       final now = DateTime.now();
-      final twentyFourHoursFromNow = now.add(Duration(hours: 24));
+      final twentyFourHoursFromNow = now.add(const Duration(hours: 24));
 
       // Check if the given date is within the next 24 hours from now
       bool within24Hours =
@@ -108,76 +111,142 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           List<SelectedClinicModel> selectedClinictody = state
                               .selectedClinic
                               .where((element) =>
-                                  element.date!.day==DateTime.now().day)
+                                  element.date!.day == DateTime.now().day)
                               .toList();
                           List<SelectedClinicModel> selectedClinictomoro = state
                               .selectedClinic
-                              .where((element) => element.date!=null&&
-                                          element.date!.isAfter(DateTime.now()) )
+                              .where((element) =>
+                                  element.date != null &&
+                                  element.date!.isAfter(DateTime.now()))
                               .toList();
                           List<SelectedClinicModel> selectedClinicfeature =
                               state.selectedClinic
-                                  .where(
-                                      (element) =>
-                                          element.date!=null&&
-                                          element.date!.isAfter(DateTime.now()))
+                                  .where((element) =>
+                                      element.date != null &&
+                                      element.date!.isAfter(DateTime.now()))
                                   .toList();
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                                top: 40, left: 20, right: 20),
-                            child: DefaultTabController(
-                              length: 3,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Container(
-                                    child: TabBar(
-                                      labelColor: Colors.white,
-                                      unselectedLabelColor:
-                                          AppColor.primaryColor,
-                                      indicatorSize: TabBarIndicatorSize.tab,
-                                      indicator: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(
-                                              30), // Creates border
-                                          color: AppColor.primaryColor),
-                                      onTap: (index) {},
-                                      tabs: const [
-                                        Tab(
-                                          text: 'All',
+                          return Stack(
+                            children: [
+                              Container(
+                                height: 180.h,
+                                width: double.infinity,
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
+                                      bottomRight: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20)),
+                                  color: AppColor.primaryColor,
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'Appointments',
+                                    style: TextStyles.font20BlackW700
+                                        .copyWith(color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 140),
+                                child: DefaultTabController(
+                                  length: 3,
+                                  child: Positioned(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.stretch,
+                                      children: [
+                                        Container(
+                                          child: TabBar(
+                                            labelColor: Colors.black,
+                                            unselectedLabelColor: Colors.black,
+                                            indicatorSize:
+                                                TabBarIndicatorSize.label,
+                                            isScrollable: false,
+                                            
+                                            indicator: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: tapColor),
+                                            onTap: (index) {
+                                              if(index==0){
+                                                setState(() {
+                                                  tapColor=Colors.white;
+                                                });
+                                              }else if(index==1){
+                                                setState(() {
+                                                  tapColor=Colors.white;
+                                                });
+                                              }else if(index==2){
+                                                setState(() {
+                                                  tapColor=Colors.white;
+                                                });
+                                              }
+                                            },
+                                            tabs: [
+                                              Container(
+                                                width: 80.w,
+                                                decoration: BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: tapColor),
+                                                child: const Tab(
+                                                  text: 'All',
+                                                ),
+                                              ),
+                                              Container(
+                                                  width: 80.w,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      // borderRadius: BorderRadius.circular(
+                                                      //     30), // Creates border
+                                                      color: tapColor),
+                                                  child:
+                                                      const Tab(text: 'Tomo')),
+                                              Container(
+                                                  width: 80.w,
+                                                  decoration: BoxDecoration(
+                                                      shape: BoxShape.circle,
+                                                      // borderRadius: BorderRadius.circular(
+                                                      //     30), // Creates border
+                                                      color: tapColor),
+                                                  child:
+                                                      const Tab(text: 'Next')),
+                                            ],
+                                          ),
                                         ),
-                                        Tab(text: 'Tomorrow'),
-                                        Tab(text: 'Next'),
+                                        Expanded(
+                                          //  height: size.height * .8,
+                                          child: TabBarView(children: [
+                                            state.selectedClinic.isNotEmpty
+                                                ? AppointmentWidget(
+                                                    clincs:
+                                                        state.selectedClinic,
+                                                  )
+                                                : Center(
+                                                    child: Lottie.asset(
+                                                        'assets/animation/empty.json'),
+                                                  ),
+                                            selectedClinictomoro.isNotEmpty
+                                                ? AppointmentWidget(
+                                                    clincs:
+                                                        selectedClinictomoro)
+                                                : Center(
+                                                    child: Lottie.asset(
+                                                        'assets/animation/empty.json'),
+                                                  ),
+                                            selectedClinicfeature.isNotEmpty
+                                                ? AppointmentWidget(
+                                                    clincs:
+                                                        selectedClinicfeature)
+                                                : Center(
+                                                    child: Lottie.asset(
+                                                        'assets/animation/empty.json'),
+                                                  )
+                                          ]),
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  Expanded(
-                                  //  height: size.height * .8,
-                                    child: TabBarView(children: [
-                                     state.selectedClinic.isNotEmpty? AppointmentWidget(
-                                        clincs: state.selectedClinic,
-                                      ): Center(
-                                              child: Lottie.asset(
-                                                  'assets/animation/empty.json'),
-                                            ),
-                                      selectedClinictomoro.isNotEmpty
-                                          ? AppointmentWidget(
-                                              clincs: selectedClinictomoro)
-                                          : Center(
-                                              child: Lottie.asset(
-                                                  'assets/animation/empty.json'),
-                                            ),
-                                      selectedClinicfeature.isNotEmpty
-                                          ? AppointmentWidget(
-                                              clincs: selectedClinicfeature)
-                                          : Center(
-                                              child: Lottie.asset(
-                                                  'assets/animation/empty.json'),
-                                            )
-                                    ]),
-                                  ),
-                                ],
+                                ),
                               ),
-                            ),
+                            ],
                           );
                         }
                       } else if (state is GetSelectedClinicIsError) {
