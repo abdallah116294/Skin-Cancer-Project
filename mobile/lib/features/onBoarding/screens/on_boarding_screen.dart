@@ -1,64 +1,116 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:mobile/config/routes/app_routes.dart';
-import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
-import 'package:mobile/core/helper/spacing.dart';
-import 'package:mobile/core/utils/string_manager.dart';
-import 'package:mobile/core/widgets/app_button.dart';
 
-import '../../../core/utils/text_styles.dart';
+import '../../../config/routes/app_routes.dart';
+import '../../../core/cach_helper/cach_helper.dart';
+import '../../../core/utils/app_color.dart';
+import '../../../core/widgets/app_button.dart';
 
-class OnBoardingScreen extends StatelessWidget {
-  const OnBoardingScreen({super.key});
+class OnBoardingScreen extends StatefulWidget {
+  OnBoardingScreen({
+    super.key,
+  });
+
+  @override
+  State<OnBoardingScreen> createState() => _OnBoardingScreenState();
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen> {
+  final PageController controller = PageController();
+
+  int currentIndex = 0;
+  bool isLast = true;
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> pages = [
+      OnBoardingWidget(
+          currentIndex: currentIndex,
+          onTap: () {
+            controller.nextPage(
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.bounceIn);
+            setState(() {
+              currentIndex = 0;
+            });
+          },
+          imagePath: "assets/image/ai_scan.png"),
+      OnBoardingWidget(
+          currentIndex: currentIndex,
+          onTap: () {
+            controller.nextPage(
+                duration: const Duration(milliseconds: 100),
+                curve: Curves.bounceIn);
+            setState(() {
+              currentIndex = 1;
+            });
+          },
+          imagePath: "assets/image/AhmedKhaled.jpg"),
+      OnBoardingWidget(
+          currentIndex: currentIndex,
+          onTap: () {
+            setState(() {
+              currentIndex = 2;
+            });
+            CacheHelper.saveData(key: 'onBoarding', value: true);
+            context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,
+                predicate: (Route<dynamic> route) => false);
+          },
+          imagePath: "assets/image/cancer.png"),
+    ];
     return Scaffold(
-        body: SafeArea(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: [
-            verticalSpacing(10),
-            Container(
-              height: 300.h,
-              clipBehavior: Clip.antiAlias,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  image: const DecorationImage(
-                      fit: BoxFit.cover,
-                      image: AssetImage("assets/image/onboarding_2.jpg"))),
-            ),
-            verticalSpacing(10),
-            Text(
-              textAlign: TextAlign.center,
-              StringManager.onboarding1,
-              style: TextStyles.font20BlackW700,
-            ),
-            verticalSpacing(20),
-            Text(
-              textAlign: TextAlign.center,
-              StringManager.onBoarding2,
-              style: TextStyles.font14BlackW600,
-            ),
-            verticalSpacing(30),
-            AppButton(
-                buttonColor: const Color(0xFFC74587),
-                width: 358,
-                height: 60,
-                buttonName: StringManager.getStarted,
-                onTap: () {
-                  CacheHelper.saveData(key: 'onBoarding', value: true);
-                  context.pushReplacementNamed(Routes.choseUserRoutes);
-                },
-                textColor: Colors.white,
-                white: false),
-          ],
+      body: PageView.builder(
+          onPageChanged: (index) {
+            if (index == pages.length - 1) {
+              setState(() {
+                currentIndex = index;
+              });
+            }
+          },
+          itemCount: pages.length,
+          controller: controller,
+          itemBuilder: (context, index) {
+            return pages[index];
+          }),
+    );
+  }
+}
+
+class OnBoardingWidget extends StatelessWidget {
+  final String imagePath;
+  final int currentIndex;
+  final void Function() onTap;
+
+  const OnBoardingWidget({
+    super.key,
+    required this.imagePath,
+    required this.onTap,
+    required this.currentIndex,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Image.asset(
+            height: MediaQuery.of(context).size.height,
+            fit: BoxFit.cover,
+            imagePath),
+        Positioned(
+          bottom: 40,
+          right: 10,
+          child: AppButton(
+              borderRadius: 16,
+              buttonColor: AppColor.primaryColor,
+              width: 200.w,
+              height: 50.h,
+              buttonName: currentIndex == 2 ? "Get Started" : "Next",
+              onTap: onTap,
+              textColor: Colors.white,
+              white: true),
         ),
-      ),
-    ));
+      ],
+    );
   }
 }

@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/widgets/sub_title_widgets.dart';
 
 class ProfileAction extends StatelessWidget {
   ProfileAction(
       {super.key,
-        required this.title,
-        required this.icondata,
-        required this.function,
-        required this.icondata2
-      });
+      required this.title,
+      required this.icondata,
+      required this.function,
+      required this.icondata2});
 
   String title;
   IconData icondata;
@@ -19,25 +19,30 @@ class ProfileAction extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-        height: 50,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  blurRadius: 5.0,
-                  spreadRadius: 0.0
-              )
-            ]
-        ),
+      height: 70.h,
+      decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+                color: Colors.black.withOpacity(0.1),
+                blurRadius: 5.0,
+                spreadRadius: 0.0)
+          ]),
       child: ListTile(
         onTap: function,
         leading: Icon(
-         icondata2,
+          icondata2,
+          color: AppColor.primaryColor,
         ),
-        title: SubtitleTextWidget(label: title),
-        trailing: Icon(icondata),
+        title: SubtitleTextWidget(
+          label: title,
+          color: Colors.black.withOpacity(.7),
+        ),
+        trailing: Icon(
+          icondata,
+          color: AppColor.primaryColor,
+        ),
       ),
     );
   }
