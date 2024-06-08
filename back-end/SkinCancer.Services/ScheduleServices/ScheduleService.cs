@@ -140,6 +140,39 @@ namespace SkinCancer.Services.ScheduleServices
                         IsSucceeded = false
                     };
                 }
+                   
+               
+                var result = await _unitOfWork.scheduleRepository.GetClinicId(dto.ScheduleId);
+
+                if (result == null)
+                {
+                    return new ProcessResult
+                    {
+                        Message = "No Schedule assigned with this id"
+                    };
+                }
+
+                 
+                var checkPatientInClinic =  _unitOfWork.scheduleRepository
+                    .IsPatientInClinic(new Entities.ModelsDtos.PatientDtos.PatientRateDto
+                    {
+                        ClinicId = result.Value,
+                        PatientId = dto.PatientId,
+                    });
+
+                if (checkPatientInClinic)
+                    return new ProcessResult
+                    {
+                        Message = "Patient has booked in the same clinic before"
+                    };
+
+                if (schedule.IsBooked)
+                    return new ProcessResult
+                    {
+                        Message = "this schedule has a patient already"
+                    };
+
+
                 schedule.PatientId = dto.PatientId;
                 schedule.IsBooked = true;
 

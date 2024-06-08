@@ -55,6 +55,8 @@ namespace SkinCancer.Api.Controllers
 
             return Ok(clinicDto);
         }
+
+
         [HttpGet("GetClinicById{id:int}")]
         public async Task<ActionResult<DoctorClinicDetailsDto>> GetClinicByIdAsync(int id)
         {

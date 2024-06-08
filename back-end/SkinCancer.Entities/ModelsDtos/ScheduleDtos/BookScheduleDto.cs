@@ -11,6 +11,6 @@ namespace SkinCancer.Entities.ModelsDtos.ScheduleDtos
         public int ScheduleId { get; set; }
 
         public string PatientId { get; set; }
-
+        
     }
 }
