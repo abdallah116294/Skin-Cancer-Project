@@ -6,14 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Newtonsoft.Json;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.PaymentDtos;
 using SkinCancer.Repositories.Interface;
 using SkinCancer.Services.ClinicServices;
 using Stripe;
 using Stripe.Checkout;
-using Stripe.Climate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,36 +52,25 @@ namespace SkinCancer.Api.Controllers
                 var referer = Request.Headers.Referer;
                 s_wasmClientURL = referer[0];
 
-                // Build the URL to which the customer will be redirected after paying.
                 var server = sp.GetRequiredService<IServer>();
-
                 var serverAddressesFeature = server.Features.Get<IServerAddressesFeature>();
-
-                string? thisApiUrl = null;
-
-                if (serverAddressesFeature is not null)
-                {
-                    thisApiUrl = serverAddressesFeature.Addresses.FirstOrDefault();
-                }
+                string? thisApiUrl = serverAddressesFeature?.Addresses.FirstOrDefault();
 
                 if (thisApiUrl is not null)
                 {
-                    var sessionId = await CreatePaymentSession(paymentDto, thisApiUrl);
+                    var session = await CreatePaymentSession(paymentDto, thisApiUrl);
                     var publishKey = _configuration["Stripe:PublishKey"];
 
-                    // Construct the URL with query parameters
-                    var returnUrl = $"{thisApiUrl}/api/payment/success?sessionId={sessionId}&publishKey={publishKey}";
+                    var returnUrl = session.Url;
 
-                    // Construct the response object
                     var paymentOrderResponse = new PaymentOrderResponse
                     {
-                        SessionId = sessionId,
+                        SessionId = session.Id,
                         PublishKey = publishKey,
                         Url = returnUrl
                     };
 
-
-                    return Ok(new { SessionId = sessionId, PublishKey = publishKey, Url = returnUrl });
+                    return Ok(paymentOrderResponse);
                 }
                 else
                 {
@@ -97,10 +84,8 @@ namespace SkinCancer.Api.Controllers
             }
         }
 
-
-
         [NonAction]
-        private async Task<string> CreatePaymentSession(PaymentDto paymentDto, string thisApiUrl)
+        private async Task<Session> CreatePaymentSession(PaymentDto paymentDto, string thisApiUrl)
         {
             try
             {
@@ -108,33 +93,33 @@ namespace SkinCancer.Api.Controllers
                 if (clinic == null)
                 {
                     _logger.LogWarning($"No Clinic found with ID {paymentDto.ClinicId}");
-                    return ("No Clinic Found With this Id");
+                    throw new Exception("No Clinic Found With this Id");
                 }
 
                 var patient = await _userManager.FindByIdAsync(paymentDto.PatientId);
                 if (patient == null)
                 {
                     _logger.LogWarning($"No Patient found with ID {paymentDto.PatientId}");
-                    return ("No Patient Found With this Id");
+                    throw new Exception("No Patient Found With this Id");
                 }
 
                 var schedule = await _unitOfWork.Reposirory<Schedule>().GetByIdAsync(paymentDto.ScheduleId);
                 if (schedule == null)
                 {
                     _logger.LogWarning($"No Schedule found with ID {paymentDto.ScheduleId}");
-                    return ("No Schedule Found With this Id");
+                    throw new Exception("No Schedule Found With this Id");
                 }
 
                 if (schedule.ClinicId != paymentDto.ClinicId)
                 {
                     _logger.LogWarning("Clinic ID mismatch in schedule.");
-                    return ("This Clinic doesn't contain this schedule");
+                    throw new Exception("This Clinic doesn't contain this schedule");
                 }
 
                 if (schedule.PatientId != paymentDto.PatientId)
                 {
                     _logger.LogWarning("Patient ID mismatch in schedule.");
-                    return ("This patient hasn't booked an appointment within this clinic's schedule.");
+                    throw new Exception("This patient hasn't booked an appointment within this clinic's schedule.");
                 }
 
                 var options = new SessionCreateOptions
@@ -166,7 +151,7 @@ namespace SkinCancer.Api.Controllers
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
 
-                return session.Id;
+                return session;
             }
             catch (StripeException ex)
             {
@@ -181,7 +166,7 @@ namespace SkinCancer.Api.Controllers
         }
 
         [HttpGet("Success")]
-        public ActionResult success(string sessionId , string publishKey)
+        public ActionResult Success(string sessionId, string publishKey)
         {
             try
             {
