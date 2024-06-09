@@ -243,7 +243,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                 firstText: StringManager.alreadyHaveAccount,
                                 secondText: StringManager.signIn,
                                 onTap: () {
-                                  context.pushNamed(Routes.singInScreenRoutes);
+                                  context.pushNamed(Routes.singInScreenRoutes,
+                                      arguments: widget.role);
                                 },
                               ),
                               verticalSpacing(20),

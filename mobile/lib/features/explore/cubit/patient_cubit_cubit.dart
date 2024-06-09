@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/explore/data/model/booked_success_model.dart';
 import 'package:mobile/features/explore/data/model/clinic_info_model.dart';
 import 'package:mobile/features/explore/data/model/clinic_schedual_model.dart';
+import 'package:mobile/features/explore/data/model/payment_response.dart';
 import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
-import 'package:mobile/features/explore/data/repo/patient_clinic_repo_impl.dart';
 
 part 'patient_cubit_state.dart';
 
@@ -51,32 +51,36 @@ class PatientClinicCubit extends Cubit<PatientClinicState> {
       emit(GetClinicDetailsIsError(error: error.toString()));
     }
   }
-    Future<void> patienBookSchedual(int scheduleId,String patientId,String token  ) async {
+
+  Future<void> patienBookSchedual(
+      int scheduleId, String patientId, String token) async {
     emit(PatientBookSchedualIsLoading());
 
     try {
-      Either<String, PatientBookSuccess> response =
-          await patientClinicRepo.patientBookSchedual(scheduleId,patientId,token);
+      Either<String, PatientBookSuccess> response = await patientClinicRepo
+          .patientBookSchedual(scheduleId, patientId, token);
       emit(response.fold((l) => PatientBookSchedualError(error: l),
           (r) => PatientBookSchedualIsSuccess(patientBookSuccess: r)));
     } catch (error) {
       emit(PatientBookSchedualError(error: error.toString()));
     }
   }
-      Future<void> patientRateClinic(String token,
-      int rate, String patientId, int clinicId) async {
+
+  Future<void> patientRateClinic(
+      String token, int rate, String patientId, int clinicId) async {
     emit(PatientRatingClinicIsLoading());
 
     try {
-      Either<String, PatientBookSuccess> response =
-          await patientClinicRepo.patientRateClinic(token, rate, patientId, clinicId);
+      Either<String, PatientBookSuccess> response = await patientClinicRepo
+          .patientRateClinic(token, rate, patientId, clinicId);
       emit(response.fold((l) => PatientRatingClinicError(error: l),
           (r) => PatientRatingClinicIsSuccess(patientBookSuccess: r)));
     } catch (error) {
       emit(PatientBookSchedualError(error: error.toString()));
     }
   }
-        Future<void> getClinicSchedual(int clinicId) async {
+
+  Future<void> getClinicSchedual(int clinicId) async {
     emit(GetClinicSchedualIsLoading());
     try {
       Either<String, List<ClinicSchedualModel>> response =
@@ -85,6 +89,19 @@ class PatientClinicCubit extends Cubit<PatientClinicState> {
           (r) => GetClinicSchedualIsSuccess(clinicSchedual: r)));
     } catch (error) {
       emit(GetClinicSchedualIsError(error: error.toString()));
+    }
+  }
+
+  Future<void> patientPaymentOrder(
+      String patientId, int clinicId, int scheduleId) async {
+    emit(PaymentOrderLoading());
+    try {
+      Either<String, PaymentResponse> response =
+          await patientClinicRepo.paymentOrder(patientId, clinicId, scheduleId);
+      emit(response.fold((l) => PaymentOrderError(error: l),
+          (r) => PaymentOrderSuccess(paymentResponse: r)));
+    } catch (error) {
+      emit(PaymentOrderError(error: error.toString()));
     }
   }
 }

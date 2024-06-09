@@ -5,11 +5,14 @@ import 'package:mobile/core/network/api_consumer.dart';
 import 'package:mobile/features/explore/data/model/booked_success_model.dart';
 import 'package:mobile/features/explore/data/model/clinic_info_model.dart';
 import 'package:mobile/features/explore/data/model/clinic_schedual_model.dart';
+import 'package:mobile/features/explore/data/model/payment_response.dart';
 import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
 
 class PatinetClinicRepoImpl implements PatientClinicRepo {
   ApiConsumer apiConsumer;
+
   PatinetClinicRepoImpl({required this.apiConsumer});
+
   @override
   Future<Either<String, List<ClinicInfoModel>>> getAllClinic() async {
     try {
@@ -91,6 +94,22 @@ class PatinetClinicRepoImpl implements PatientClinicRepo {
           .map((e) => ClinicSchedualModel.fromJson(e))
           .toList();
       return Right(clinicScheduals);
+    } on ServerException catch (error) {
+      return Left(error.toString());
+    }
+  }
+
+  @override
+  Future<Either<String, PaymentResponse>> paymentOrder(
+      String patientId, int clinicId, int scheduleId) async {
+    try {
+      final response = await apiConsumer.post(ApiConstant.paymentOrder, body: {
+        "patientId": patientId,
+        "clinicId": clinicId,
+        "scheduleId": scheduleId
+      });
+      var result = PaymentResponse.fromJson(response);
+      return Right(result);
     } on ServerException catch (error) {
       return Left(error.toString());
     }
