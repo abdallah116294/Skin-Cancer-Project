@@ -90,3 +90,15 @@ class GetClinicSchedualIsError extends PatientClinicState {
   final String error;
   GetClinicSchedualIsError({required this.error});
 }
+
+class PaymentOrderLoading extends PatientClinicState {}
+
+class PaymentOrderSuccess extends PatientClinicState {
+  final PaymentResponse paymentResponse;
+  const PaymentOrderSuccess({required this.paymentResponse});
+}
+
+class PaymentOrderError extends PatientClinicState {
+  final String error;
+  const PaymentOrderError({required this.error});
+}

@@ -1,17 +1,11 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:lottie/lottie.dart';
-import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
-import 'package:mobile/core/helper/date_converter.dart';
-import 'package:mobile/core/helper/exetentions.dart';
-import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
@@ -63,6 +57,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     }
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: clinicid != null
           ? BlocProvider(
               create: (context) =>
@@ -155,61 +150,57 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                           CrossAxisAlignment.stretch,
                                       children: [
                                         Container(
-                                          child: TabBar(
-                                            labelColor: Colors.black,
-                                            unselectedLabelColor: Colors.black,
-                                            indicatorSize:
-                                                TabBarIndicatorSize.label,
-                                            isScrollable: false,
-                                            
-                                            indicator: BoxDecoration(
+                                          color: Colors.white,
+                                        ),
+                                        TabBar(
+                                          labelColor: Colors.black,
+                                          unselectedLabelColor: Colors.black,
+                                          indicatorSize:
+                                              TabBarIndicatorSize.label,
+                                          isScrollable: false,
+                                          indicator: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: tapColor),
+                                          onTap: (index) {
+                                            if (index == 0) {
+                                              setState(() {
+                                                tapColor = Colors.white;
+                                              });
+                                            } else if (index == 1) {
+                                              setState(() {
+                                                tapColor = Colors.white;
+                                              });
+                                            } else if (index == 2) {
+                                              setState(() {
+                                                tapColor = Colors.white;
+                                              });
+                                            }
+                                          },
+                                          tabs: [
+                                            Container(
+                                              decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
-                                                color: tapColor),
-                                            onTap: (index) {
-                                              if(index==0){
-                                                setState(() {
-                                                  tapColor=Colors.white;
-                                                });
-                                              }else if(index==1){
-                                                setState(() {
-                                                  tapColor=Colors.white;
-                                                });
-                                              }else if(index==2){
-                                                setState(() {
-                                                  tapColor=Colors.white;
-                                                });
-                                              }
-                                            },
-                                            tabs: [
-                                              Container(
-                                                width: 80.w,
-                                                decoration: BoxDecoration(
-                                                    shape: BoxShape.circle,
-                                                    color: tapColor),
-                                                child: const Tab(
-                                                  text: 'All',
-                                                ),
+                                                color: tapColor,
                                               ),
-                                              Container(
-                                                  width: 80.w,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      // borderRadius: BorderRadius.circular(
-                                                      //     30), // Creates border
-                                                      color: tapColor),
-                                                  child:
-                                                      const Tab(text: 'Tomo')),
-                                              Container(
-                                                  width: 80.w,
-                                                  decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                      // borderRadius: BorderRadius.circular(
-                                                      //     30), // Creates border
-                                                      color: tapColor),
-                                                  child:
-                                                      const Tab(text: 'Next')),
-                                            ],
-                                          ),
+                                              child: const Tab(
+                                                text: '    All    ',
+                                              ),
+                                            ),
+                                            Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: tapColor,
+                                                ),
+                                                child: const Tab(
+                                                    text: '  Tomo  ')),
+                                            Container(
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: tapColor,
+                                                ),
+                                                child: const Tab(
+                                                    text: '  Next  ')),
+                                          ],
                                         ),
                                         Expanded(
                                           //  height: size.height * .8,

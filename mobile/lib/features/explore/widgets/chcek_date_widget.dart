@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
@@ -19,7 +20,6 @@ import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/data/model/clinic_schedual_model.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
 import 'package:mobile/features/explore/widgets/action_widgets.dart';
-import 'package:mobile/features/payments/screens/register_to_payment.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class PatientCheckDate extends StatefulWidget {
@@ -57,7 +57,7 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
         listener: (context, state) {
           if (state is PatientBookSchedualIsSuccess) {
             if (state.patientBookSuccess.message ==
-                'An error occurred while booking schedule: An error occurred while saving the entity changes. See the inner exception for details.') {
+                'Patient has booked in the same clinic before') {
               DailogAlertFun.showMyDialog(
                   daliogContent: "You Have Book before",
                   actionName: "Go Back",
@@ -70,18 +70,30 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                             route.settings.name ==
                             Routes.bottomNavScreenRoutes);
                   });
-            } else {
-              DailogAlertFun.showMyDialog(
-                  daliogContent: "Booked Successful",
-                  actionName: "Start Pay",
-                  context: context,
-                  onTap: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterPayment()));
-                  });
             }
+            // else {
+            //   DailogAlertFun.showMyDialog(
+            //       daliogContent: "Booked Successful",
+            //       actionName: "Start Pay",
+            //       context: context,
+            //       onTap: () {
+            //         di
+            //             .sl<PatientClinicRepo>()
+            //             .paymentOrder(patientId, widget.clinicId, 29)
+            //             .then((val) {
+            //           Fluttertoast.showToast(
+            //             backgroundColor: Colors.green,
+            //             textColor: Colors.white,
+            //             toastLength: Toast.LENGTH_LONG,
+            //             msg: "Payment Order Successful",
+            //           ).then((value) {
+            //             context.pushNamedAndRemoveUntil(
+            //                 Routes.bottomNavScreenRoutes,
+            //                 predicate: (Route<dynamic> route) => false);
+            //           });
+            //         });
+            //       });
+            // }
           }
         },
         builder: (context, state) {
@@ -169,7 +181,45 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                                         BlocProvider.of<PatientClinicCubit>(
                                                 context)
                                             .patienBookSchedual(selectedIndex!,
-                                                patientId, token);
+                                                patientId, token)
+                                            .then((val) {
+                                          context
+                                              .read<PatientClinicCubit>()
+                                              .patientPaymentOrder(
+                                                  patientId,
+                                                  widget.clinicId,
+                                                  selectedIndex!);
+                                          BlocBuilder<PatientClinicCubit,
+                                              PatientClinicState>(
+                                            builder: (BuildContext context,
+                                                PatientClinicState state) {
+                                              if (state
+                                                  is PaymentOrderSuccess) {
+                                                context.pushReplacementNamed(
+                                                    Routes.paymentWebView,
+                                                    arguments: state
+                                                        .paymentResponse.url);
+                                              } else if (state
+                                                  is PaymentOrderError) {
+                                                Fluttertoast.showToast(
+                                                  backgroundColor: Colors.red,
+                                                  textColor: Colors.white,
+                                                  toastLength:
+                                                      Toast.LENGTH_LONG,
+                                                  msg: "you cant pay",
+                                                ).then((value) {
+                                                  context.pushNamedAndRemoveUntil(
+                                                      Routes
+                                                          .bottomNavScreenRoutes,
+                                                      predicate: (Route<dynamic>
+                                                              route) =>
+                                                          false);
+                                                });
+                                              }
+                                              return SizedBox();
+                                            },
+                                          );
+                                        });
                                       },
                                       textColor: Colors.white,
                                       white: false,
