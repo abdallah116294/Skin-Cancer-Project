@@ -29,6 +29,7 @@ namespace SkinCancer.Entities.Models
         //       [ValidateNever]
         public Clinic? Clinic { get; set; }
 
+
         public List<PatientRateClinic> PatientRates { get; set; } = new List<PatientRateClinic>();
         
         public ICollection<Schedule> Schedules { get; set; }    
