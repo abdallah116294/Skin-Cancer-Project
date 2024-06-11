@@ -2,14 +2,14 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "AddRoleAsync",
-    "RelativePath": "api/Account/AddRole",
+    "RelativePath": "api/account/addrole",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "model",
-        "Type": "SkinCancer.Entities.AuthenticationUserDtos.RoleModel",
+        "Type": "SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos.RoleModel",
         "IsRequired": true
       }
     ],
@@ -18,7 +18,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "ConfirmEmail",
-    "RelativePath": "api/Account/ConfirmEmail",
+    "RelativePath": "api/account/confirmemail",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -39,7 +39,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "ForgetPassword",
-    "RelativePath": "api/Account/ForgetPassword",
+    "RelativePath": "api/account/forgetpassword",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -54,25 +54,47 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
-    "Method": "GetAll",
-    "RelativePath": "api/Account/GetAll",
+    "Method": "GetDoctorDetailsAsync",
+    "RelativePath": "api/account/getdoctordetails",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "doctorId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AccountController",
+    "Method": "GetPatientDetailsAsync",
+    "RelativePath": "api/account/getpatientdetails",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "patientId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
     "ReturnTypes": []
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "Login",
-    "RelativePath": "api/Account/Login",
+    "RelativePath": "api/account/login",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "model",
-        "Type": "SkinCancer.Entities.AuthenticationUserDtos.LoginModel",
+        "Type": "SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos.LoginModel",
         "IsRequired": true
       }
     ],
@@ -81,7 +103,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "Logout",
-    "RelativePath": "api/Account/Logout",
+    "RelativePath": "api/account/logout",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -91,14 +113,14 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "Register",
-    "RelativePath": "api/Account/Register",
+    "RelativePath": "api/account/register",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "model",
-        "Type": "SkinCancer.Entities.AuthenticationUserDtos.RegisterModel",
+        "Type": "SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos.RegisterModel",
         "IsRequired": true
       }
     ],
@@ -107,7 +129,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "ResendEmailConfirmation",
-    "RelativePath": "api/Account/ResendEmailConfirmation",
+    "RelativePath": "api/account/resendemailconfirmation",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -123,14 +145,14 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.AccountController",
     "Method": "ResetPassword",
-    "RelativePath": "api/Account/ResetPassword",
+    "RelativePath": "api/account/resetpassword",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
         "Name": "dto",
-        "Type": "SkinCancer.Entities.AuthenticationUserDtos.ResetPasswordDto",
+        "Type": "SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos.ResetPasswordDto",
         "IsRequired": true
       }
     ],
@@ -139,7 +161,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "CreateClinicAsync",
-    "RelativePath": "api/Clinic/CreateClinic",
+    "RelativePath": "api/clinic/createclinic",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -165,7 +187,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "DeleteClinicAsync",
-    "RelativePath": "api/Clinic/DeleteClinic",
+    "RelativePath": "api/clinic/deleteclinic",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -191,7 +213,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "GetClinicsAsync",
-    "RelativePath": "api/Clinic/GetAllClinics",
+    "RelativePath": "api/clinic/getallclinics",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -211,7 +233,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "GetClinicByIdAsync",
-    "RelativePath": "api/Clinic/GetClinicById{id}",
+    "RelativePath": "api/clinic/getclinicbyid{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -237,7 +259,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "GetClinicByNameAsync",
-    "RelativePath": "api/Clinic/GetClinicByName",
+    "RelativePath": "api/clinic/getclinicbyname",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -262,8 +284,24 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "IsDoctorHasClinicAsync",
+    "RelativePath": "api/clinic/isdoctorhasclinic",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "doctorId",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "PatientRatesClinicAsync",
-    "RelativePath": "api/Clinic/PatientRateClinic",
+    "RelativePath": "api/clinic/patientrateclinic",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -279,7 +317,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "UpdateClinicAsync",
-    "RelativePath": "api/Clinic/UpdateClinic",
+    "RelativePath": "api/clinic/updateclinic",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -305,7 +343,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.DetectionController",
     "Method": "Upload",
-    "RelativePath": "api/Detection",
+    "RelativePath": "api/detection",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -331,7 +369,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.DetectionController",
     "Method": "GetDetectionsData",
-    "RelativePath": "api/Detection",
+    "RelativePath": "api/detection",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -347,7 +385,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.DetectionController",
     "Method": "AddDiagnosis",
-    "RelativePath": "api/Detection/AddDiagnosis",
+    "RelativePath": "api/detection/adddiagnosis",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -366,17 +404,38 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
-    "Method": "UpdateScheduleAsync",
-    "RelativePath": "api/Schedule",
-    "HttpMethod": "PUT",
+    "ContainingType": "SkinCancer.Api.Controllers.PaymentController",
+    "Method": "PaymentOrder",
+    "RelativePath": "api/payment/paymentorder",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "dto",
-        "Type": "SkinCancer.Entities.ModelsDtos.ScheduleDtos.UpdateScheduleDto",
+        "Name": "paymentDto",
+        "Type": "SkinCancer.Entities.ModelsDtos.PaymentDtos.PaymentDto",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.PaymentController",
+    "Method": "Success",
+    "RelativePath": "api/payment/success",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sessionId",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "publishKey",
+        "Type": "System.String",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []
@@ -384,7 +443,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
     "Method": "CreateScheduleAsync",
-    "RelativePath": "api/Schedule/DoctorCreateSchedule",
+    "RelativePath": "api/schedule/doctorcreateschedule",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -399,8 +458,8 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
-    "Method": "GetClinicAppointments",
-    "RelativePath": "api/Schedule/GetClinicAppointments",
+    "Method": "GetClinicBookedSchedules",
+    "RelativePath": "api/schedule/getclinicbookedschedules",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -416,7 +475,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
     "Method": "GetClinicSchedulesByClinicIdAsync",
-    "RelativePath": "api/Schedule/GetClinicSchedules",
+    "RelativePath": "api/schedule/getclinicschedules",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -441,14 +500,14 @@
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
-    "Method": "GetUserAppointments",
-    "RelativePath": "api/Schedule/GetUserAppointments",
+    "Method": "GetPatientSchedulesAsync",
+    "RelativePath": "api/schedule/getpatientschedules",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userId",
+        "Name": "patientId",
         "Type": "System.String",
         "IsRequired": false
       }
@@ -458,7 +517,7 @@
   {
     "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
     "Method": "BookScheduleAsync",
-    "RelativePath": "api/Schedule/PatientBookSchedule",
+    "RelativePath": "api/schedule/patientbookschedule",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -480,5 +539,21 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ScheduleController",
+    "Method": "UpdateScheduleAsync",
+    "RelativePath": "api/schedule/updateschedule",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SkinCancer.Entities.ModelsDtos.ScheduleDtos.UpdateScheduleDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   }
 ]
