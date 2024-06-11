@@ -18,6 +18,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.2",
           "SkinCancer.Entities": "1.0.0",
           "SkinCancer.Services": "1.0.0",
+          "Stripe.net": "44.9.0",
           "Swashbuckle.AspNetCore": "6.4.0",
           "System.IdentityModel.Tokens.Jwt": "7.5.1"
         },
@@ -1693,6 +1694,18 @@
           }
         }
       },
+      "Stripe.net/44.9.0": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "System.Configuration.ConfigurationManager": "7.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/Stripe.net.dll": {
+            "assemblyVersion": "44.9.0.0",
+            "fileVersion": "44.9.0.0"
+          }
+        }
+      },
       "Swashbuckle.AspNetCore/6.4.0": {
         "dependencies": {
           "Microsoft.Extensions.ApiDescription.Server": "6.0.5",
@@ -2921,6 +2934,13 @@
       "sha512": "sha512-ypnSvEtpNGo48bAWn95J1oHChycCXcevFSbn53fqzLxlXFSZP7dawu8p/7mHAfGufZQSV2sBpW80XQGIfXO8kQ==",
       "path": "nuget.versioning/6.9.1",
       "hashPath": "nuget.versioning.6.9.1.nupkg.sha512"
+    },
+    "Stripe.net/44.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-822y4avQ/tubP9kO2yQRWG0KAKI2jl9Ux9KOn/j1ib/0ZpML6UoXRBD5vHcOjxXlTywg9E6p7z110zt1C+Qhtw==",
+      "path": "stripe.net/44.9.0",
+      "hashPath": "stripe.net.44.9.0.nupkg.sha512"
     },
     "Swashbuckle.AspNetCore/6.4.0": {
       "type": "package",

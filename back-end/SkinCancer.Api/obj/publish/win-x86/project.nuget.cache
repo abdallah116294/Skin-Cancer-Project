@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IrQFpNyREZHvEjE3cwbS29tVH0K82V57V3dY+dijT6p+gSrERkn2WZnQ+eCDmY01njA6n6bl/VstttrbCe0CPg==",
+  "dgSpecHash": "WraVZ9VtiD6nmXrCM853bE/WnUZLGa+hQKXJHRN700l1PBMGEuWi6FZHgKha0Q1VnmmI7/+VEj3ga/OUZeZllw==",
   "success": true,
   "projectFilePath": "D:\\AWork\\SkinCancerSharedRepository\\Skin-Cancer-Project\\back-end\\SkinCancer.Api\\SkinCancer.Api.csproj",
   "expectedPackageFiles": [
@@ -131,6 +131,7 @@
     "C:\\Users\\iamasd\\.nuget\\packages\\nuget.projectmodel\\6.9.1\\nuget.projectmodel.6.9.1.nupkg.sha512",
     "C:\\Users\\iamasd\\.nuget\\packages\\nuget.protocol\\6.9.1\\nuget.protocol.6.9.1.nupkg.sha512",
     "C:\\Users\\iamasd\\.nuget\\packages\\nuget.versioning\\6.9.1\\nuget.versioning.6.9.1.nupkg.sha512",
+    "C:\\Users\\iamasd\\.nuget\\packages\\stripe.net\\44.9.0\\stripe.net.44.9.0.nupkg.sha512",
     "C:\\Users\\iamasd\\.nuget\\packages\\swashbuckle.aspnetcore\\6.4.0\\swashbuckle.aspnetcore.6.4.0.nupkg.sha512",
     "C:\\Users\\iamasd\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.4.0\\swashbuckle.aspnetcore.swagger.6.4.0.nupkg.sha512",
     "C:\\Users\\iamasd\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\6.4.0\\swashbuckle.aspnetcore.swaggergen.6.4.0.nupkg.sha512",

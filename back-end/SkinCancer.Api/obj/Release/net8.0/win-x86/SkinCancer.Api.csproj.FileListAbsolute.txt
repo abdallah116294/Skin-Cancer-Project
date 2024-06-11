@@ -1022,3 +1022,5 @@ D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Api\
 D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\SkinCancer.Api.pdb
 D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\SkinCancer.Api.genruntimeconfig.cache
 D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Api\obj\Release\net8.0\win-x86\ref\SkinCancer.Api.dll
+D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Api\bin\Release\net8.0\win-x86\libman.json
+D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Api\bin\Release\net8.0\win-x86\Stripe.net.dll
