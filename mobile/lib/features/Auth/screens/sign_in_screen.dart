@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
@@ -46,13 +48,27 @@ class _SingInScreenState extends State<SingInScreen> {
             if (state is LoginUserIsLoadingState) {
               log('loading');
             } else if (state is LoginUserIsSuccessSetate) {
-              DailogAlertFun.showMyDialog(
-                  daliogContent: state.userModel.roles[0],
-                  actionName: "Go to Home",
-                  context: context,
-                  onTap: () {
-                    context.pushNamed(Routes.bottomNavScreenRoutes);
-                  });
+              if (state.userModel.roles[0] == "Doctor") {
+                CacheHelper.saveData(key: 'token', value: state.userModel.token);
+                CacheHelper.saveData(key: 'doctor_role', value: state.userModel.roles[0]);
+                DailogAlertFun.showMyDialog(
+                    daliogContent: "Welecome Doctor",
+                    actionName: "Go to Home",
+                    context: context,
+                    onTap: () {
+                      context.pushNamed(Routes.bottomNavScreenRoutes);
+                    });
+              } else {
+                 CacheHelper.saveData(key: 'token', value: state.userModel.token);
+                CacheHelper.saveData(key: 'patient_role', value: state.userModel.roles[0]);
+                DailogAlertFun.showMyDialog(
+                    daliogContent: "Welecome",
+                    actionName: " Go to Home",
+                    context: context,
+                    onTap: () {
+                      context.pushNamed(Routes.bottomNavScreenRoutes);
+                    });
+              }
             } else if (state is LoginUserIsErrorState) {
               log(state.error);
             }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:mobile/config/routes/app_routes.dart';
+import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/string_manager.dart';
@@ -28,8 +30,7 @@ class OnBoardingScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   image: const DecorationImage(
                       fit: BoxFit.cover,
-                      image: AssetImage(
-                          "assets/image/onboarding_2.jpg"))),
+                      image: AssetImage("assets/image/onboarding_2.jpg"))),
             ),
             verticalSpacing(10),
             Text(
@@ -49,7 +50,10 @@ class OnBoardingScreen extends StatelessWidget {
                 width: 358,
                 height: 60,
                 buttonName: StringManager.getStarted,
-                onTap: () => context.pushNamed(Routes.choseUserRoutes),
+                onTap: () {
+                  CacheHelper.saveData(key: 'onBoarding', value: true);
+                  context.pushReplacementNamed(Routes.choseUserRoutes);
+                },
                 textColor: Colors.white,
                 white: false),
           ],
