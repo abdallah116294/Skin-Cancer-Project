@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/config/routes/app_routes.dart';
@@ -13,6 +14,7 @@ import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
 import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/utils/text_styles.dart';
+import 'package:mobile/core/widgets/app_methods.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
@@ -57,14 +59,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
   //   );
   // }
 
-  Future pickImage() async {
+  Future pickFromCamera() async {
     log("pick image");
     var image = await picker.pickImage(source: ImageSource.camera);
-    if (image != null) {
+    if (image == null) {
       return null;
     }
     setState(() {
-      _image = File(image!.path);
+      _image = File(image.path);
+      _loading = false;
     });
     //  detectImage(_image);
   }
@@ -84,6 +87,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
     // detectImage(_image);
   }
 
+  ///todo firebase remove it
   // Future<String> uploadImage() async {
   //   if (widget.num == 0) {
   //     final ref = FirebaseStorage.instance
@@ -230,7 +234,8 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                 )
                               : Text(
                                   state.peredictionModel.prediction,
-                                  style: TextStyles.font26BlackW700,
+                                  style: TextStyles.font26BlackW700
+                                      .copyWith(fontSize: 22.sp),
                                 )
                           : const SizedBox(),
                       SizedBox(
@@ -252,9 +257,12 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                 ]),
                               )
                             : Column(children: [
-                                SizedBox(
-                                  width: double.infinity,
-                                  height: 400.h,
+                                Container(
+                                  clipBehavior: Clip.antiAlias,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  width: 290.w,
+                                  height: 200.h,
                                   child: Image.file(
                                     _image,
                                     fit: BoxFit.cover,
@@ -291,8 +299,8 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                             Text(
                                               'AI Couldn\'t identify your Image ,\n You can Explore Doctor\'s Clinic to get Private Dignonoses',
                                               style: TextStyle(
-                                                  fontSize: 27.sp,
-                                                  color: Colors.red),
+                                                  fontSize: 14.sp,
+                                                  color: Colors.black),
                                             )
                                           ],
                                         ),
@@ -318,25 +326,41 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                                 child: Text(
                                                   'What is ${disease['name'].toString()}?',
                                                   style: TextStyle(
-                                                      fontSize: 27.sp,
-                                                      color: Colors.red),
+                                                      fontSize: 18.sp,
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: AppColor
+                                                          .primaryColor),
                                                 ),
                                               ),
                                               verticalSpacing(10),
-                                              Text(disease['description']
-                                                  .toString()),
-                                              verticalSpacing(10),
+                                              Text(
+                                                disease['description']
+                                                    .toString(),
+                                                style: TextStyles
+                                                    .font12BlackW400
+                                                    .copyWith(fontSize: 14.sp),
+                                              ),
+                                              verticalSpacing(20),
                                               Align(
                                                   alignment:
                                                       Alignment.centerLeft,
                                                   child: Text(
                                                     'What are the Symptoms?',
                                                     style: TextStyle(
-                                                        fontSize: 27.sp,
-                                                        color: Colors.red),
+                                                        fontSize: 18.sp,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: AppColor
+                                                            .primaryColor),
                                                   )),
-                                              Text(disease['description']
-                                                  .toString()),
+                                              verticalSpacing(10),
+                                              Text(
+                                                disease['symptoms'].toString(),
+                                                style: TextStyles
+                                                    .font12BlackW400
+                                                    .copyWith(fontSize: 14.sp),
+                                              ),
                                             ],
                                           ));
                                     }
@@ -380,8 +404,16 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                               width: 300.w,
                                               height: 60.h,
                                               buttonName: "Upload",
-                                              onTap: () {
-                                                pickGallery().then((value) {
+                                              onTap: () async {
+                                                await AppMethods
+                                                    .imagePickerDialog(
+                                                  context: context,
+                                                  camerFun: _loading ==false? context.pop : pickFromCamera,
+                                                  removeFun: () {
+                                                    context.pop();
+                                                  },
+                                                  galeryFun: pickGallery,
+                                                ).then((value) {
                                                   context
                                                       .read<
                                                           AiPeredictionCubit>()
@@ -394,27 +426,46 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                         )
                                       : Expanded(
                                           child: CustomButton(
-                                              buttoncolor: const Color.fromRGBO(
-                                                  88, 99, 203, 1),
+                                              buttoncolor:
+                                                  AppColor.primaryColor,
                                               width: 300.w,
                                               height: 60.h,
                                               buttonName: "Explore Clinics",
-                                              onTap: () {
-                                                context.pushNamed(
-                                                    Routes.topDocScreen);
+                                              onTap: () async {
+                                                await AppMethods
+                                                    .imagePickerDialog(
+                                                  context: context,
+                                                  camerFun: _loading ==false? context.pop : pickFromCamera,
+                                                  removeFun: () {
+                                                    context.pop();
+                                                  },
+                                                  galeryFun: pickGallery,
+                                                ).then((value) {
+                                                  context
+                                                      .read<
+                                                          AiPeredictionCubit>()
+                                                      .peredictonSkinorNot(
+                                                          _image);
+                                                });
                                               },
                                               textColor: Colors.white,
                                               white: false),
                                         )
                                   : Expanded(
                                       child: CustomButton(
-                                          buttoncolor: const Color.fromRGBO(
-                                              88, 99, 203, 1),
+                                          buttoncolor: AppColor.primaryColor,
                                           width: 300.w,
                                           height: 60.h,
                                           buttonName: "Upload",
-                                          onTap: () {
-                                            pickGallery().then((value) {
+                                          onTap: () async {
+                                            await AppMethods.imagePickerDialog(
+                                              context: context,
+                                              camerFun: _loading ==false? context.pop : pickFromCamera,
+                                              removeFun: () {
+                                                context.pop();
+                                              },
+                                              galeryFun: pickGallery,
+                                            ).then((value) {
                                               context
                                                   .read<AiPeredictionCubit>()
                                                   .peredictonSkinorNot(_image);
@@ -429,8 +480,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                       width: 300.w,
                                       height: 60.h,
                                       buttonName: "Upload",
-                                      onTap: () {
-                                        pickGallery().then((value) {
+                                      onTap: () async {
+                                        await AppMethods.imagePickerDialog(
+                                          context: context,
+                                          camerFun: _loading ==false? context.pop : pickFromCamera,
+                                          removeFun: () {
+                                            context.pop();
+                                          },
+                                          galeryFun: pickGallery,
+                                        ).then((value) {
                                           context
                                               .read<AiPeredictionCubit>()
                                               .peredictonSkinorNot(_image);
@@ -445,13 +503,21 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                   color: Colors.grey,
                                   onPressed: () {
                                     state is PeredictionCancerTypeIsSuccess
-                                        ? context
-                                            .read<AiPeredictionCubit>()
-                                            .uploadAiResult(
-                                                patientId,
-                                                state.peredictionModel
-                                                    .prediction,
-                                                _image)
+                                        ? state.peredictionModel.prediction ==
+                                                "Couldn't identify lesion"
+                                            ? Fluttertoast.showToast(
+                                                backgroundColor: Colors.red,
+                                                textColor: Colors.white,
+                                                toastLength: Toast.LENGTH_LONG,
+                                                msg: "Couldn't upload",
+                                              )
+                                            : context
+                                                .read<AiPeredictionCubit>()
+                                                .uploadAiResult(
+                                                    patientId,
+                                                    state.peredictionModel
+                                                        .prediction,
+                                                    _image)
                                         : log("not done");
                                   },
                                   icon: const Icon(Icons.save))
