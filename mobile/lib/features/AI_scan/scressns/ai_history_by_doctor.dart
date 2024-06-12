@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
@@ -13,7 +14,7 @@ import '../../../core/cach_helper/cach_helper.dart';
 
 class AiHistoryByDoctor extends StatefulWidget {
   final String userId;
-   AiHistoryByDoctor({super.key,required this.userId  });
+  AiHistoryByDoctor({super.key, required this.userId});
 
   @override
   State<AiHistoryByDoctor> createState() => _AiHistoryByDoctorState();
@@ -47,12 +48,22 @@ class _AiHistoryByDoctorState extends State<AiHistoryByDoctor> {
               } else {
                 return Column(
                   children: [
-                    Expanded(
-                        child: ListView.separated(
+                    Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 14.w),
+                        child: SizedBox(
+                          height: 800.h,
+                          child: GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: state.aiHistory.length,
                             itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () {
-                                  context.pushNamed(
+                              return AIResultWidget(
+                                  image: state.aiHistory[index].imagePath
+                                      .toString(),
+                                  output:
+                                      state.aiHistory[index].result.toString(),
+                                  onTap: () {
+                                    context.pushNamed(
                                       Routes.aIItemHistoryDetailsScreen,
                                       arguments: {
                                         "image": state
@@ -67,18 +78,17 @@ class _AiHistoryByDoctorState extends State<AiHistoryByDoctor> {
                                             .toString(),
                                         "id": state.aiHistory[index].id
                                       });
-                                },
-                                child: AIResultWidget(
-                                  image: state.aiHistory[index].imagePath
-                                      .toString(),
-                                  output:
-                                      state.aiHistory[index].result.toString(),
-                                ),
-                              );
+                                
+                                  });
                             },
-                            separatorBuilder: (context, index) =>
-                                const Divider(),
-                            itemCount: state.aiHistory.length))
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: .78),
+                          ),
+                        ))
                   ],
                 );
               }
