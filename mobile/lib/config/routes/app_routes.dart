@@ -19,6 +19,7 @@ import 'package:mobile/features/disease_info/screens/early_detection.dart';
 import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/explore/doc_details.dart';
 import 'package:mobile/features/explore/explore_screen.dart';
+import 'package:mobile/features/explore/order_details_screen.dart';
 import 'package:mobile/features/explore/payment_web_view.dart';
 import 'package:mobile/features/explore/top_doc_screen.dart';
 import 'package:mobile/features/home/home_screen.dart';
@@ -69,6 +70,7 @@ class Routes {
   static const String aiHistoryByDoctor = "/AiHistoryByDoctor";
   static const String developerScreen = "/DeveloperScreen";
   static const String paymentWebView = "/PaymentWebView";
+  static const String orderDetailsScreen = "/OrderDetailsScreen";
 }
 
 class AppRoutes {
@@ -212,7 +214,9 @@ class AppRoutes {
       case Routes.paymentWebView:
         return MaterialPageRoute(
             builder: (context) =>
-                PaymentWebView(url: routeSettings.arguments as String));
+                PaymentWebView(url: routeSettings.arguments as String,));
+      case Routes.orderDetailsScreen:
+        return MaterialPageRoute(builder: (context)=>  OrderDetailsScreen(orderdetails: routeSettings.arguments as Map<String, dynamic>,));
 
       default:
         return null;

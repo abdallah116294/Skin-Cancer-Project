@@ -223,7 +223,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                   ModalBottomSheet.addAppointment(
                                       context,
                                       state.clinicInfoModel.id!,
-                                      state.clinicInfoModel.availableDates);
+                                      state.clinicInfoModel.availableDates,state.clinicInfoModel.name.toString(),state.clinicInfoModel.rate!.toInt(),state.clinicInfoModel.price!.toInt());
                                 },
                                 textColor: Colors.white,
                                 white: false,

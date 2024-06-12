@@ -12,6 +12,7 @@ import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/features/appointment/widgets/appointment_widget.dart';
 import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
+import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class AppointmentScreen extends StatefulWidget {
@@ -59,9 +60,16 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: clinicid != null
-          ? BlocProvider(
-              create: (context) =>
-                  di.sl<ClinicCubit>()..getClinicAppointments(clinicid),
+          ? MultiBlocProvider(
+              providers: [
+                  BlocProvider(
+                    create: (context) => di.sl<PatientClinicCubit>(),
+                  ),
+                  BlocProvider(
+                    create: (context) =>
+                        di.sl<ClinicCubit>()..getClinicAppointments(clinicid),
+                  ),
+                ],
               child: BlocConsumer<ClinicCubit, ClinicState>(
                 listener: (context, state) {
                   if (state is GetSelectedClinicIsLoading) {
@@ -120,6 +128,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                       element.date != null &&
                                       element.date!.isAfter(DateTime.now()))
                                   .toList();
+                          CacheHelper.saveData(
+                              key: 'total_booking', value: state.selectedClinic.length);
                           return Stack(
                             children: [
                               Container(

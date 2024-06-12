@@ -49,14 +49,14 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
       ],
       child: BlocConsumer<PatientClinicCubit, PatientClinicState>(
         listener: (context, state) {
-          if (state is DocCreateSchedualSuccess) {
-            DailogAlertFun.showMyDialog(
-                daliogContent: "Create Schedual Success",
-                actionName: "Go Home",
-                context: context,
-                onTap: () =>
-                    context.pushReplacementNamed(Routes.bottomNavScreenRoutes));
-          }
+          // if (state is DocCreateSchedualSuccess) {
+          //   DailogAlertFun.showMyDialog(
+          //       daliogContent: "Create Schedual Success",
+          //       actionName: "Go Home",
+          //       context: context,
+          //       onTap: () =>
+          //           context.pushReplacementNamed(Routes.bottomNavScreenRoutes));
+          // }
         },
         builder: (context, state) {
           var clinicId = CacheHelper.getData(key: 'clinic_id');
@@ -94,6 +94,8 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
             } else {
               CacheHelper.saveData(
                   key: 'clinic_id', value: clinicInfoModel.first.id);
+                  CacheHelper.saveData(
+                  key: 'clinic_price', value: clinicInfoModel.first.price);
               return Scaffold(
                 appBar: AppBar(
                   actions: [
