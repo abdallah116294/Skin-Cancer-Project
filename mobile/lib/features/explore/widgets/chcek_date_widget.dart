@@ -25,9 +25,18 @@ import 'package:mobile/injection_container.dart' as di;
 class PatientCheckDate extends StatefulWidget {
   List<String> availableDates;
   final int clinicId;
+  final String clinicName;
+  final int clinicPrice;
+  final int rate;
 
   PatientCheckDate(
-      {super.key, required this.clinicId, required this.availableDates});
+      {super.key,
+      required this.clinicId,
+      required this.availableDates,
+      required this.clinicName,
+      required this.clinicPrice,
+      required this.rate
+      });
 
   @override
   State<PatientCheckDate> createState() => _PatientCheckDateState();
@@ -70,6 +79,16 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                             route.settings.name ==
                             Routes.bottomNavScreenRoutes);
                   });
+            } else {
+              context.pushNamed(Routes.orderDetailsScreen,arguments: {
+                "clinic_name":widget.clinicName,
+                "clinic_price":widget.clinicPrice,
+                "rate":widget.rate,
+                "selected_date":date,
+                "clinic_id":widget.clinicId,
+                "patient_id":patientId,
+                "selectedIndex":selectedIndex,
+              });
             }
             // else {
             //   DailogAlertFun.showMyDialog(
@@ -181,45 +200,7 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                                         BlocProvider.of<PatientClinicCubit>(
                                                 context)
                                             .patienBookSchedual(selectedIndex!,
-                                                patientId, token)
-                                            .then((val) {
-                                          context
-                                              .read<PatientClinicCubit>()
-                                              .patientPaymentOrder(
-                                                  patientId,
-                                                  widget.clinicId,
-                                                  selectedIndex!);
-                                          BlocBuilder<PatientClinicCubit,
-                                              PatientClinicState>(
-                                            builder: (BuildContext context,
-                                                PatientClinicState state) {
-                                              if (state
-                                                  is PaymentOrderSuccess) {
-                                                context.pushReplacementNamed(
-                                                    Routes.paymentWebView,
-                                                    arguments: state
-                                                        .paymentResponse.url);
-                                              } else if (state
-                                                  is PaymentOrderError) {
-                                                Fluttertoast.showToast(
-                                                  backgroundColor: Colors.red,
-                                                  textColor: Colors.white,
-                                                  toastLength:
-                                                      Toast.LENGTH_LONG,
-                                                  msg: "you cant pay",
-                                                ).then((value) {
-                                                  context.pushNamedAndRemoveUntil(
-                                                      Routes
-                                                          .bottomNavScreenRoutes,
-                                                      predicate: (Route<dynamic>
-                                                              route) =>
-                                                          false);
-                                                });
-                                              }
-                                              return SizedBox();
-                                            },
-                                          );
-                                        });
+                                                patientId, token);
                                       },
                                       textColor: Colors.white,
                                       white: false,

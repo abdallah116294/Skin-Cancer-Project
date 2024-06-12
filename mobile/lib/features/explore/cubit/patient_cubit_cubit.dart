@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/clinic/data/model/add_clinic_success_model.dart';
+import 'package:mobile/features/clinic/data/repo/clinic_repo.dart';
 import 'package:mobile/features/explore/data/model/booked_success_model.dart';
 import 'package:mobile/features/explore/data/model/clinic_info_model.dart';
 import 'package:mobile/features/explore/data/model/clinic_schedual_model.dart';
@@ -12,9 +14,10 @@ import 'package:mobile/features/explore/data/repo/patient_clinic_repo.dart';
 part 'patient_cubit_state.dart';
 
 class PatientClinicCubit extends Cubit<PatientClinicState> {
-  PatientClinicCubit({required this.patientClinicRepo})
+  PatientClinicCubit({required this.patientClinicRepo,required this.clinicRepo})
       : super(PatientCubitInitial());
   PatientClinicRepo patientClinicRepo;
+    ClinicRepo clinicRepo;
   Future<void> getAllClinics() async {
     emit(GetAllClinicIsLoading());
     try {
@@ -93,15 +96,26 @@ class PatientClinicCubit extends Cubit<PatientClinicState> {
   }
 
   Future<void> patientPaymentOrder(
-      String patientId, int clinicId, int scheduleId) async {
+    {       required patientId, required int clinicId,required int scheduleId}) async {
     emit(PaymentOrderLoading());
     try {
       Either<String, PaymentResponse> response =
-          await patientClinicRepo.paymentOrder(patientId, clinicId, scheduleId);
+          await patientClinicRepo.paymentOrder(clinicId: clinicId,patientId: patientId,scheduleId: scheduleId);
       emit(response.fold((l) => PaymentOrderError(error: l),
           (r) => PaymentOrderSuccess(paymentResponse: r)));
     } catch (error) {
       emit(PaymentOrderError(error: error.toString()));
+    }
+  }
+    Future<void> docCreateSchadual(String date, bool isBook, int clinicId) async {
+    emit(DocCreateSchedualLoading());
+    try {
+      Either<String, AddClinicSuccessModel> response =
+          await clinicRepo.docCreateSchedule(date, isBook, clinicId);
+      emit(response.fold((l) => DocCreateSchedualError(error: l),
+          (r) => DocCreateSchedualSuccess(selectedClinic: r)));
+    } catch (error) {
+      emit(DocCreateSchedualError(error: error.toString()));
     }
   }
 }

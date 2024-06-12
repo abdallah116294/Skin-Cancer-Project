@@ -5,7 +5,7 @@ import 'package:mobile/features/explore/widgets/rating_widget.dart';
 
 class ModalBottomSheet {
   static void addAppointment(
-      BuildContext context, int clinicId, List<String> availableDates) {
+      BuildContext context, int clinicId, List<String> availableDates,String  clinicName,int clinicRate ,int clinicPrice) {
     showModalBottomSheet(
         backgroundColor: Colors.white,
         context: context,
@@ -26,7 +26,10 @@ class ModalBottomSheet {
                   padding: const EdgeInsets.all(20),
                   child: PatientCheckDate(
                     clinicId: clinicId,
+                    clinicName: clinicName,
+                    clinicPrice: clinicPrice,
                     availableDates: availableDates,
+                    rate: clinicRate,
                   )),
             ),
           );

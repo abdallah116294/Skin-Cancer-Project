@@ -101,12 +101,16 @@ class PatinetClinicRepoImpl implements PatientClinicRepo {
 
   @override
   Future<Either<String, PaymentResponse>> paymentOrder(
-      String patientId, int clinicId, int scheduleId) async {
+    {
+       required patientId, required int clinicId,required int scheduleId
+      
+    }
+      ) async {
     try {
       final response = await apiConsumer.post(ApiConstant.paymentOrder, body: {
-        "patientId": patientId,
-        "clinicId": clinicId,
-        "scheduleId": scheduleId
+        "patientId":patientId,
+        "clinicId":clinicId,
+        "scheduleId":scheduleId
       });
       var result = PaymentResponse.fromJson(response);
       return Right(result);

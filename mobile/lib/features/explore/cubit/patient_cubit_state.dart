@@ -102,3 +102,15 @@ class PaymentOrderError extends PatientClinicState {
   final String error;
   const PaymentOrderError({required this.error});
 }
+class DocCreateSchedualLoading extends PatientClinicState {}
+
+class DocCreateSchedualSuccess extends PatientClinicState {
+  final AddClinicSuccessModel selectedClinic;
+
+  const DocCreateSchedualSuccess({required this.selectedClinic});
+}
+class DocCreateSchedualError extends PatientClinicState {
+  final String error;
+
+  const DocCreateSchedualError({required this.error});
+}

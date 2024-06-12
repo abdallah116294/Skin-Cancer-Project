@@ -22,13 +22,11 @@ class HallProfileScreenWidget extends StatelessWidget {
   });
 
   final String name;
-
-  // final String imagUrl;
-  // final String uid;
-  // final int num;
   @override
   Widget build(BuildContext context) {
     var dotoctorRole = CacheHelper.getData(key: 'doctor_role');
+    var clinic_price=CacheHelper.getData(key: 'clinic_price');
+    var total_booking=CacheHelper.getData(key: 'total_booking');
     return Center(
       child: Column(
         children: [
@@ -55,13 +53,43 @@ class HallProfileScreenWidget extends StatelessWidget {
               ),
             ],
           ),
-          verticalSpacing(110.h),
-          Text(
+          verticalSpacing(90.h),
+        dotoctorRole != null ?  Text(
+            "Dr: $name",
+            style: TextStyles.font20BlackW700
+                .copyWith(fontWeight: FontWeight.w600),
+          ):  Text(
             name,
             style: TextStyles.font20BlackW700
                 .copyWith(fontWeight: FontWeight.w600),
           ),
-          verticalSpacing(10.h),
+          dotoctorRole != null ? verticalSpacing(10) : SizedBox(),
+          dotoctorRole != null
+              ? Container(
+                width: 233.0.w,
+                padding: EdgeInsets.symmetric(horizontal: 10.w,),
+                height: 25.h,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.r),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.5),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                        offset: Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child:total_booking!=null ?Row(
+                  children: [
+                    Text("Total Booking :${total_booking??0}",style: TextStyles.font17BlackW500.copyWith(color: Colors.grey),),
+                     Text("💲${clinic_price*total_booking??0}",style: TextStyles.font17BlackW500.copyWith(color: Colors.grey),)
+                  ],
+                  ):const  SizedBox(),
+                )
+              :const  SizedBox(),
+          verticalSpacing(10),
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.w),
             child: Column(

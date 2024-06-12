@@ -35,7 +35,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               currentIndex = 0;
             });
           },
-          imagePath: "assets/image/ai_scan.png"),
+          imagePath: "assets/image/start_screen.png"),
       OnBoardingWidget(
           currentIndex: currentIndex,
           onTap: () {
@@ -46,7 +46,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               currentIndex = 1;
             });
           },
-          imagePath: "assets/image/AhmedKhaled.jpg"),
+          imagePath: "assets/image/start_screen_2.png"),
       OnBoardingWidget(
           currentIndex: currentIndex,
           onTap: () {
@@ -57,7 +57,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,
                 predicate: (Route<dynamic> route) => false);
           },
-          imagePath: "assets/image/cancer.png"),
+          imagePath: "assets/image/start_screen_3.png"),
     ];
     return Scaffold(
       body: PageView.builder(

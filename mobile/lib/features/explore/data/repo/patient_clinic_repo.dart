@@ -15,8 +15,6 @@ abstract class PatientClinicRepo {
   Future<Either<String, List<ClinicSchedualModel>>> getClinicSchedual(
       int clinicId);
   Future<Either<String, PaymentResponse>> paymentOrder(
-    String patientId,
-    int clinicId,
-    int scheduleId,
+   {       required patientId, required int clinicId,required int scheduleId}
   );
 }
