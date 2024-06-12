@@ -1,13 +1,15 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile/core/helper/spacing.dart';
+import 'package:mobile/core/widgets/titles_text_widget.dart';
 
 class AIResultWidget extends StatefulWidget {
-  const AIResultWidget({super.key, required this.image,required this.output});
-
+  const AIResultWidget({super.key, required this.image,required this.output,required this.onTap});
+   
   final String image;
   final String output;
-
+final void Function()? onTap;
   @override
   State<AIResultWidget> createState() => _AIResultWidgetState();
 }
@@ -16,49 +18,26 @@ class _AIResultWidgetState extends State<AIResultWidget> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return FittedBox(
-      child: IntrinsicWidth(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(12),
-                child: FancyShimmerImage(
-                  imageUrl: widget.image.toString(),
-                  height: size.height * 0.2,
-                  width: size.width * 0.4,
-                ),
-              ),
-              const SizedBox(
-                width: 12,
-              ),
-              IntrinsicWidth(
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        SizedBox(
-                            width: size.width * 0.6,
-                            child: Text(
-                               widget.output,
-                              maxLines: 2,
-                            )),
-                        Column(
-                          children: [],
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
+    return  InkWell(
+      onTap: widget.onTap,
+      child: Column(
+        children: [
+          Container(
+          
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: Colors.black.withOpacity(0.1),
+                        blurRadius: 5.0,
+                        spreadRadius: 0.0)
+                  ]),
+              child: ClipRect(clipBehavior: Clip.antiAlias,child: Image.network(height: 180.h,widget.image,))),
+          verticalSpacing(5),
+          TitlesTextWidget(fontSize: 14, label: widget.output)
+        ],
       ),
-    );
+    );         
   }
 }
