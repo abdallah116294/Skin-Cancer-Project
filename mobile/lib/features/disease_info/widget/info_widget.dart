@@ -21,6 +21,7 @@ class InfoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         child: SafeArea(
@@ -37,34 +38,29 @@ class InfoWidget extends StatelessWidget {
                 verticalSpacing(30),
                 Image.asset(imagePath),
                 verticalSpacing(20),
-                Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: AppColor.buttonChoseuser,
-                  ),
-                  child: Text(
-                      style: TextStyles.font17BlackW500.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
-                    supTitle)
+                Padding(
+                  padding:  EdgeInsets.symmetric(horizontal: 14.sp),
+                  child: Column(
+                    children: [
+                      Text(
+                          style: TextStyles.font17BlackW500.copyWith(
+                            fontWeight: FontWeight.w300,
+
                           ),
-                verticalSpacing(20),
-                supTitle2 != null?
-                Container(
-                  padding: EdgeInsets.all(10.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20.r),
-                    color: AppColor.buttonChoseuser,
+                        supTitle),
+                      verticalSpacing(20),
+                      supTitle2 != null?
+                      Text(
+                          style: TextStyles.font17BlackW500.copyWith(
+                            fontWeight: FontWeight.w300,
+
+                          ),
+                        supTitle2!
+                      ):const SizedBox(),
+                      verticalSpacing(40),
+                    ],
                   ),
-                  child: Text(
-                      style: TextStyles.font17BlackW500.copyWith(
-                        fontWeight: FontWeight.w300,
-                      ),
-                    supTitle2!
-                  ),
-                ):const SizedBox(),
-                verticalSpacing(40),
+                ),
               ],
             ),
           ),

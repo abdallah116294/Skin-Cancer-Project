@@ -114,17 +114,17 @@ class HallProfileScreenWidget extends StatelessWidget {
                           context.pushNamed(Routes.aIHistoryScreen);
                         },
                       ),
-                ProfileWidget(
-                  title: 'Payment Method',
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterPayment()));
-                  },
-                  iconPath: 'assets/svgs/payment.svg',
-                  backgroundColor: Color(0xFFFFEEEF),
-                ),
+                // ProfileWidget(
+                //   title: 'Payment Method',
+                //   onTap: () {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => const RegisterPayment()));
+                //   },
+                //   iconPath: 'assets/svgs/payment.svg',
+                //   backgroundColor: Color(0xFFFFEEEF),
+                // ),
                 dotoctorRole != null
                     ? ProfileWidget(
                         onTap: () {
