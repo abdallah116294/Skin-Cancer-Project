@@ -14,8 +14,14 @@ abstract class AuthRepo {
     required String phoneNumber,
     required String userName,
   });
+
   Future<Either<String, AddRoleRespons>> addRole(
       String roleName, String userName);
-  Future<Either<String, String>> forgetPasssword(String email);
-  Future<Either<String, String>> resetPassword(String code, String password);
+
+  Future<Either<String, String>> forgetPassword(String email);
+
+  Future<Either<String, String>> resetPassword(
+      {required String code,
+      required String email,
+      required String newPassword});
 }
