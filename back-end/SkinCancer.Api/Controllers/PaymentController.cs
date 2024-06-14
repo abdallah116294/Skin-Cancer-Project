@@ -49,12 +49,26 @@ namespace SkinCancer.Api.Controllers
         {
             try
             {
-                var referer = Request.Headers.Referer;
-                s_wasmClientURL = referer[0];
+                var referer = Request.Headers.Referer.ToString();
+                if (string.IsNullOrEmpty(referer))
+                {
+                    _logger.LogWarning("Referer header is missing. Using default client URL.");
+                    var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+                    s_wasmClientURL = environment == "Development"
+                        ? _configuration["ClientURLs:Default"]
+                        : _configuration["ClientURLs:Production"];
+                }
+                else
+                {
+                    s_wasmClientURL = referer;
+                }
+                _logger.LogInformation($"Referer: {referer}");
+                _logger.LogInformation($"Client URL: {s_wasmClientURL}");
 
                 var server = sp.GetRequiredService<IServer>();
                 var serverAddressesFeature = server.Features.Get<IServerAddressesFeature>();
                 string? thisApiUrl = serverAddressesFeature?.Addresses.FirstOrDefault();
+                _logger.LogInformation($"API URL: {thisApiUrl}");
 
                 if (thisApiUrl is not null)
                 {
@@ -93,60 +107,62 @@ namespace SkinCancer.Api.Controllers
                 if (clinic == null)
                 {
                     _logger.LogWarning($"No Clinic found with ID {paymentDto.ClinicId}");
-                    throw new Exception("No Clinic Found With this Id");
+                    throw new Exception("The clinic with the provided ID does not exist.");
                 }
 
                 var patient = await _userManager.FindByIdAsync(paymentDto.PatientId);
                 if (patient == null)
                 {
                     _logger.LogWarning($"No Patient found with ID {paymentDto.PatientId}");
-                    throw new Exception("No Patient Found With this Id");
+                    throw new Exception("The patient with the provided ID does not exist.");
                 }
 
                 var schedule = await _unitOfWork.Reposirory<Schedule>().GetByIdAsync(paymentDto.ScheduleId);
                 if (schedule == null)
                 {
                     _logger.LogWarning($"No Schedule found with ID {paymentDto.ScheduleId}");
-                    throw new Exception("No Schedule Found With this Id");
+                    throw new Exception("The schedule with the provided ID does not exist.");
                 }
 
                 if (schedule.ClinicId != paymentDto.ClinicId)
                 {
                     _logger.LogWarning("Clinic ID mismatch in schedule.");
-                    throw new Exception("This Clinic doesn't contain this schedule");
+                    throw new Exception("The provided clinic ID does not match the clinic ID in the schedule.");
                 }
 
                 if (schedule.PatientId != paymentDto.PatientId)
                 {
                     _logger.LogWarning("Patient ID mismatch in schedule.");
-                    throw new Exception("This patient hasn't booked an appointment within this clinic's schedule.");
+                    throw new Exception("The provided patient ID does not match the patient ID in the schedule.");
                 }
 
                 var options = new SessionCreateOptions
                 {
-                    SuccessUrl = $"{thisApiUrl}/checkout/success?sessionId={{CHECKOUT_SESSION_ID}}",
-                    CancelUrl = $"{s_wasmClientURL}failed",
+                    SuccessUrl = $"{thisApiUrl}/payment/success?sessionId={{CHECKOUT_SESSION_ID}}",
+                    CancelUrl = $"{s_wasmClientURL}/failed",
                     PaymentMethodTypes = new List<string> { "card" },
                     LineItems = new List<SessionLineItemOptions>
+            {
+                new()
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
                     {
-                        new()
+                        UnitAmount = (long)clinic.Price * 100,
+                        Currency = "USD",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            PriceData = new SessionLineItemPriceDataOptions
-                            {
-                                UnitAmount = (long)clinic.Price * 100,
-                                Currency = "USD",
-                                ProductData = new SessionLineItemPriceDataProductDataOptions
-                                {
-                                    Name = clinic.Name,
-                                    Description = clinic.Description,
-                                    Images = new List<string> { clinic.Image }
-                                },
-                            },
-                            Quantity = 1,
+                            Name = clinic.Name,
+                            Description = clinic.Description,
+                            Images = new List<string> { clinic.Image }
                         },
                     },
+                    Quantity = 1,
+                },
+            },
                     Mode = "payment"
                 };
+
+                _logger.LogInformation($"Creating Stripe session with options: {JsonConvert.SerializeObject(options)}");
 
                 var service = new SessionService();
                 var session = await service.CreateAsync(options);
@@ -156,14 +172,15 @@ namespace SkinCancer.Api.Controllers
             catch (StripeException ex)
             {
                 _logger.LogError(ex, "Stripe error occurred while creating the payment session.");
-                throw new Exception("An error occurred while creating the payment session with Stripe. Please try again.");
+                throw new Exception("A Stripe error occurred while creating the payment session. Please check your Stripe configuration and try again.");
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while creating the payment session.");
-                throw new Exception("An error occurred while creating the payment session. Please try again.");
+                throw new Exception("An unexpected error occurred while creating the payment session. Please try again later.");
             }
         }
+
 
         [HttpGet("Success")]
         public ActionResult Success(string sessionId, string publishKey)
@@ -182,7 +199,7 @@ namespace SkinCancer.Api.Controllers
                 var total = session.AmountTotal ?? 0;
                 var customerEmail = session.CustomerDetails?.Email;
 
-                return Redirect($"{s_wasmClientURL}Success");
+                return Redirect($"{s_wasmClientURL}/Success");
             }
             catch (Exception ex)
             {
