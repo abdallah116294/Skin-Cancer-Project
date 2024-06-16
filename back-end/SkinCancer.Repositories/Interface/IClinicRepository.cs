@@ -1,4 +1,5 @@
 ﻿using SkinCancer.Entities.Models;
+using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace SkinCancer.Repositories.Interface
 
         Task<TEntity> Include<TEntity>(string name, 
                 params Expression<Func<TEntity, object>>[] includes) where TEntity : Clinic;
-
 
         int GetClinicAverageRate(int clinicId);
 
