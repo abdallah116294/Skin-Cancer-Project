@@ -8,6 +8,7 @@ using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
+
 using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.DoctorServices;
@@ -72,6 +73,30 @@ namespace SkinCancer.Api.Controllers
             }
 
             return Ok(clinicDto);
+        }
+
+        [HttpGet("GetClinicsOrderedByRate")]
+        public async Task<IActionResult> GetClinicsOrderedByRateAsync()
+        {
+            try
+            {
+                var clinics = await _clinicService.GetClinicOrderedByRate();
+                return Ok(clinics);
+            }
+            catch (ApplicationException ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, "Error in GetClinicsOrderedByRateAsync");
+
+                return StatusCode(404, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, "Unexpected error in GetClinicsOrderedByRateAsync");
+
+                return StatusCode(404, new { message = "An unexpected error occurred." });
+            }
         }
 
         [HttpPut("UpdateClinic")]

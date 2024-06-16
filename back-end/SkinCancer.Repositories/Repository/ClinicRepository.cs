@@ -32,6 +32,7 @@ namespace SkinCancer.Repositories.Repository
             => await _context.Clinics.FirstOrDefaultAsync(c => c.Name == name);
 
 
+   
         public async Task<TEntity> Include<TEntity>(string name, 
             params Expression<Func<TEntity, object>>[] includes) where TEntity : Clinic
         {

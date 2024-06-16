@@ -167,6 +167,30 @@ namespace SkinCancer.Services.ClinicServices
             }
         }
 
+        public async Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicOrderedByRate()
+        {
+            try
+            {
+                var clinics = await _unitOfWork.Include<Clinic>
+                    (c => c.Schedules)
+                    .Include(c => c.PatientRates)
+                    .OrderByDescending(c => c.Rate)
+                    .ToListAsync();
+
+                var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinics);
+
+                return dtos;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, "Error fetching clinics ordered by rate");
+
+                // Optionally, rethrow the exception or handle it according to your error handling strategy
+                throw new ApplicationException("An error occurred while fetching clinics ordered by rate.", ex);
+            }
+        }
+
         public async Task<ProcessResult> IsDoctorHasClinicAsync(string doctorId)
         {
             try

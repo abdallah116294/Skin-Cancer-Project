@@ -23,6 +23,8 @@ namespace SkinCancer.Services.ClinicServices
 
         Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicByName(string name);
 
+        Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicOrderedByRate();
+
         Task<DoctorClinicDetailsDto> GetClinicById(int id);
 
         Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto);
@@ -30,6 +32,8 @@ namespace SkinCancer.Services.ClinicServices
         Task<ProcessResult> PatientRateClinicAsync(PatientRateDto dto);
 
         Task<ProcessResult> IsDoctorHasClinicAsync(string doctorId);
+
+        
 
 
 
