@@ -25,6 +25,9 @@ namespace SkinCancer.Services.ClinicServices
 
         Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicOrderedByRate();
 
+        Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicsByPriceRangeService
+            (int minPrice, int maxPrice);
+
         Task<DoctorClinicDetailsDto> GetClinicById(int id);
 
         Task<ProcessResult> UpdateClinicAsync(DoctorClinicUpdateDto clinicDto);

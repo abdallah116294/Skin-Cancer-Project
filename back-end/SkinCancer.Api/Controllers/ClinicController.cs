@@ -75,6 +75,43 @@ namespace SkinCancer.Api.Controllers
             return Ok(clinicDto);
         }
 
+        [HttpGet("GetClinicsByPriceRange")]
+        public async Task<ActionResult> GetClinicsByPriceRangeAsync
+            (int minPrice, int maxPrice)
+        {
+            if (minPrice < 0 || maxPrice < 0)
+            {
+                return BadRequest(new { message = "Invalid price range provided. Prices must be non-negative." });
+            }
+            try
+            {
+                var result = await _clinicService.GetClinicsByPriceRangeService(minPrice, maxPrice);
+
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                // Log the exception (assuming a logger is available)
+                // _logger.LogError(ex, "Invalid price range provided: {minPrice}-{maxPrice}", minPrice, maxPrice);
+
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                // Log the exception
+                // _logger.LogWarning(ex, "No clinics found within the specified price range: {minPrice}-{maxPrice}", minPrice, maxPrice);
+
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "An error occurred while fetching clinics within the price range: {minPrice}-{maxPrice}", minPrice, maxPrice);
+
+                return StatusCode(500, new { message = "An unexpected error occurred while fetching clinics within the specified price range. Please try again later." });
+            }
+        }
+
         [HttpGet("GetClinicsOrderedByRate")]
         public async Task<IActionResult> GetClinicsOrderedByRateAsync()
         {
