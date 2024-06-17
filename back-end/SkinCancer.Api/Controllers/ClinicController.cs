@@ -8,6 +8,7 @@ using SkinCancer.Entities.AuthModels;
 using SkinCancer.Entities.Models;
 using SkinCancer.Entities.ModelsDtos.DoctorClinicDtos;
 using SkinCancer.Entities.ModelsDtos.DoctorDtos;
+
 using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.DoctorServices;
@@ -72,6 +73,67 @@ namespace SkinCancer.Api.Controllers
             }
 
             return Ok(clinicDto);
+        }
+
+        [HttpGet("GetClinicsByPriceRange")]
+        public async Task<ActionResult> GetClinicsByPriceRangeAsync
+            (int minPrice, int maxPrice)
+        {
+            if (minPrice < 0 || maxPrice < 0)
+            {
+                return BadRequest(new { message = "Invalid price range provided. Prices must be non-negative." });
+            }
+            try
+            {
+                var result = await _clinicService.GetClinicsByPriceRangeService(minPrice, maxPrice);
+
+                return Ok(result);
+            }
+            catch (ArgumentException ex)
+            {
+                // Log the exception (assuming a logger is available)
+                // _logger.LogError(ex, "Invalid price range provided: {minPrice}-{maxPrice}", minPrice, maxPrice);
+
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (KeyNotFoundException ex)
+            {
+                // Log the exception
+                // _logger.LogWarning(ex, "No clinics found within the specified price range: {minPrice}-{maxPrice}", minPrice, maxPrice);
+
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // _logger.LogError(ex, "An error occurred while fetching clinics within the price range: {minPrice}-{maxPrice}", minPrice, maxPrice);
+
+                return StatusCode(500, new { message = "An unexpected error occurred while fetching clinics within the specified price range. Please try again later." });
+            }
+        }
+
+        [HttpGet("GetClinicsOrderedByRate")]
+        public async Task<IActionResult> GetClinicsOrderedByRateAsync()
+        {
+            try
+            {
+                var clinics = await _clinicService.GetClinicOrderedByRate();
+                return Ok(clinics);
+            }
+            catch (ApplicationException ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, "Error in GetClinicsOrderedByRateAsync");
+
+                return StatusCode(404, new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                // Example: _logger.LogError(ex, "Unexpected error in GetClinicsOrderedByRateAsync");
+
+                return StatusCode(404, new { message = "An unexpected error occurred." });
+            }
         }
 
         [HttpPut("UpdateClinic")]
