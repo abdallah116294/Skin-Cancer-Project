@@ -1,6 +1,7 @@
 ﻿// File: SkinCancer.Services.ClinicServices/ClinicService.cs
 
 using AutoMapper;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -189,6 +190,51 @@ namespace SkinCancer.Services.ClinicServices
                 // Optionally, rethrow the exception or handle it according to your error handling strategy
                 throw new ApplicationException("An error occurred while fetching clinics ordered by rate.", ex);
             }
+        }
+
+        public async Task<IEnumerable<DoctorClinicDetailsDto>> GetClinicsByPriceRangeService(int minPrice, int maxPrice)
+        {
+            try
+            {
+                if (minPrice < 0 || maxPrice < 0)
+                {
+                    throw new ArgumentException("InValid Price Range Provided");
+                }
+
+                if (minPrice > maxPrice)
+                    (minPrice, maxPrice) = (maxPrice, minPrice);
+
+                var clinics = await _unitOfWork.Include<Clinic>(c => c.Schedules)
+                                               .Include(c => c.PatientRates)
+                                               .Where(c => c.Price >= minPrice &&
+                                                      c.Price <= maxPrice)
+                                               .ToListAsync();
+
+                if (clinics.Count == 0 || clinics == null)
+                {
+                    throw new KeyNotFoundException("No clinics found within the specified price range.");
+                }
+
+                var dtos = _mapper.Map<IEnumerable<DoctorClinicDetailsDto>>(clinics);
+
+                return dtos;
+            }
+            catch (ArgumentException ex)
+            {
+                _logger.LogError(ex, "Invalid price range provided: {minPrice}-{maxPrice}", minPrice, maxPrice);
+                throw;
+            }
+            catch (KeyNotFoundException ex)
+            {
+                _logger.LogWarning(ex, "No clinics found within the specified price range: {minPrice}-{maxPrice}", minPrice, maxPrice);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching clinics within the price range: {minPrice}-{maxPrice}", minPrice, maxPrice);
+                throw new ApplicationException("An error occurred while fetching clinics within the specified price range. Please try again later.", ex);
+            }
+
         }
 
         public async Task<ProcessResult> IsDoctorHasClinicAsync(string doctorId)
