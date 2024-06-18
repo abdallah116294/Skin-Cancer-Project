@@ -27,8 +27,8 @@ namespace SkinCancer.Entities.Models
         [MaxLength(500)]
         public string Description { get; set; }
 
-/*        public decimal? TotalAmountReceived { get; set; }   
-*/
+        /*        public decimal? TotalAmountReceived { get; set; }   
+        */
         [Required, MaxLength(100)]
         public string DoctorName { get; set; }
 
@@ -38,12 +38,10 @@ namespace SkinCancer.Entities.Models
         [ForeignKey("Doctor")]
         public string DoctorId { get; set; } = string.Empty;
 
-        public ApplicationUser Doctor { get; set; }
-
 
         public List<PatientRateClinic> PatientRates { get; set; } = new List<PatientRateClinic>();
 
 
-        public ICollection<Schedule>? Schedules { get; set; } = new List<Schedule>();       
+        public ICollection<Schedule>? Schedules { get; set; } = new List<Schedule>();
     }
 }
