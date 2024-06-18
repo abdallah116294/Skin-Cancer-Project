@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SkinCancer.Entities;
 
@@ -11,9 +12,11 @@ using SkinCancer.Entities;
 namespace SkinCancer.Entities.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240617182951_AddJsonIgnoreToDoctorAndPatientRatesAndSchedulesToClinicClass")]
+    partial class AddJsonIgnoreToDoctorAndPatientRatesAndSchedulesToClinicClass
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -163,9 +166,6 @@ namespace SkinCancer.Entities.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ClinicId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -236,8 +236,6 @@ namespace SkinCancer.Entities.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ClinicId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -269,7 +267,7 @@ namespace SkinCancer.Entities.Migrations
 
                     b.Property<string>("DoctorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DoctorName")
                         .IsRequired()
@@ -297,6 +295,9 @@ namespace SkinCancer.Entities.Migrations
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId")
+                        .IsUnique();
 
                     b.ToTable("Clinics");
                 });
@@ -441,13 +442,15 @@ namespace SkinCancer.Entities.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SkinCancer.Entities.Models.ApplicationUser", b =>
+            modelBuilder.Entity("SkinCancer.Entities.Models.Clinic", b =>
                 {
-                    b.HasOne("SkinCancer.Entities.Models.Clinic", "Clinic")
-                        .WithMany()
-                        .HasForeignKey("ClinicId");
+                    b.HasOne("SkinCancer.Entities.Models.ApplicationUser", "Doctor")
+                        .WithOne("Clinic")
+                        .HasForeignKey("SkinCancer.Entities.Models.Clinic", "DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Clinic");
+                    b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("SkinCancer.Entities.Models.DetectionData", b =>
@@ -499,6 +502,8 @@ namespace SkinCancer.Entities.Migrations
 
             modelBuilder.Entity("SkinCancer.Entities.Models.ApplicationUser", b =>
                 {
+                    b.Navigation("Clinic");
+
                     b.Navigation("PatientRates");
 
                     b.Navigation("Schedules");

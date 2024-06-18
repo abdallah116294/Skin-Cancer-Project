@@ -16,6 +16,7 @@ using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.ScheduleServices;
 using Stripe;
 using SkinCancer.Services.PaymentServices;
+using SkinCancer.Services.AdminServices;
 
 namespace SkinCancer.Api
 {
@@ -59,6 +60,7 @@ namespace SkinCancer.Api
             builder.Services.AddScoped<IScheduleService, ScheduleService>();
             builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
+            builder.Services.AddScoped<IAdminService, AdminService>();
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddDataProtection();
