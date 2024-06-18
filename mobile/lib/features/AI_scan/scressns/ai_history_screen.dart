@@ -57,10 +57,10 @@ class _AiHistoryScreenState extends State<AiHistoryScreen> {
                             padding: EdgeInsets.symmetric(
                                 horizontal: 14.w, vertical: 30.h),
                             child: SizedBox(
-                              height: 600.h,
+                              height: 800.h,
                               child: GridView.builder(
                                 shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
+                                physics: const ScrollPhysics(),
                                 itemCount: state.aiHistory.length,
                                 itemBuilder: (context, index) {
                                   return AIResultWidget(

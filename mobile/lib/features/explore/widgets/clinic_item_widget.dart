@@ -14,7 +14,8 @@ class ClinicItemWidget extends StatefulWidget {
       {super.key,
       required this.clinicAddress,
       required this.clinicName,
-      required this.rate});
+      required this.rate
+      });
   final String clinicName;
   final String clinicAddress;
   final double rate;

@@ -116,7 +116,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                         fontSize: 23.sp),
                                   ),
                                   Text(
-                                    '⭐${state.clinicInfoModel.rate}',
+                                    '⭐${state.clinicInfoModel.rate != null ? state.clinicInfoModel.rate : 0}',
                                     style: TextStyles.font20whiteW700.copyWith(
                                       color: AppColor.primaryColor,
                                       fontSize: 25.sp,
@@ -223,7 +223,10 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                   ModalBottomSheet.addAppointment(
                                       context,
                                       state.clinicInfoModel.id!,
-                                      state.clinicInfoModel.availableDates,state.clinicInfoModel.name.toString(),state.clinicInfoModel.rate!.toInt(),state.clinicInfoModel.price!.toInt());
+                                      state.clinicInfoModel.availableDates!=null?state.clinicInfoModel.availableDates:[],
+                                      state.clinicInfoModel.name.toString(),
+                                      state.clinicInfoModel.rate!=null?state.clinicInfoModel.rate!.toInt():0,
+                                      state.clinicInfoModel.price!.toInt());
                                 },
                                 textColor: Colors.white,
                                 white: false,
@@ -249,13 +252,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                                             ratingvalue = intivalue;
                                           });
                                         },
-                                        initialRating: state
-                                                    .clinicInfoModel.rate!
-                                                    .toDouble() ==
-                                                null
-                                            ? 0
-                                            : state.clinicInfoModel.rate!
-                                                .toDouble(),
+                                        initialRating: state.clinicInfoModel.rate!=null?state.clinicInfoModel.rate!.toDouble():0.toDouble(),
                                         actionName: "Rate",
                                         context: context,
                                         onTap: () {

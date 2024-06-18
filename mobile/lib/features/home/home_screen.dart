@@ -7,6 +7,8 @@ import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
+import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
+import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/home/widget/add_clinic_widget.dart';
 import 'package:mobile/features/home/widget/info_center.dart';
 import 'package:mobile/injection_container.dart' as di;
@@ -72,143 +74,161 @@ class _HomeScreenState extends State<HomeScreen>
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                width: 390.w,
-                height: 120.h,
-                child: doctor_role != null
-                    ? BlocProvider(
-                        create: (context) =>
-                            di.sl<AuthCubit>()..getDoctorDetials(docId),
-                        child: BlocBuilder<AuthCubit, AuthState>(
-                          builder: (context, state) {
-                            if (state is GetDoctorDetialsSuccess) {
-                              CacheHelper.saveData(
-                                  key: 'doctor_name',
-                                  value:
-                                      "${state.doctorModel.firstName!} ${state.doctorModel.lastName!}");
-                              return Padding(
-                                padding: EdgeInsets.only(top: 40.h, left: 30.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        style: TextStyles.font24PrimaryW700
-                                            .copyWith(color: Colors.black)
-                                            .copyWith(
-                                                fontSize: 22.sp,
-                                                fontWeight: FontWeight.w600),
-                                        "Hi,${state.doctorModel.firstName}"),
-                                    verticalSpacing(5),
-                                    Text(
-                                      style: TextStyles.font20BlackW700
-                                          .copyWith(
-                                              color: const Color(0xFF616161),
-                                              fontSize: 12.sp,
-                                              fontWeight: FontWeight.w400),
-                                      "How are you today?",
-                                    ),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
-                        ),
-                      )
-                    : BlocProvider(
-                        create: (context) =>
-                            di.sl<AuthCubit>()..getPatientDetails(docId),
-                        child: BlocBuilder<AuthCubit, AuthState>(
-                          builder: (context, state) {
-                            if (state is GetPatientDetialsSuccess) {
-                              return Padding(
-                                padding: EdgeInsets.only(top: 40.h, left: 30.w),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                        style: TextStyles.font24PrimaryW700
-                                            .copyWith(color: Colors.black)
-                                            .copyWith(
-                                                fontSize: 22.sp,
-                                                fontWeight: FontWeight.w600),
-                                        "Hi,${state.doctorModel.firstName}"),
-                                    verticalSpacing(3),
-                                    Text(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          if (doctor_role != null) {
+            di.sl<AuthCubit>().getDoctorDetials(docId);
+            di.sl<ClinicCubit>()
+              .getDocHasClinic(docId: docId).then((value) {
+                di.sl<PatientClinicCubit>().getAllClinics();
+              });
+          } else {
+            di.sl<AuthCubit>().getPatientDetails(docId);
+          }
+        },
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 390.w,
+                  height: 120.h,
+                  child: doctor_role != null
+                      ? BlocProvider(
+                          create: (context) =>
+                              di.sl<AuthCubit>()..getDoctorDetials(docId),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              if (state is GetDoctorDetialsSuccess) {
+                                CacheHelper.saveData(
+                                    key: 'doctor_name',
+                                    value:
+                                        "${state.doctorModel.firstName!} ${state.doctorModel.lastName!}");
+                                return Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 40.h, left: 30.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          style: TextStyles.font24PrimaryW700
+                                              .copyWith(color: Colors.black)
+                                              .copyWith(
+                                                  fontSize: 22.sp,
+                                                  fontWeight: FontWeight.w600),
+                                          "Hi,${state.doctorModel.firstName}"),
+                                      verticalSpacing(5),
+                                      Text(
                                         style: TextStyles.font20BlackW700
                                             .copyWith(
                                                 color: const Color(0xFF616161),
                                                 fontSize: 12.sp,
                                                 fontWeight: FontWeight.w400),
-                                        "How are you today?"),
-                                  ],
-                                ),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          },
-                        ),
-                      ),
-              ),
-              doctor_role != null
-                  ? verticalSpacing(10)
-                  : const SizedBox(
-                      height: 0.0,
-                    ),
-              doctor_role != null
-                  ? const AddClinicWidget()
-                  : verticalSpacing(0),
-              doctor_role != null ? verticalSpacing(15) : verticalSpacing(0),
-              const AISection(),
-              verticalSpacing(10),
-              verticalSpacing(10),
-              Padding(
-                padding: EdgeInsets.only(left: 15.w),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                            size: 44,
-                            Icons.info_outline_rounded,
-                            color: AppColor.primaryColor),
-                        horizontalSpacing(10),
-                        Text(
-                          "Learning Center",
-                          style: TextStyles.font15BlackW500,
+                                        "How are you today?",
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
                         )
-                      ],
-                    ),
-                  ],
+                      : BlocProvider(
+                          create: (context) =>
+                              di.sl<AuthCubit>()..getPatientDetails(docId),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              if (state is GetPatientDetialsSuccess) {
+                                return Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 40.h, left: 30.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          style: TextStyles.font24PrimaryW700
+                                              .copyWith(color: Colors.black)
+                                              .copyWith(
+                                                  fontSize: 22.sp,
+                                                  fontWeight: FontWeight.w600),
+                                          "Hi,${state.doctorModel.firstName}"),
+                                      verticalSpacing(3),
+                                      Text(
+                                          style: TextStyles.font20BlackW700
+                                              .copyWith(
+                                                  color:
+                                                      const Color(0xFF616161),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400),
+                                          "How are you today?"),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
+                        ),
                 ),
-              ),
-              verticalSpacing(20),
-              Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 14.w),
-                  child: SizedBox(
-                    height: 800.h,
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: infoList.length,
-                      itemBuilder: (context, index) {
-                        return infoList[index];
-                      },
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 10,
-                              childAspectRatio: .78),
-                    ),
-                  ))
-            ],
+                doctor_role != null
+                    ? verticalSpacing(10)
+                    : const SizedBox(
+                        height: 0.0,
+                      ),
+                doctor_role != null
+                    ? const AddClinicWidget()
+                    : verticalSpacing(0),
+                doctor_role != null ? verticalSpacing(15) : verticalSpacing(0),
+                const AISection(),
+                verticalSpacing(10),
+                verticalSpacing(10),
+                Padding(
+                  padding: EdgeInsets.only(left: 15.w),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Icon(
+                              size: 44,
+                              Icons.info_outline_rounded,
+                              color: AppColor.primaryColor),
+                          horizontalSpacing(10),
+                          Text(
+                            "Learning Center",
+                            style: TextStyles.font15BlackW500,
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                verticalSpacing(20),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14.w),
+                    child: SizedBox(
+                      height: 800.h,
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: infoList.length,
+                        itemBuilder: (context, index) {
+                          return infoList[index];
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: .78),
+                      ),
+                    ))
+              ],
+            ),
           ),
         ),
       ),

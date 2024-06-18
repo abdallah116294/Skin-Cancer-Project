@@ -23,7 +23,7 @@ class AddClinicWidget extends StatefulWidget {
 }
 
 class _AddClinicWidgetState extends State<AddClinicWidget>
-    with AutomaticKeepAliveClientMixin {
+    {
   bool rebuild = false;
   String getToken() {
     final token = CacheHelper.getData(key: 'token');
@@ -52,7 +52,7 @@ class _AddClinicWidgetState extends State<AddClinicWidget>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
+   // super.build(context);
     var clinicName = CacheHelper.getData(key: 'clinicName');
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
@@ -135,14 +135,19 @@ class _AddClinicWidgetState extends State<AddClinicWidget>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 }
 
-class ShowClinicDetails extends StatelessWidget {
+class ShowClinicDetails extends StatefulWidget {
   const ShowClinicDetails({super.key});
 
+  @override
+  State<ShowClinicDetails> createState() => _ShowClinicDetailsState();
+}
+
+class _ShowClinicDetailsState extends State<ShowClinicDetails> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -157,8 +162,13 @@ class ShowClinicDetails extends StatelessWidget {
           String docId = data[
               "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
           if (state is GetAllClinicIsSuccess) {
+            
             Iterable<ClinicInfoModel> clinicInfoModel = state.clinicInfoModel
-                .where((element) => element.doctorId == docId);
+                .where((element) => element.doctorId == docId);   
+                CacheHelper.saveData(
+                  key: 'clinic_id', value: clinicInfoModel.first.id);
+                 CacheHelper.saveData(
+                  key: 'clinic_price', value: clinicInfoModel.first.price);  
             return Container(
               width: 365.w,
               height: 190.h,
@@ -176,7 +186,8 @@ class ShowClinicDetails extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          clinicInfoModel.first.name.toString(),
+                          state.clinicInfoModel.where((element) => element.doctorId==docId).first.name.toString(),
+                         // clinicInfoModel.first.name.toString(),
                           maxLines: 2,
                           style: TextStyles.font16BlackW500.copyWith(
                             color: Colors.white,
