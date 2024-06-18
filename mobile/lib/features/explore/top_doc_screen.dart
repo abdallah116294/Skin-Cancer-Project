@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lottie/lottie.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
@@ -84,14 +85,15 @@ class _TopDocScreenState extends State<TopDocScreen> {
                           return InkWell(
                             onTap: () {
                               log(clinics.toString());
-                              log("Clinic ${clinics![index].availableDates.first}");
+                              //log("Clinic ${clinics![index].availableDates.first}");
                               context.pushNamed(Routes.docDetailsScreen,
                                   arguments: clinics![index].id);
                             },
                             child: ClinicItemWidget(
                               clinicAddress: clinics![index].address.toString(),
                               clinicName: clinics![index].name.toString(),
-                              rate: clinics![index].rate!.toDouble(),
+                               rate:clinics![index].rate!=null?clinics![index].rate!.toDouble():0 ,
+                            // rate: clinics![index].rate!.toDouble(),
                             ),
                           );
                         },

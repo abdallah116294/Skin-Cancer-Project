@@ -289,31 +289,31 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
                     ),
                   ),
                 ),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () async {
-                    Map<String, String?> date =
-                        await DateConverter.showDateTimePicker(
-                      context: context,
-                      firstDate: DateTime(2015, 8),
-                      lastDate: DateTime(2101),
-                      initialDate: DateTime.now(),
-                      selectedDateAndTime: selectedDateAndTime3,
-                    );
-                    setState(() {
-                      selectedDateAndTime3 = date['selectedDateAndTime']!;
-                    });
-                    if (date['showDate'] != null) {
-                      context
-                          .read<ClinicCubit>()
-                          .docCreateSchadual(
-                              selectedDateAndTime3, false, clinicId)
-                          .then((value) {
-                        context.read<PatientClinicCubit>().getAllClinics();
-                      });
-                    }
-                  },
-                  child: const Icon(Icons.add),
-                ),
+                // floatingActionButton: FloatingActionButton(
+                //   onPressed: () async {
+                //     Map<String, String?> date =
+                //         await DateConverter.showDateTimePicker(
+                //       context: context,
+                //       firstDate: DateTime(2015, 8),
+                //       lastDate: DateTime(2101),
+                //       initialDate: DateTime.now(),
+                //       selectedDateAndTime: selectedDateAndTime3,
+                //     );
+                //     setState(() {
+                //       selectedDateAndTime3 = date['selectedDateAndTime']!;
+                //     });
+                //     if (date['showDate'] != null) {
+                //       context
+                //           .read<ClinicCubit>()
+                //           .docCreateSchadual(
+                //               selectedDateAndTime3, false, clinicId)
+                //           .then((value) {
+                //         context.read<PatientClinicCubit>().getAllClinics();
+                //       });
+                //     }
+                //   },
+                //   child: const Icon(Icons.add),
+                // ),
               );
             }
           } else if (state is GetAllClinicIsError) {

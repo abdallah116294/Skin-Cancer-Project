@@ -1,6 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:flutter/widgets.dart';
+import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as path;
+import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,43 +35,20 @@ class AIScanScreen extends StatefulWidget {
 }
 
 class _AIScanScreenState extends State<AIScanScreen> {
-  bool _loading = true;
-  late File _image;
   List? _output;
+  bool _loading = true;
+
+  late File _image;
   final picker = ImagePicker();
-
-  // detectImage(File image) async {
-  //   log("detect image");
-  //   var output = await Tflite.runModelOnImage(
-  //       path: image.path,
-  //       numResults: 7,
-  //       threshold: 0.6,
-  //       imageMean: 1.0,
-  //       imageStd: 1.0);
-  //   log(output.toString());
-  //   setState(() {
-  //     _output = output;
-  //     _loading = false;
-  //   });
-  // }
-
-  // loadModel() async {
-  //   log("load Model");
-  //   Tflite.loadModel(
-  //     model: 'assets/EfficientNetB0_model.tflite',
-  //     labels: 'assets/labels.txt',
-  //     isAsset: true,
-  //   );
-  // }
-
   Future pickFromCamera() async {
     log("pick image");
     var image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) {
       return null;
     }
+    var compressedImage =await compressImage(File(image.path));
     setState(() {
-      _image = File(image.path);
+      _image = compressedImage;
       _loading = false;
     });
     //  detectImage(_image);
@@ -79,43 +61,31 @@ class _AIScanScreenState extends State<AIScanScreen> {
     if (image == null) {
       return null;
     }
+    var compressedImage =await compressImage(File(image.path));
     setState(() {
-      _image = File(image.path);
+      _image = compressedImage;
       _loading = false;
     });
     log(image.path.toString());
     // detectImage(_image);
   }
 
-  ///todo firebase remove it
-  // Future<String> uploadImage() async {
-  //   if (widget.num == 0) {
-  //     final ref = FirebaseStorage.instance
-  //         .ref()
-  //         .child("patient")
-  //         .child('aiResult')
-  //         .child("${widget.num}.jpg");
-  //     await ref.putFile(File(_image.path));
-  //     final downloadURl = await ref.getDownloadURL();
-  //     setState(() {
-  //       userImageUrl = downloadURl;
-  //     });
-  //     return userImageUrl;
-  //   } else if (widget.num == 1) {
-  //     final ref = FirebaseStorage.instance
-  //         .ref()
-  //         .child("doctor")
-  //         .child('aiResult')
-  //         .child("${widget.uid.trim()}.jpg");
-  //     await ref.putFile(File(_image.path));
-  //     final downloadURl = await ref.getDownloadURL();
-  //     setState(() {
-  //       userImageUrl = downloadURl;
-  //     });
-  //     return userImageUrl;
-  //   }
-  //   return userImageUrl;
-  // }
+  Future<File> compressImage(File file) async {
+    final dir = await getTemporaryDirectory();
+    final targetPath = '${dir.absolute.path}/temp.jpg';
+
+    // Read the image from file
+    img.Image image = img.decodeImage(file.readAsBytesSync())!;
+
+    // Resize the image
+    img.Image smallerImage = img.copyResize(image, width: 800);
+
+    // Save the smaller image to a file
+    File compressedImage = File(targetPath)
+      ..writeAsBytesSync(img.encodeJpg(smallerImage, quality: 85));
+
+    return compressedImage;
+  }
 
   Disease? getDiseaseByName(List<Disease> diseases, String name) {
     try {
@@ -408,11 +378,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                                 await AppMethods
                                                     .imagePickerDialog(
                                                   context: context,
-                                                  camerFun: _loading ==false? context.pop : pickFromCamera,
+                                                  camerFun: _loading == false
+                                                      ? context.pop
+                                                      : pickFromCamera,
                                                   removeFun: () {
                                                     context.pop();
                                                   },
-                                                  galeryFun: pickGallery,
+                                                  galeryFun: _loading == false
+                                                      ? context.pop
+                                                      : pickGallery,
                                                 ).then((value) {
                                                   context
                                                       .read<
@@ -435,11 +409,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                                 await AppMethods
                                                     .imagePickerDialog(
                                                   context: context,
-                                                  camerFun: _loading ==false? context.pop : pickFromCamera,
+                                                  camerFun: _loading == false
+                                                      ? context.pop
+                                                      : pickFromCamera,
                                                   removeFun: () {
                                                     context.pop();
                                                   },
-                                                  galeryFun: pickGallery,
+                                                  galeryFun: _loading == false
+                                                      ? context.pop
+                                                      : pickGallery,
                                                 ).then((value) {
                                                   context
                                                       .read<
@@ -460,11 +438,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                           onTap: () async {
                                             await AppMethods.imagePickerDialog(
                                               context: context,
-                                              camerFun: _loading ==false? context.pop : pickFromCamera,
+                                              camerFun: _loading == false
+                                                  ? context.pop
+                                                  : pickFromCamera,
                                               removeFun: () {
                                                 context.pop();
                                               },
-                                              galeryFun: pickGallery,
+                                              galeryFun: _loading == false
+                                                      ? context.pop
+                                                      : pickGallery,
                                             ).then((value) {
                                               context
                                                   .read<AiPeredictionCubit>()
@@ -483,11 +465,15 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                       onTap: () async {
                                         await AppMethods.imagePickerDialog(
                                           context: context,
-                                          camerFun: _loading ==false? context.pop : pickFromCamera,
+                                          camerFun: _loading == false
+                                              ? context.pop
+                                              : pickFromCamera,
                                           removeFun: () {
                                             context.pop();
                                           },
-                                          galeryFun: pickGallery,
+                                          galeryFun: _loading == false
+                                                      ? context.pop
+                                                      : pickGallery,
                                         ).then((value) {
                                           context
                                               .read<AiPeredictionCubit>()
