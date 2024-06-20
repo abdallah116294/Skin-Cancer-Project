@@ -18,11 +18,11 @@ namespace SkinCancer.Api.Controllers
         private readonly IUnitOfWork  unitOfWork;
 		private readonly ApplicationDbContext _context;
 
-		public ScheduleController(IScheduleService scheduleService, ApplicationDbContext context)
+        public ScheduleController(IScheduleService scheduleService, ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
             _scheduleService = scheduleService;
             _context = context;
-            unitOfWork = new UnitOfWork(_context);
+            this.unitOfWork = unitOfWork;
         }
 
 

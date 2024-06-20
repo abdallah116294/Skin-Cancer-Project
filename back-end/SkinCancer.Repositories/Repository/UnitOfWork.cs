@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 
 namespace SkinCancer.Repositories.Repository
 {
@@ -21,13 +23,17 @@ namespace SkinCancer.Repositories.Repository
         public IScheduleRepository scheduleRepository { get; set;}
         public IDetectionRepository detectionRepositoty { get; set;}
         public IClinicRepository clinicRepository { get; set; }
+        public IUserRepository userRepository { get; set; }
 
-        public UnitOfWork(ApplicationDbContext context)
+        public UnitOfWork(ApplicationDbContext context,
+                          UserManager<ApplicationUser> userManager, 
+                          IMapper mapper)
         {
             this.context = context;
             this.scheduleRepository = new ScheduleRepository(context);
             this.detectionRepositoty = new DetectionRepository(context);
             this.clinicRepository = new ClinicRepository(context);
+            this.userRepository = new UserRepository(context , mapper , userManager);
         }
 
         public async Task<int> CompleteAsync() => await context.SaveChangesAsync();
