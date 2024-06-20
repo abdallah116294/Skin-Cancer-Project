@@ -14,6 +14,7 @@ namespace SkinCancer.Repositories.Interface
         IScheduleRepository scheduleRepository { get; set; }
 		IDetectionRepository detectionRepositoty { get; set; }
         IClinicRepository clinicRepository { get; set; }
+        IUserRepository userRepository { get; set; }
 
         Task<int> CompleteAsync();
 
@@ -29,9 +30,5 @@ namespace SkinCancer.Repositories.Interface
 
         Task<List<T>> SelectItemAsync<T>(Expression<Func<T, bool>> predicate,
             params Expression<Func<T, object>>[] includes) where T : class;
-
-
-
-
     }
 }
