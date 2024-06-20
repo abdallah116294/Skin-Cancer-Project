@@ -238,7 +238,8 @@ namespace SkinCancer.Services.AuthServices
             var removeResult = await _userManager.RemovePasswordAsync(user);
 
             if (!removeResult.Succeeded)
-                return new ProcessResult { Message = string.Join(", ", removeResult.Errors.Select(er => er.Description)) };
+                return new ProcessResult { Message = string.Join(", ",
+                    removeResult.Errors.Select(er => er.Description)) };
 
             var changePassword = await _userManager.AddPasswordAsync(user, newPassword);
 
