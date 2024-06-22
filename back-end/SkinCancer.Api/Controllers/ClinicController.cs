@@ -11,7 +11,6 @@ using SkinCancer.Entities.ModelsDtos.DoctorDtos;
 
 using SkinCancer.Entities.ModelsDtos.PatientDtos;
 using SkinCancer.Services.ClinicServices;
-using SkinCancer.Services.DoctorServices;
 using System.Security.Claims;
 
 namespace SkinCancer.Api.Controllers
@@ -20,14 +19,12 @@ namespace SkinCancer.Api.Controllers
     [ApiController]
     public class ClinicController : ControllerBase
     {
-        public readonly IDoctorService _doctorService;
         public readonly UserManager<ApplicationUser> _userManager;
         public readonly IClinicService _clinicService;
         public readonly RoleManager<IdentityRole> _roleManager;
 
-        public ClinicController(IDoctorService doctorService, UserManager<ApplicationUser> userManager, IClinicService clinicService, RoleManager<IdentityRole> roleManager)
+        public ClinicController(UserManager<ApplicationUser> userManager, IClinicService clinicService, RoleManager<IdentityRole> roleManager)
         {
-            _doctorService = doctorService;
             _userManager = userManager;
             _clinicService = clinicService;
             _roleManager = roleManager;
