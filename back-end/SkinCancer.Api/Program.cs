@@ -10,7 +10,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SkinCancer.Entities;
 using SkinCancer.Repositories.Interface;
-using SkinCancer.Services.DoctorServices;
 using SkinCancer.Repositories.Repository;
 using SkinCancer.Services.ClinicServices;
 using SkinCancer.Services.ScheduleServices;
@@ -54,7 +53,6 @@ namespace SkinCancer.Api
             builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<IDoctorService, DoctorService>();
             builder.Services.AddTransient<IClinicService, ClinicService>();
             builder.Services.AddScoped<IClinicRepository, ClinicRepository>();
             builder.Services.AddScoped<IScheduleService, ScheduleService>();

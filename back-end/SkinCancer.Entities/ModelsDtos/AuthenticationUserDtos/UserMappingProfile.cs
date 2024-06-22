@@ -1,8 +1,7 @@
 ﻿using SkinCancer.Entities.Models;
 using AutoMapper;
-using SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos;
 
-namespace SkinCancer.Entities.MappingProfiles
+namespace SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos
 {
     public class UserMappingProfile : Profile
     {
@@ -12,9 +11,9 @@ namespace SkinCancer.Entities.MappingProfiles
 
             CreateMap<LoginModel, ApplicationUser>().ReverseMap();
 
-            CreateMap<PatientDetailsDto , ApplicationUser>().ReverseMap();
+            CreateMap<PatientDetailsDto, ApplicationUser>().ReverseMap();
 
-            CreateMap<DoctorDetailsDto , ApplicationUser>().ReverseMap();
+            CreateMap<DoctorDetailsDto, ApplicationUser>().ReverseMap();
 
         }
     }
