@@ -45,6 +45,8 @@ namespace SkinCancer.Services.ClinicServices
                 await _unitOfWork.Reposirory<Clinic>().AddAsync(clinic);
                 await _unitOfWork.CompleteAsync();
 
+                var doctor = await _userManager.FindByIdAsync(dto.DoctorId);
+                doctor.DoctorHasClinic = true;
 
 
                 return new ProcessResult
@@ -79,6 +81,9 @@ namespace SkinCancer.Services.ClinicServices
 
                 _unitOfWork.Reposirory<Clinic>().Delete(clinic);
                 await _unitOfWork.CompleteAsync();
+
+                var doctor = await _userManager.FindByIdAsync(clinic.DoctorId);
+                doctor.DoctorHasClinic = false;
 
                 return new ProcessResult
                 {
