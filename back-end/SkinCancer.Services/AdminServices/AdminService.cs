@@ -52,6 +52,8 @@ namespace SkinCancer.Services.AdminServices
                 await _unitOfWork.Reposirory<Clinic>().AddAsync(clinic);
                 await _unitOfWork.CompleteAsync();
 
+                 
+
                 return clinic;
             }
             catch (ValidationException ex)
@@ -83,6 +85,10 @@ namespace SkinCancer.Services.AdminServices
 
                 _unitOfWork.Reposirory<Clinic>().Delete(clinic);
                 await _unitOfWork.CompleteAsync();
+
+                var user = await _userManager.FindByIdAsync(clinic.DoctorId);
+                user.DoctorHasClinic = false;
+
 
                 return clinic;
             }
@@ -497,6 +503,10 @@ namespace SkinCancer.Services.AdminServices
             if (validationErrors.Any())
             {
                 throw new ValidationException(string.Join(Environment.NewLine, validationErrors));
+            }
+            else
+            {
+                user.DoctorHasClinic = true;
             }
         }
     }
