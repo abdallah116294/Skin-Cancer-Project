@@ -58,9 +58,9 @@ class _TopDocScreenState extends State<TopDocScreen> {
                         Padding(
                           padding:  EdgeInsets.all(15.w),
                           child: SearchBar(
-                            backgroundColor:    WidgetStateProperty.all(
-                              Colors.grey.shade300,
-                            ),
+                            // backgroundColor:    WidgetStateProperty.all(
+                            //   Colors.grey.shade300,
+                            // ),
 
                             controller: searchController,
                             hintText: 'Search Specialty',
