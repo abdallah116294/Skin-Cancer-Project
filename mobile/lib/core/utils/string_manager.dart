@@ -110,7 +110,7 @@ class StringManager {
           "Waxy, scaly, slightly elevated appearance; can vary in color from light tan to black; round or oval in shape; well-defined edges; looks like it's stuck onto the skin; can appear singly or in clusters."
     },
     {
-      "name": "Squamous Cell Carcinoma",
+      "name": "Squamous cell carcinoma",
       "description":
           "Squamous cell carcinoma (SCC) is a common form of skin cancer that arises from the squamous cells in the outer layer of the skin. It often develops on areas of the body exposed to the sun, such as the face, ears, neck, lips, and backs of the hands. SCC can grow and spread to other parts of the body if not treated promptly.",
       "symptoms":
@@ -141,6 +141,14 @@ class StringManager {
       "Seborrheic keratoses are common, noncancerous skin growths that appear as waxy, brown, black, or tan growths. They often appear on the chest, back, shoulders, or face. Seborrheic keratoses are harmless and typically do not require treatment unless they cause discomfort or cosmetic concerns.",
       "symptoms":
       "Waxy, wart-like growths that are light tan, brown, or black; slightly raised with a well-defined edge; appear 'stuck on' the skin surface; can be rough or slightly scaly; may itch or cause irritation, especially if rubbed by clothing."
-    }
+    },
+    {
+  "name": "Benign Keratosis-Like Lesion",
+  "description":
+      "A benign keratosis-like lesion is a non-cancerous skin growth that can resemble other forms of keratosis, such as actinic keratosis. These lesions are typically harmless and do not pose a risk of developing into skin cancer. They can appear in various forms and are usually found on sun-exposed areas of the skin. Although benign, it is essential to monitor these lesions to differentiate them from potentially malignant growths.",
+  "symptoms":
+      "Small, raised, and rough patch of skin; can be flesh-colored, brown, or black; typically less than 1 inch in diameter; may be scaly or have a wart-like surface; can occur anywhere on the body but are more common on sun-exposed areas; generally asymptomatic but may occasionally itch or become irritated."
+}
+
   ];
 }

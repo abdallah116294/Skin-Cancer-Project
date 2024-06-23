@@ -44,16 +44,17 @@ class _AIScanScreenState extends State<AIScanScreen> {
     var image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) {
       setState(() {
-        image=null;
+        image = null;
       });
       return null;
     }
     var compressedImage = await compressImage(File(image.path));
+    Navigator.pop(context);
     setState(() {
       _image = compressedImage;
       _loading = false;
     });
-    Navigator.pop(context);
+
     print(_loading.toString());
     print("8888888888   camera   8888888888888");
 
@@ -66,19 +67,19 @@ class _AIScanScreenState extends State<AIScanScreen> {
     var image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) {
       setState(() {
-        image=null;
+        image = null;
       });
       return null;
     }
     var compressedImage = await compressImage(File(image.path));
-
+    Navigator.pop(context);
     setState(() {
       _image = compressedImage;
       _loading = false;
     });
-    Navigator.pop(context);
-print(_loading.toString());
-print("8888888888888888888888888888");
+
+    print(_loading.toString());
+    print("8888888888888888888888888888");
     log(image.path.toString());
     // detectImage(_image);
   }
@@ -291,7 +292,10 @@ print("8888888888888888888888888888");
                                         ),
                                       );
                                     } else {
-                                      return Container(
+                                      if (_image == null) {
+                                        return SizedBox();
+                                      }else{
+                                         return Container(
                                           padding: const EdgeInsets.all(20),
                                           decoration: BoxDecoration(
                                               color: Colors.white,
@@ -348,6 +352,9 @@ print("8888888888888888888888888888");
                                               ),
                                             ],
                                           ));
+                                   
+                                      }
+                                      
                                     }
                                   } else if (state
                                       is PeredictionCancerTypeIsSuccess) {
@@ -391,29 +398,24 @@ print("8888888888888888888888888888");
                                               buttonName: "Upload",
                                               onTap: () async {
                                                 setState(() {
-                                                  _loading = true;
+                                                  _image = null;
                                                 });
                                                 await AppMethods
                                                     .imagePickerDialog(
                                                   context: context,
-                                                    camerFun: _loading == false
-                                                        ? context.pop
-                                                        : pickFromCamera,
-                                                    removeFun: () {
-                                                      context.pop();
-                                                    },
-                                                    galeryFun: _loading == false
-                                                        ? context.pop
-                                                        : pickGallery,
+                                                  camerFun: pickFromCamera,
+                                                  removeFun: () {
+                                                    context.pop();
+                                                  },
+                                                  galeryFun: pickGallery,
                                                 ).then((value) {
-                                                  if(_image!= null){
+                                                  if (_image != null) {
                                                     context
                                                         .read<
-                                                        AiPeredictionCubit>()
+                                                            AiPeredictionCubit>()
                                                         .peredictonSkinorNot(
-                                                        _image!);
+                                                            _image!);
                                                   }
-
                                                 });
                                               },
                                               textColor: Colors.white,
@@ -427,18 +429,17 @@ print("8888888888888888888888888888");
                                               height: 60.h,
                                               buttonName: "Explore Clinics",
                                               onTap: () async {
+                                                setState(() {
+                                                  _image = null;
+                                                });
                                                 await AppMethods
                                                     .imagePickerDialog(
                                                   context: context,
-                                                  camerFun: _loading == false
-                                                      ? context.pop
-                                                      : pickFromCamera,
+                                                  camerFun: pickFromCamera,
                                                   removeFun: () {
                                                     context.pop();
                                                   },
-                                                  galeryFun: _loading == false
-                                                      ? context.pop
-                                                      : pickGallery,
+                                                  galeryFun: pickGallery,
                                                 ).then((value) {
                                                   context
                                                       .read<
@@ -457,17 +458,16 @@ print("8888888888888888888888888888");
                                           height: 60.h,
                                           buttonName: "Upload",
                                           onTap: () async {
+                                            setState(() {
+                                              _image = null;
+                                            });
                                             await AppMethods.imagePickerDialog(
                                               context: context,
-                                              camerFun: _loading == false
-                                                  ? context.pop
-                                                  : pickFromCamera,
+                                              camerFun: pickFromCamera,
                                               removeFun: () {
                                                 context.pop();
                                               },
-                                              galeryFun: _loading == false
-                                                  ? context.pop
-                                                  : pickGallery,
+                                              galeryFun: pickGallery,
                                             ).then((value) {
                                               context
                                                   .read<AiPeredictionCubit>()
@@ -484,17 +484,16 @@ print("8888888888888888888888888888");
                                       height: 60.h,
                                       buttonName: "Upload",
                                       onTap: () async {
+                                        setState(() {
+                                          _image = null;
+                                        });
                                         await AppMethods.imagePickerDialog(
                                           context: context,
-                                          camerFun: _loading == false
-                                              ? context.pop
-                                              : pickFromCamera,
+                                          camerFun: pickFromCamera,
                                           removeFun: () {
                                             context.pop();
                                           },
-                                          galeryFun: _loading == false
-                                              ? context.pop
-                                              : pickGallery,
+                                          galeryFun: pickGallery,
                                         ).then((value) {
                                           context
                                               .read<AiPeredictionCubit>()
