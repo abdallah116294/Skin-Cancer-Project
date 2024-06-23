@@ -55,7 +55,8 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
                 context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,
                     predicate: (Route<dynamic> route) => false);
               });
-            } else {
+            }
+            else {
               DailogAlertFun.showMyDialog(
                   daliogContent: state.patientBookSuccess.message.toString(),
                   actionName: 'Go Home',
@@ -73,6 +74,7 @@ class _DocDetailsScreenState extends State<DocDetailsScreen> {
             builder: (context, state) {
               if (state is GetClinicDetailsIsloading) {
                 return const Scaffold(
+                  backgroundColor: Colors.white,
                   body: Center(
                     child: CireProgressIndecatorWidget(),
                   ),

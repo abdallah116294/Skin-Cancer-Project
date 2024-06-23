@@ -16,7 +16,7 @@ import 'package:mobile/injection_container.dart' as di;
 import '../../config/routes/app_routes.dart';
 
 class TopDocScreen extends StatefulWidget {
-  TopDocScreen({super.key});
+  const TopDocScreen({super.key});
 
   @override
   State<TopDocScreen> createState() => _TopDocScreenState();
@@ -56,8 +56,12 @@ class _TopDocScreenState extends State<TopDocScreen> {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(15.0),
+                          padding:  EdgeInsets.all(15.w),
                           child: SearchBar(
+                            backgroundColor:    WidgetStateProperty.all(
+                              Colors.grey.shade300,
+                            ),
+
                             controller: searchController,
                             hintText: 'Search Specialty',
                             leading: const Icon(Icons.search),

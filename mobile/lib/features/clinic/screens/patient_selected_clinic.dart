@@ -15,6 +15,7 @@ import 'package:mobile/core/utils/text_styles.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
 import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
+import 'package:mobile/features/clinic/screens/widget/booked_clinic_item.dart';
 import 'package:mobile/injection_container.dart' as di;
 
 class PatientSelectedClinic extends StatefulWidget {
@@ -87,120 +88,41 @@ class _PatientSelectedClinicState extends State<PatientSelectedClinic> {
                         ],
                       );
                     } else {
-                      return Column(
-                        children: [
-                          verticalSpacing(30),
-                          Expanded(
-                            child: ListView.separated(
-                                addAutomaticKeepAlives: true,
-                                itemBuilder: (context, index) {
-                                  DateTime dateTime = DateTime.parse(state
-                                      .selectedClinic[index].date
-                                      .toString());
-
-                                  return Padding(
-                                    padding: const EdgeInsets.all(20),
-                                    child: Container(
-                                        height: 120.h,
-                                        width: double.infinity,
-                                        decoration: BoxDecoration(
-                                            color: AppColor.primaryColor,
-                                            borderRadius:
-                                                BorderRadius.circular(20),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.black
-                                                      .withOpacity(0.1),
-                                                  blurRadius: 5.0,
-                                                  spreadRadius: 0.0)
-                                            ]),
-                                        child: Column(
-                                          children: [
-                                            Row(
-                                              children: [
-                                                Icon(Icons.local_hospital,
-                                                    size: 60.h,
-                                                    color: Colors.white),
-                                                horizontalSpacing(5),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                      state
-                                                          .selectedClinic[index]
-                                                          .clinicName
-                                                          .toString(),
-                                                      style: TextStyles
-                                                          .font20BlackW700
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.white),
-                                                    ),
-                                                    verticalSpacing(5),
-                                                    Text(
-                                                      state
-                                                          .selectedClinic[index]
-                                                          .patientName
-                                                          .toString(),
-                                                      style: TextStyles
-                                                          .font16BlackW500
-                                                          .copyWith(
-                                                              color:
-                                                                  Colors.white),
-                                                    ),
-                                                  ],
-                                                ),
-                                                const Spacer(),
-                                                // IconButton(
-                                                //     onPressed: () {
-                                            
-                                                //     },
-                                                //     icon: Icon(
-                                                //       Icons.arrow_forward_ios,
-                                                //       color: Colors.white,
-                                                //       size: 40.h,
-                                                //     ))
-                                              ],
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 60),
-                                              child: Divider(),
-                                            ),
-                                            Row(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.calendar_month,
-                                                  size: 30.h,
-                                                  color: Colors.white,
-                                                ),
-                                                horizontalSpacing(5),
-                                                Text(
-                                                  DateConverter
-                                                      .getDateTimeWithMonth(
-                                                          dateTime),
-                                                  style: TextStyles
-                                                      .font16BlackW500
-                                                      .copyWith(
-                                                          color: Colors.white),
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        )),
-                                  );
-                                },
-                                separatorBuilder: (context, index) =>
-                                    const Divider(),
-                                itemCount: state.selectedClinic.length),
+                      return Scaffold(
+                        backgroundColor: Colors.white,
+                        appBar: AppBar(
+                          centerTitle: true,
+                          leading: IconButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              icon: const Icon(Icons.arrow_back_ios)),
+                          backgroundColor: Colors.white,
+                          title: const Text(
+                            "Booked Clinic",
                           ),
-                        ],
+                        ),
+                        body: Column(
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                  addAutomaticKeepAlives: true,
+                                  itemBuilder: (context, index) {
+                                    DateTime dateTime = DateTime.parse(state
+                                        .selectedClinic[index].date
+                                        .toString());
+
+                                    return BookedClinicItem(
+                                        clinicName: state.selectedClinic[index].clinicName.toString(),
+                                        patientName: state.selectedClinic[index].patientName.toString(),
+                                        date: dateTime);
+                                  },
+                                  separatorBuilder: (context, index) =>
+                                      const SizedBox(),
+                                  itemCount: state.selectedClinic.length),
+                            ),
+                          ],
+                        ),
                       );
                     }
                   } else if (state is GetSelectedClinicIsError) {

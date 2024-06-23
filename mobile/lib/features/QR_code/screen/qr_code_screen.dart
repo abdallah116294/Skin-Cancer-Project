@@ -69,6 +69,9 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
             if (barcode.rawValue != null) {
               widget.setResult(barcode.rawValue);
               setResult(barcode.rawValue.toString());
+              // var inApppointmnet = widget.selectedClinicModel
+              //     .where((element) => element.patientId == _result);
+
               var inApppointmnet = widget.selectedClinicModel
                   .where((element) => element.patientId == _result);
               if (inApppointmnet.isNotEmpty) {
@@ -81,6 +84,18 @@ class _QrCodeScannerState extends State<QrCodeScanner> {
                     predicate: (Route<dynamic> route) => false);
                     });
               }
+              else
+                {
+                  DailogAlertFun.showMyDialog(
+                    isSuccess: false,
+                      daliogContent: 'Invalid Appointment',
+                      actionName: 'Go Back',
+                      context: context,
+                      onTap: () {
+                        context.pushNamedAndRemoveUntil(Routes.bottomNavScreenRoutes,
+                            predicate: (Route<dynamic> route) => false);
+                      });
+                }
             }
           },
         ),

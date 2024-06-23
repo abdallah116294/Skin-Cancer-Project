@@ -12,6 +12,7 @@ class DailogAlertFun {
   static Future<void> showMyDialog(
       {required String daliogContent,
       required String actionName,
+        bool isSuccess = true,
       required BuildContext context,
       required VoidCallback onTap}) async {
     return showDialog<void>(
@@ -29,9 +30,10 @@ class DailogAlertFun {
                     backgroundColor: const Color(0xffEAEAEA),
                     child: Center(
                       child: Icon(
-                        Icons.check,
+                       isSuccess? Icons.check : Icons.close,
+
                         size: 40,
-                        color: AppColor.primaryColor,
+                        color:isSuccess? AppColor.primaryColor:Colors.red,
                       ),
                     ),
                   ),
@@ -129,6 +131,7 @@ class DailogAlertFun {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: Colors.white,
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[

@@ -18,6 +18,8 @@ import 'package:mobile/features/clinic/data/model/selected_clinic_model.dart';
 import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/injection_container.dart' as di;
 
+import '../widgets/empty_appoiment_animate.dart';
+
 class AppointmentScreen extends StatefulWidget {
   const AppointmentScreen({super.key});
 
@@ -253,29 +255,20 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                                             selectedClinicsToday.isNotEmpty
                                                 ? AppointmentWidget(
                                                     clincs:
-                                                        selectedClinicsToday,
+                                                    selectedClinicsToday,
                                                   )
-                                                : Center(
-                                                    child: Lottie.asset(
-                                                        'assets/animation/empty.json'),
-                                                  ),
+                                                : const EmptyAppointmentAnimate(),
                                             selectedClinicsTomorrow.isNotEmpty
                                                 ? AppointmentWidget(
                                                     clincs:
-                                                        selectedClinicsTomorrow)
-                                                : Center(
-                                                    child: Lottie.asset(
-                                                        'assets/animation/empty.json'),
-                                                  ),
+                                                    selectedClinicsTomorrow)
+                                                : const EmptyAppointmentAnimate(),
                                             selectedClinicsDayAfterTomorrow
                                                     .isNotEmpty
                                                 ? AppointmentWidget(
                                                     clincs:
-                                                        selectedClinicsDayAfterTomorrow)
-                                                : Center(
-                                                    child: Lottie.asset(
-                                                        'assets/animation/empty.json'),
-                                                  )
+                                                    selectedClinicsDayAfterTomorrow)
+                                                : const EmptyAppointmentAnimate()
                                           ]),
                                         ),
                                       ],
@@ -286,27 +279,14 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                             );
                           }
                         } else if (state is GetSelectedClinicIsError) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text(
-                                "You don't have booking yet",
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Center(
-                                child:
-                                    Lottie.asset('assets/animation/empty.json'),
-                              )
-                            ],
-                          );
+                          return const EmptyAppointmentAnimate();
                         }
                         return const Column(
                           children: [
                             Center(
-                              child: CireProgressIndecatorWidget(),
+                              child: CireProgressIndecatorWidget(
+
+                              ),
                             )
                           ],
                         );

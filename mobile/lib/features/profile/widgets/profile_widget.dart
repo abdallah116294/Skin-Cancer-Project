@@ -23,7 +23,7 @@ class ProfileWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Padding(
-        padding: EdgeInsets.all(18.w),
+        padding: EdgeInsets.all(14.w),
         child: Row(
           children: [
             Container(

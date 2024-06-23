@@ -24,8 +24,41 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with AutomaticKeepAliveClientMixin {
+class _HomeScreenState extends State<HomeScreen> {
+  bool isLoaded = true;
+
+  Future fetchData() async {
+    var doctor_role = CacheHelper.getData(key: 'doctor_role');
+    var token = CacheHelper.getData(key: 'token');
+    Map<String, dynamic> data = Jwt.parseJwt(token);
+    String docId = data[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+    final fetchDocDetails =  context.read<AuthCubit>();
+    final fetchPatientDetails =  context.read<AuthCubit>();
+
+
+    try {
+      Future.wait({fetchDocDetails.getDoctorDetials(docId)});
+      Future.wait({fetchPatientDetails.getPatientDetails(docId)});
+    } catch (e) {
+      print(e);
+
+    }finally{
+      setState(() {
+        isLoaded = false;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (isLoaded) {
+      fetchData();
+    }
+
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     List<Widget> infoList = [
@@ -66,7 +99,6 @@ class _HomeScreenState extends State<HomeScreen>
       ),
     ];
     // log('home token' + getToken());
-    super.build(context);
     var doctor_role = CacheHelper.getData(key: 'doctor_role');
     var token = CacheHelper.getData(key: 'token');
     Map<String, dynamic> data = Jwt.parseJwt(token);
@@ -75,13 +107,14 @@ class _HomeScreenState extends State<HomeScreen>
     return Scaffold(
       backgroundColor: Colors.white,
       body: RefreshIndicator(
+        color: AppColor.primaryColor,
+        backgroundColor: Colors.white,
         onRefresh: () async {
           if (doctor_role != null) {
             di.sl<AuthCubit>().getDoctorDetials(docId);
-            di.sl<ClinicCubit>()
-              .getDocHasClinic(docId: docId).then((value) {
-                di.sl<PatientClinicCubit>().getAllClinics();
-              });
+            di.sl<ClinicCubit>().getDocHasClinic(docId: docId).then((value) {
+              di.sl<PatientClinicCubit>().getAllClinics();
+            });
           } else {
             di.sl<AuthCubit>().getPatientDetails(docId);
           }
@@ -235,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 }

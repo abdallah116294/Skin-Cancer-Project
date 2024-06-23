@@ -97,7 +97,12 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
                   CacheHelper.saveData(
                   key: 'clinic_price', value: clinicInfoModel.first.price);
               return Scaffold(
+                backgroundColor: Colors.white,
+
                 appBar: AppBar(
+
+                  backgroundColor: Colors.white,
+
                   actions: [
                     IconButton(
                       onPressed: () {
@@ -267,10 +272,10 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
                           verticalSpacing(20),
                           Center(
                             child: AppButton(
-                                borderRadius: 8.r,
+                                borderRadius: 20.r,
                                 buttonColor: AppColor.primaryColor,
-                                width: 120,
-                                height: 40,
+                                width: 160,
+                                height: 50,
                                 textOfButtonStyle: TextStyles.font20whiteW700,
                                 buttonName: "Update",
                                 onTap: () {
@@ -316,16 +321,20 @@ class _DocClinicDetailsScreenState extends State<DocClinicDetailsScreen> {
                 // ),
               );
             }
-          } else if (state is GetAllClinicIsError) {
+          }
+          else if (state is GetAllClinicIsError) {
             return Scaffold(
               body: Center(
                   child:
                       Text("some thing went wrong  ${state.error.toString()}")),
             );
           } else {
-            return const Scaffold(
+            return  Scaffold(
+               backgroundColor: Colors.white,
               body: Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: AppColor.primaryColor,
+                ),
               ),
             );
           }

@@ -136,7 +136,7 @@ class StringManager {
      "symptoms":""
     },
     {
-      "name": "Seborrheic Keratoses",
+      "name": "Seborrheic keratoses",
       "description":
       "Seborrheic keratoses are common, noncancerous skin growths that appear as waxy, brown, black, or tan growths. They often appear on the chest, back, shoulders, or face. Seborrheic keratoses are harmless and typically do not require treatment unless they cause discomfort or cosmetic concerns.",
       "symptoms":

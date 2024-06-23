@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/core/utils/app_color.dart';
+import 'package:mobile/core/utils/app_color.dart';
+import 'package:mobile/core/utils/app_color.dart';
 
-class AppMethods{
+class AppMethods {
   static Future<void> imagePickerDialog(
       {required BuildContext context,
-        required Function camerFun,
-        required Function galeryFun,
-        required Function removeFun}) async {
+      required Function camerFun,
+      required Function galeryFun,
+      required Function removeFun}) async {
     return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Center(child: Text("Chose option")),
+            backgroundColor: Colors.white,
+            title: const Center(child: Text("Choose option")),
             content: SingleChildScrollView(
               child: ListBody(
                 children: [
@@ -18,20 +22,30 @@ class AppMethods{
                       onPressed: () {
                         camerFun();
                       },
-                      icon: const Icon(Icons.camera),
-                      label: const Text("Camera")),
+                      icon:
+                          Icon(color: AppColor.primaryColor, Icons.camera_alt),
+                      label: const Text(
+                        "Camera",
+                        style: TextStyle(color: Colors.black),
+                      )),
                   TextButton.icon(
                       onPressed: () {
                         galeryFun();
                       },
-                      icon: const Icon(Icons.file_open),
-                      label: const Text("Galery")),
+                      icon: Icon(color: AppColor.primaryColor, Icons.photo),
+                      label: const Text(
+                        "Gallery",
+                        style: TextStyle(color: Colors.black),
+                      )),
                   TextButton.icon(
                       onPressed: () {
                         removeFun();
                       },
-                      icon: const Icon(Icons.remove),
-                      label: const Text("remove"))
+                      icon: Icon(color: AppColor.primaryColor, Icons.delete),
+                      label: const Text(
+                        "remove",
+                        style: TextStyle(color: Colors.black),
+                      ))
                 ],
               ),
             ),

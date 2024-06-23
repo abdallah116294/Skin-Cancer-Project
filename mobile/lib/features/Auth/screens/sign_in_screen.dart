@@ -67,7 +67,7 @@ class _SingInScreenState extends State<SingInScreen> {
                   CacheHelper.saveData(
                       key: 'patient_role', value: state.userModel.roles[0]);
                   DailogAlertFun.showMyDialog(
-                      daliogContent: "Welecome",
+                      daliogContent: "Welcome",
                       actionName: " Go to Home",
                       context: context,
                       onTap: () {
@@ -79,8 +79,9 @@ class _SingInScreenState extends State<SingInScreen> {
               } else if (widget.roles['role1'] != state.userModel.roles[0] ||
                   widget.roles["role2"] != state.userModel.roles[0]) {
                 DailogAlertFun.showMyDialog(
+                  isSuccess: false,
                     daliogContent: "You don't allow",
-                    actionName: " Go Backe",
+                    actionName: " Go Back",
                     context: context,
                     onTap: () {
                       context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,
@@ -109,7 +110,7 @@ class _SingInScreenState extends State<SingInScreen> {
                       Text(
                         "We're excited to have you back, can't wait to see what you've been up to since you last logged in.",
                         style: TextStyles.font14BlackW600
-                            .copyWith(color: Color(0xFF757575)),
+                            .copyWith(color: const Color(0xFF757575)),
                       ),
                       verticalSpacing(30),
                       Form(

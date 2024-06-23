@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:mobile/core/helper/spacing.dart';
+import 'package:mobile/core/helper/spacing.dart';
+import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/app_color.dart';
-import 'package:mobile/core/widgets/titles_text_widget.dart';
 
 class DeveloperScreen extends StatefulWidget {
   const DeveloperScreen({super.key});
@@ -14,38 +16,51 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text(
-          "Developers",
-          style: TextStyle(color: Colors.black),
+        backgroundColor: Colors.white,
+        title: Text(
+          "Team Members",
+          style: TextStyle(color: AppColor.primaryColor),
         ),
         centerTitle: true,
         leading: IconButton(
             onPressed: () {
               Navigator.of(context).pop();
             },
-            icon: const Icon(Icons.arrow_back_ios)),
+            icon:  Icon(Icons.arrow_back_ios,
+                color:AppColor.primaryColor)),
       ),
-      body: Column(
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 730.h,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: AppColor.primaryColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: const Padding(
-                  padding: const EdgeInsets.all(6.0),
-                  child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Center(
+              child: Padding(
+                padding: EdgeInsets.all(8.w),
+                child: Padding(
+                  padding: EdgeInsets.all(6.h),
+                  child:  SingleChildScrollView(
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TitlesTextWidget(label: "AI Developer"),
-                          Row(
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              DeveloperContainer(
+                                  image: "assets/image/AhmedKhaled1.jpg",
+                                  name: "Ahmed Khaled",
+                                  postion: "Flutter Developer"),
+                              DeveloperContainer(
+                                image: "assets/image/abdullah.jpg",
+                                name: "Abdallah ",
+                                postion: "Flutter Developer",
+                              ),
+                            ],
+                          ),
+                          verticalSpacing(10),
+
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               DeveloperContainer(
@@ -54,18 +69,14 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
                                   postion: "AI developer"),
                               DeveloperContainer(
                                 image: "assets/image/abdelrhamn.jpg",
-                                name: "Abdelrhman ",
+                                name: "Abdelrahman",
                                 postion: "AI Developer",
                               ),
                             ],
                           ),
-                          Divider(
-                            thickness: 6,
-                            indent: 60,
-                            endIndent: 60,
-                          ),
-                          TitlesTextWidget(label: "Backend Developer"),
-                          Row(
+                          verticalSpacing(10),
+
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               DeveloperContainer(
@@ -73,51 +84,28 @@ class _DeveloperScreenState extends State<DeveloperScreen> {
                                   name: "Ammar Gamal",
                                   postion: "C#.Net Developer"),
                               DeveloperContainer(
-                                image: "'",
+                                image: "assets/image/george.jpg",
                                 name: "George Awad",
                                 postion: "C#.Net Developer",
                               ),
                             ],
                           ),
-                          Divider(
-                            thickness: 6,
-                            indent: 60,
-                            endIndent: 60,
+                          verticalSpacing(10),
+
+
+                          const DeveloperContainer(
+                            image: "assets/image/shrouk.png",
+                            name: "shrouk ashraf",
+                            postion: "UI&UX",
                           ),
-                          TitlesTextWidget(label: "Mobile Developer"),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              DeveloperContainer(
-                                  image: "assets/image/AhmedKhaled.jpg",
-                                  name: "Ahmed Khaled",
-                                  postion: "Flutter Developer"),
-                              DeveloperContainer(
-                                image: "assets/image/abdallah.jpg",
-                                name: "Abdallah ",
-                                postion: "Flutter Developer",
-                              ),
-                            ],
-                          ),
-                           Divider(
-                            thickness: 6,
-                            indent: 60,
-                            endIndent: 60,
-                          ),
-                           TitlesTextWidget(label: "UI&UX"),
-                           DeveloperContainer(
-                                image: "",
-                                name: "Shrouk Asherf",
-                                postion: "UI&UX",
-                              ),
                           // SliverDynamicHeightGridView()
                         ]),
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
@@ -129,35 +117,38 @@ class DeveloperContainer extends StatelessWidget {
       required this.image,
       required this.name,
       required this.postion});
+
   final String image;
   final String name;
   final String postion;
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CircleAvatar(
-          backgroundColor: Color(0xffD6D9F4),
-          radius: 70,
+          backgroundColor: AppColor.primaryColor,
+          radius: 57,
           child: CircleAvatar(
             backgroundImage: AssetImage(image),
-            radius: 60,
+            radius: 55,
+
           ),
         ),
         Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           Text(
             name,
             style: TextStyle(
-                color: Colors.black,
-                fontSize: 20.sp,
-                fontWeight: FontWeight.bold),
+                color: AppColor.primaryColor,
+                fontSize: 17.sp,
+                fontWeight: FontWeight.w600),
           ),
-          Text('(${postion})',
+          Text(postion,
               style: TextStyle(
                   color: Colors.black,
-                  fontSize: 18.sp,
-                  fontWeight: FontWeight.bold))
+                  fontSize: 15.sp,
+                  fontWeight: FontWeight.w400))
         ]),
       ],
     );
