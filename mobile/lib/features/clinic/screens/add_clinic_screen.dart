@@ -81,9 +81,13 @@ class _AddClinicScreenState extends State<AddClinicScreen> {
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
+
+        backgroundColor: Colors.white,
+
         title: Text(
-          "Clinic",
+          "Your Clinic",
           style: TextStyle(
               color: Colors.black,
               fontSize: 24.sp,

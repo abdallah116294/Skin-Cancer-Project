@@ -149,37 +149,35 @@ class _PatientCheckDateState extends State<PatientCheckDate> {
                         children: [
                           SizedBox(
                             height: 270,
-                            child: Expanded(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: availableSchedules.length,
-                                itemBuilder: (context, index) {
-                                  DateTime dateTime = DateTime.parse(
-                                      availableSchedules[index].date);
-                                  bool isSelected =
-                                      availableSchedules[index].date == date;
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: availableSchedules.length,
+                              itemBuilder: (context, index) {
+                                DateTime dateTime = DateTime.parse(
+                                    availableSchedules[index].date);
+                                bool isSelected =
+                                    availableSchedules[index].date == date;
 
-                                  return ProfileAction(
-                                    title: DateConverter.getDateTimeWithMonth(
-                                        dateTime),
-                                    icondata: isSelected
-                                        ? Icons.radio_button_checked
-                                        : Icons.radio_button_off,
-                                    function: () {
-                                      log('change');
-                                      setState(() {
-                                        date = availableSchedules[index].date;
-                                        selectedIndex =
-                                            availableSchedules[index].id;
-                                        log(selectedIndex.toString());
-                                        log(date.toString());
-                                      });
-                                      // log(selectedIndex.toString());
-                                    },
-                                    icondata2: Icons.calendar_month,
-                                  );
-                                },
-                              ),
+                                return ProfileAction(
+                                  title: DateConverter.getDateTimeWithMonth(
+                                      dateTime),
+                                  icondata: isSelected
+                                      ? Icons.radio_button_checked
+                                      : Icons.radio_button_off,
+                                  function: () {
+                                    log('change');
+                                    setState(() {
+                                      date = availableSchedules[index].date;
+                                      selectedIndex =
+                                          availableSchedules[index].id;
+                                      log(selectedIndex.toString());
+                                      log(date.toString());
+                                    });
+                                    // log(selectedIndex.toString());
+                                  },
+                                  icondata2: Icons.calendar_month,
+                                );
+                              },
                             ),
                           ),
                           state is PatientBookSchedualIsLoading

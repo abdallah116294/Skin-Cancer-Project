@@ -1,11 +1,9 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/widgets.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as path;
-import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -38,19 +36,27 @@ class _AIScanScreenState extends State<AIScanScreen> {
   List? _output;
   bool _loading = true;
 
-  late File _image;
+  File? _image;
   final picker = ImagePicker();
+
   Future pickFromCamera() async {
     log("pick image");
     var image = await picker.pickImage(source: ImageSource.camera);
     if (image == null) {
+      setState(() {
+        image=null;
+      });
       return null;
     }
-    var compressedImage =await compressImage(File(image.path));
+    var compressedImage = await compressImage(File(image.path));
     setState(() {
       _image = compressedImage;
       _loading = false;
     });
+    Navigator.pop(context);
+    print(_loading.toString());
+    print("8888888888   camera   8888888888888");
+
     //  detectImage(_image);
   }
 
@@ -59,13 +65,20 @@ class _AIScanScreenState extends State<AIScanScreen> {
   Future pickGallery() async {
     var image = await picker.pickImage(source: ImageSource.gallery);
     if (image == null) {
+      setState(() {
+        image=null;
+      });
       return null;
     }
-    var compressedImage =await compressImage(File(image.path));
+    var compressedImage = await compressImage(File(image.path));
+
     setState(() {
       _image = compressedImage;
       _loading = false;
     });
+    Navigator.pop(context);
+print(_loading.toString());
+print("8888888888888888888888888888");
     log(image.path.toString());
     // detectImage(_image);
   }
@@ -110,9 +123,6 @@ class _AIScanScreenState extends State<AIScanScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    // loadModel().then((value) {
-    //   setState(() {});
-    // });
   }
 
   @override
@@ -143,14 +153,17 @@ class _AIScanScreenState extends State<AIScanScreen> {
             } else if (state is PeredictonSkinOrNotIsSuccess) {
               if (state.peredictionModel.prediction == "Not Skin") {
                 DailogAlertFun.showMyDialog(
-                    daliogContent: "Pleas Enter Skin Image",
+                    isSuccess: false,
+                    daliogContent: "Please Enter Skin Image",
                     actionName: 'Go Back',
                     context: context,
                     onTap: () {
                       context.pop();
                     });
               } else if (state.peredictionModel.prediction == 'Skin') {
-                context.read<AiPeredictionCubit>().peredictonCancerType(_image);
+                context
+                    .read<AiPeredictionCubit>()
+                    .peredictonCancerType(_image!);
               }
             } else if (state is PeredictonSkinOrNotIsError) {
               log(state.error);
@@ -233,10 +246,12 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                       borderRadius: BorderRadius.circular(20)),
                                   width: 290.w,
                                   height: 200.h,
-                                  child: Image.file(
-                                    _image,
-                                    fit: BoxFit.cover,
-                                  ),
+                                  child: _image != null
+                                      ? Image.file(
+                                          _image!,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(),
                                 ),
                                 verticalSpacing(20),
                                 BlocBuilder<AiPeredictionCubit,
@@ -375,24 +390,30 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                               height: 60.h,
                                               buttonName: "Upload",
                                               onTap: () async {
+                                                setState(() {
+                                                  _loading = true;
+                                                });
                                                 await AppMethods
                                                     .imagePickerDialog(
                                                   context: context,
-                                                  camerFun: _loading == false
-                                                      ? context.pop
-                                                      : pickFromCamera,
-                                                  removeFun: () {
-                                                    context.pop();
-                                                  },
-                                                  galeryFun: _loading == false
-                                                      ? context.pop
-                                                      : pickGallery,
+                                                    camerFun: _loading == false
+                                                        ? context.pop
+                                                        : pickFromCamera,
+                                                    removeFun: () {
+                                                      context.pop();
+                                                    },
+                                                    galeryFun: _loading == false
+                                                        ? context.pop
+                                                        : pickGallery,
                                                 ).then((value) {
-                                                  context
-                                                      .read<
-                                                          AiPeredictionCubit>()
-                                                      .peredictonSkinorNot(
-                                                          _image);
+                                                  if(_image!= null){
+                                                    context
+                                                        .read<
+                                                        AiPeredictionCubit>()
+                                                        .peredictonSkinorNot(
+                                                        _image!);
+                                                  }
+
                                                 });
                                               },
                                               textColor: Colors.white,
@@ -423,7 +444,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                                       .read<
                                                           AiPeredictionCubit>()
                                                       .peredictonSkinorNot(
-                                                          _image);
+                                                          _image!);
                                                 });
                                               },
                                               textColor: Colors.white,
@@ -445,12 +466,12 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                                 context.pop();
                                               },
                                               galeryFun: _loading == false
-                                                      ? context.pop
-                                                      : pickGallery,
+                                                  ? context.pop
+                                                  : pickGallery,
                                             ).then((value) {
                                               context
                                                   .read<AiPeredictionCubit>()
-                                                  .peredictonSkinorNot(_image);
+                                                  .peredictonSkinorNot(_image!);
                                             });
                                           },
                                           textColor: Colors.white,
@@ -472,12 +493,12 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                             context.pop();
                                           },
                                           galeryFun: _loading == false
-                                                      ? context.pop
-                                                      : pickGallery,
+                                              ? context.pop
+                                              : pickGallery,
                                         ).then((value) {
                                           context
                                               .read<AiPeredictionCubit>()
-                                              .peredictonSkinorNot(_image);
+                                              .peredictonSkinorNot(_image!);
                                         });
                                       },
                                       textColor: Colors.white,
@@ -503,7 +524,7 @@ class _AIScanScreenState extends State<AIScanScreen> {
                                                     patientId,
                                                     state.peredictionModel
                                                         .prediction,
-                                                    _image)
+                                                    _image!)
                                         : log("not done");
                                   },
                                   icon: const Icon(Icons.save))

@@ -18,7 +18,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen>
-    with AutomaticKeepAliveClientMixin {
+     {
   @override
   Widget build(BuildContext context) {
     var token = CacheHelper.getData(key: 'token');
@@ -107,7 +107,7 @@ class _ProfileScreenState extends State<ProfileScreen>
     }
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 }
