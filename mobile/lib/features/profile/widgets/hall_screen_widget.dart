@@ -51,7 +51,7 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('QR Code'),
+          title: const Text('QR Code'),
           content: QrImageView(
             data: data,
             version: QrVersions.auto,
@@ -59,7 +59,7 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -80,8 +80,8 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
     Map<String, dynamic> data = Jwt.parseJwt(token);
     String patientId = data[
         "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
-    if (dotoctorRole != null)
-    {
+    var total = clinic_price * total_booking;
+    if (dotoctorRole != null) {
       if (clinicid == null) {
         return Center(
           child: Column(
@@ -113,7 +113,7 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
               Card(
                 color: Colors.white.withOpacity(.99),
                 child: Padding(
-                  padding:  EdgeInsets.all(10.w),
+                  padding: EdgeInsets.all(10.w),
                   child: Column(
                     children: [
                       Text(
@@ -125,42 +125,34 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
                   ),
                 ),
               ),
-
               verticalSpacing(10),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
                 child: Column(
                   children: [
-                     ProfileWidget(
-                      backgroundColor:const Color(0xFFE9FAEF),
+                    ProfileWidget(
+                      backgroundColor: const Color(0xFFE9FAEF),
                       iconPath: "assets/svgs/calendar.svg",
                       title: 'Appointments',
                       onTap: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                            const AppointmentScreen(
-                              //    uid: uid,
-                            )));
+                            builder: (context) => const AppointmentScreen(
+                                //    uid: uid,
+                                )));
                       },
                     ),
-
-                     ProfileWidget(
+                    ProfileWidget(
                       onTap: () {
-                        context.pushNamed(
-                            Routes.docClinicDetailsScreenRoutes);
+                        context.pushNamed(Routes.docClinicDetailsScreenRoutes);
                       },
                       title: 'Clinic',
                       iconPath: 'assets/svgs/clinic_icon.svg',
-                      backgroundColor:Color(0xFFFFEAFF),
+                      backgroundColor: const Color(0xFFFFEAFF),
                     ),
-
-
-                         ProfileWidget(
+                    ProfileWidget(
                       iconPath: "assets/svgs/qrcode.svg",
                       backgroundColor: const Color(0xf0088ff),
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                       title: 'Scan Qr ',
                     ),
                     ProfileWidget(
@@ -186,8 +178,7 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
                               }
                               context.pushNamedAndRemoveUntil(
                                   Routes.choseUserRoutes,
-                                  predicate: (Route<dynamic> route) =>
-                                  false);
+                                  predicate: (Route<dynamic> route) => false);
                             });
                       },
                       iconPath: 'assets/svgs/logout.svg',
@@ -199,171 +190,158 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
             ],
           ),
         );
-      }
-      else{
- return BlocProvider(
-        create: (context) =>
-            di.sl<ClinicCubit>()..getClinicAppointments(clinicid),
-        child: BlocConsumer<ClinicCubit, ClinicState>(
-          listener: (context, state) {
-            // TODO: implement listener
-          },
-          builder: (context, state) {
-            return Center(
-              child: Column(
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      Container(
-                        height: 200.h,
-                        width: 407.w,
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: AppColor.primaryColor,
-                        ),
-                      ),
-                      Positioned(
-                        top: 140.h,
-                        left: MediaQuery.of(context).size.width / 3.2,
-                        child: CircleAvatar(
-                          radius: 70.r,
-                          backgroundColor: Colors.white,
-                          child: Image.asset("assets/image/profile.png"),
-                        ),
-                      ),
-                    ],
-                  ),
-                  verticalSpacing(90.h),
-                      Card(
-                    color: Colors.white.withOpacity(.99),
-                        child: Padding(
-                          padding:  EdgeInsets.all(10.w),
-                          child: Column(
-                            children: [
-                              Text(
-                                  "Dr: ${widget.name}",
-                                  style: TextStyles.font20BlackW700
-                                      .copyWith(fontWeight: FontWeight.w600),
-                                ),
-                              Text(
-                                "Total Booking :${total_booking ?? 0}",
-                                style: TextStyles.font17BlackW500
-                                    .copyWith(color: Colors.grey),
-                              ),
-                              Text(
-                                "💲${clinic_price * total_booking ?? 0}",
-                                style: TextStyles.font17BlackW500
-                                    .copyWith(color: Colors.grey),
-                              )
-                            ],
+      } else {
+        return BlocProvider(
+          create: (context) =>
+              di.sl<ClinicCubit>()..getClinicAppointments(clinicid),
+          child: BlocConsumer<ClinicCubit, ClinicState>(
+            listener: (context, state) {
+              // TODO: implement listener
+            },
+            builder: (context, state) {
+              return Center(
+                child: Column(
+                  children: [
+                    Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Container(
+                          height: 200.h,
+                          width: 407.w,
+                          clipBehavior: Clip.antiAliasWithSaveLayer,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            color: AppColor.primaryColor,
                           ),
                         ),
-                      ),
-
-
-
-                  verticalSpacing(5),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: Column(
-                      children: [
-                       ProfileWidget(
-                                backgroundColor:
-                                    Color(0xFFE9FAEF),
-                                iconPath: "assets/svgs/calendar.svg",
-                                title: 'Appointments',
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          const AppointmentScreen(
-                                              //    uid: uid,
-                                              )));
-                                },
-                              ),
-
-                         ProfileWidget(
-                                onTap: () {
-                                  context.pushNamed(
-                                      Routes.docClinicDetailsScreenRoutes);
-                                },
-                                title: 'Clinic',
-                                iconPath: 'assets/svgs/clinic_icon.svg',
-                                backgroundColor:
-                                Color(0xFFFFEAFF),
-
-                         ),
-
-                         state is GetSelectedClinicIsSuccess
-                                ? ProfileWidget(
-                                    iconPath: "assets/svgs/qrcode.svg",
-                                    backgroundColor: Color(0xf0088ff),
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => QrCodeScanner(
-                                                  selectedClinicModel:
-                                                      state.selectedClinic,
-                                                  setResult: setResult,
-                                                )),
-                                      );
-                                    },
-                                    title: 'Scan Qr ',
-                                  ):ProfileWidget(
-                           iconPath: "assets/svgs/qrcode.svg",
-                           backgroundColor: Color(0xf0088ff),
-                           onTap: () {
-
-                           },
-                           title: 'Scan Qr ',
-                         ) ,
-
-                        ProfileWidget(
-                          iconPath: "assets/svgs/developers.svg",
-                          backgroundColor: const Color(0xFFEAF2FF),
-                          onTap: () {
-                            context.pushNamed(Routes.developerScreen);
-                          },
-                          title: 'Developer',
-                        ),
-                        ProfileWidget(
-                          title: 'Log out',
-                          onTap: () {
-                            DailogAlertFun.showMyDialog(
-                                daliogContent: "Are you sure?",
-                                actionName: "Logout",
-                                context: context,
-                                onTap: () {
-                                  CacheHelper.removeData(key: 'token');
-                                  CacheHelper.removeData(key: 'email');
-                                  if (dotoctorRole != null) {
-                                    CacheHelper.removeData(key: 'doctor_role');
-                                  }
-                                  context.pushNamedAndRemoveUntil(
-                                      Routes.choseUserRoutes,
-                                      predicate: (Route<dynamic> route) =>
-                                          false);
-                                });
-                          },
-                          iconPath: 'assets/svgs/logout.svg',
-                          backgroundColor: const Color(0xFFFFEEEF),
+                        Positioned(
+                          top: 140.h,
+                          left: MediaQuery.of(context).size.width / 3.2,
+                          child: CircleAvatar(
+                            radius: 70.r,
+                            backgroundColor: Colors.white,
+                            child: Image.asset("assets/image/profile.png"),
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
-        ),
-      );
-    
+                    verticalSpacing(90.h),
+                    Card(
+                      color: Colors.white.withOpacity(.99),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.w),
+                        child: Column(
+                          children: [
+                            Text(
+                              "Dr: ${widget.name}",
+                              style: TextStyles.font20BlackW700
+                                  .copyWith(fontWeight: FontWeight.w600),
+                            ),
+                               total_booking!=null? Text(
+                              "Total Booking :${total_booking ?? 0}",
+                              style: TextStyles.font17BlackW500
+                                  .copyWith(color: Colors.grey),
+                            ):const SizedBox(),
+
+                          total_booking!=null&&clinic_price!=null?  Text(
+                              "💲${total_booking*clinic_price}",
+                              style: TextStyles.font17BlackW500
+                                  .copyWith(color: Colors.grey),
+                            ): const SizedBox(),
+                          ],
+                        ),
+                      ),
+                    ),
+                    verticalSpacing(5),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      child: Column(
+                        children: [
+                          ProfileWidget(
+                            backgroundColor: const Color(0xFFE9FAEF),
+                            iconPath: "assets/svgs/calendar.svg",
+                            title: 'Appointments',
+                            onTap: () {
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => const AppointmentScreen(
+                                      //    uid: uid,
+                                      )));
+                            },
+                          ),
+                          ProfileWidget(
+                            onTap: () {
+                              context.pushNamed(
+                                  Routes.docClinicDetailsScreenRoutes);
+                            },
+                            title: 'Clinic',
+                            iconPath: 'assets/svgs/clinic_icon.svg',
+                            backgroundColor: const Color(0xFFFFEAFF),
+                          ),
+                          state is GetSelectedClinicIsSuccess
+                              ? ProfileWidget(
+                                  iconPath: "assets/svgs/qrcode.svg",
+                                  backgroundColor: const Color(0xf0088ff),
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => QrCodeScanner(
+                                                selectedClinicModel:
+                                                    state.selectedClinic,
+                                                setResult: setResult,
+                                              )),
+                                    );
+                                  },
+                                  title: 'Scan Qr ',
+                                )
+                              : ProfileWidget(
+                                  iconPath: "assets/svgs/qrcode.svg",
+                                  backgroundColor: const Color(0xf0088ff),
+                                  onTap: () {},
+                                  title: 'Scan Qr ',
+                                ),
+                          ProfileWidget(
+                            iconPath: "assets/svgs/developers.svg",
+                            backgroundColor: const Color(0xFFEAF2FF),
+                            onTap: () {
+                              context.pushNamed(Routes.developerScreen);
+                            },
+                            title: 'Developer',
+                          ),
+                          ProfileWidget(
+                            title: 'Log out',
+                            onTap: () {
+                              DailogAlertFun.showMyDialog(
+                                  daliogContent: "Are you sure?",
+                                  actionName: "Logout",
+                                  context: context,
+                                  onTap: () {
+                                    CacheHelper.removeData(key: 'token');
+                                    CacheHelper.removeData(key: 'email');
+                                    if (dotoctorRole != null) {
+                                      CacheHelper.removeData(
+                                          key: 'doctor_role');
+                                    }
+                                    context.pushNamedAndRemoveUntil(
+                                        Routes.choseUserRoutes,
+                                        predicate: (Route<dynamic> route) =>
+                                            false);
+                                  });
+                            },
+                            iconPath: 'assets/svgs/logout.svg',
+                            backgroundColor: const Color(0xFFFFEEEF),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
       }
-     
-    }
-    else {
+    } else {
       return Center(
         child: Column(
           children: [
@@ -391,12 +369,11 @@ class _HallProfileScreenWidgetState extends State<HallProfileScreenWidget> {
               ],
             ),
             verticalSpacing(90.h),
-                Text(
-                    widget.name,
-                    style: TextStyles.font20BlackW700
-                        .copyWith(fontWeight: FontWeight.w600),
-                  ),
-
+            Text(
+              widget.name,
+              style: TextStyles.font20BlackW700
+                  .copyWith(fontWeight: FontWeight.w600),
+            ),
             verticalSpacing(10),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 8.w),
