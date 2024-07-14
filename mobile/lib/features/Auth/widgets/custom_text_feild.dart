@@ -5,8 +5,9 @@ import 'package:mobile/core/utils/app_color.dart';
 import '../../../core/utils/text_styles.dart';
 
 class CustomTextFormFiled extends StatelessWidget {
-  const CustomTextFormFiled(
+  CustomTextFormFiled(
       {Key? key,
+      this.maxline,
       this.isObscureText,
       this.inputFiled,
       this.prefixIcon,
@@ -14,7 +15,7 @@ class CustomTextFormFiled extends StatelessWidget {
       this.textInputType,
       required this.controller,
       this.onchange,
-       this.onTap,
+      this.onTap,
       this.suffixIcon})
       : super(key: key);
   final bool? isObscureText;
@@ -26,12 +27,15 @@ class CustomTextFormFiled extends StatelessWidget {
   final Function(String)? onchange;
   final void Function()? onTap;
   final Widget? suffixIcon;
+  int? maxline;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      cursorColor: AppColor.primaryColor,
       controller: controller,
       onTap: onTap,
+      maxLines: maxline ?? 1,
       style: TextStyles.font14BlackW600,
       onChanged: onchange,
       obscureText: isObscureText ?? false,

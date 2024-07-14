@@ -1,10 +1,12 @@
 import 'package:dartz/dartz.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
+import 'package:mobile/features/Auth/data/model/patient_details._model.dart';
 import 'package:mobile/features/Auth/data/model/user_model.dart';
 
 import '../model/add_role_response.dart';
 
 abstract class AuthRepo {
-  Future<Either<String, UserModel>> loginUser(String email, String password);
+  Future<Either<String, UserModel>> loginUser({required String email,required String password});
 
   Future<Either<String, String>> registerUser({
     required String email,
@@ -24,4 +26,8 @@ abstract class AuthRepo {
       {required String code,
       required String email,
       required String newPassword});
+ 
+       Future<Either<String,DoctorDetails>>getDoctorDetails(String docId);    
+       Future<Either<String,PatientDetails>>getPatientDetails(String patientId);    
+
 }

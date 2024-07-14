@@ -5,6 +5,8 @@ import 'package:mobile/core/error/exception.dart';
 import 'package:mobile/core/network/api_constant.dart';
 import 'package:mobile/core/network/api_consumer.dart';
 import 'package:mobile/features/Auth/data/model/add_role_response.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
+import 'package:mobile/features/Auth/data/model/patient_details._model.dart';
 import 'package:mobile/features/Auth/data/model/user_model.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
 
@@ -15,8 +17,8 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<String, UserModel>> loginUser(
-      String email, String password) async {
-    try {
+      {required String email, required String password}) async {
+     try {
       final respons = await apiConsumer.post(ApiConstant.loginEndPoint,
           body: {"email": email, "password": password});
       final user = UserModel.fromJson(respons);
@@ -73,6 +75,7 @@ class AuthRepoImpl implements AuthRepo {
     try {
       final encodeEmail = Uri.encodeComponent(email);
       final response = await apiConsumer.post(
+        body: {},
         ApiConstant.forgetPasswordEndPoint + "?email=$encodeEmail",
       );
       return Right(response);
@@ -83,18 +86,44 @@ class AuthRepoImpl implements AuthRepo {
 
   @override
   Future<Either<String, String>> resetPassword(
-      {required String code,required String email, required String newPassword}) async {
+      {required String code,
+      required String email,
+      required String newPassword}) async {
     try {
-      final response = await apiConsumer
-          .post(ApiConstant.resetPasswordEndPoint, body: {
+      final response =
+          await apiConsumer.post(ApiConstant.resetPasswordEndPoint, body: {
         "code": code,
         "email": email,
         "newPassword": newPassword,
       });
+      log("Repo outPut" + response);
       return Right(response);
     } on ServerException catch (e) {
       return Left(e.toString());
     }
+  }
+    @override
+  Future<Either<String, DoctorDetails>> getDoctorDetails(String docId)async {
+   try{
+    final response=await apiConsumer.get(ApiConstant.doctDetails,
+    queryParameters: {"doctorId":docId});
+    final result=DoctorDetails.fromJson(response);
+    return Right(result);
+   }on ServerException catch(error){
+    return Left(error.toString());
+   }
+  }
+
+  @override
+  Future<Either<String, PatientDetails>> getPatientDetails(String patientId) async{
+   try{
+    final response=await apiConsumer.get(ApiConstant.patientDetails,
+    queryParameters: {"patientId":patientId});
+    final result=PatientDetails.fromJson(response);
+    return Right(result);
+   }on ServerException catch(error){
+    return Left(error.toString());
+   }
   }
 }
 //http://skincancerdetectionapiv2.runasp.net/api/Account/ResetPassword?Code=014870&newPassword=Ahmed%40123
