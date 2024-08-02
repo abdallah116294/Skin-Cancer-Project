@@ -1956,6 +1956,7 @@
           "Microsoft.VisualStudio.Web.CodeGeneration.Design": "8.0.2",
           "SkinCancer.Entities": "1.0.0",
           "SkinCancer.Repositories": "1.0.0",
+          "Stripe.net": "44.9.0",
           "System.IdentityModel.Tokens.Jwt": "7.5.1"
         },
         "runtime": {

@@ -16,6 +16,6 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = SkinCancer.Repositories
-build_property.ProjectDir = D:\AWork\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Repositories\
+build_property.ProjectDir = D:\Active-Work\SkinCancerSharedRepository\Skin-Cancer-Project\back-end\SkinCancer.Repositories\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
