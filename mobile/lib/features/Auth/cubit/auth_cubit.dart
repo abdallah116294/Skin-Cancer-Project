@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/core/widgets/error_text_widgte.dart';
+import 'package:mobile/features/Auth/data/model/doctor_details_model.dart';
+import 'package:mobile/features/Auth/data/model/patient_details._model.dart';
 import 'package:mobile/features/Auth/data/model/user_model.dart';
 import 'package:mobile/features/Auth/data/repository/auth_repo.dart';
 
@@ -17,11 +20,13 @@ class AuthCubit extends Cubit<AuthState> {
   AuthRepo authRepo;
   String autherror = '';
 
-  Future<void> userlogin(String email, String password) async {
+  Future<void> userlogin(
+      {required String email, required String password}) async {
     emit(LoginUserIsLoadingState());
     try {
+      log("cubit $password");
       Either<String, UserModel> response =
-          await authRepo.loginUser(email, password);
+          await authRepo.loginUser(email: email, password: password);
       response.fold((left) {
         autherror = extractErrorMessage(left);
         emit(LoginUserIsErrorState(error: autherror));
@@ -99,11 +104,40 @@ class AuthCubit extends Cubit<AuthState> {
           code: code, email: email, newPassword: newPassword);
       emit(response.fold(
           (l) => ResetPasswordIsErrorState(message: extractErrorMessage(l)),
-          (r) => ResetPasswordIsSuccessState(message: r)));
+          (r) => ResetPasswordIsSuccessState(
+              message: extractPasswordUpdatedMessage(r))));
     } catch (error) {
       emit(ResetPasswordIsErrorState(
           message: extractErrorMessage(error.toString())));
     }
+  }
+  Future<void> getDoctorDetials(String docId) async {
+    try {
+      Either<String, DoctorDetails> response =
+          await authRepo.getDoctorDetails(docId);
+      emit(response.fold((l) => GetDoctorDetialsError(error: l),
+          (r) => GetDoctorDetialsSuccess(doctorModel: r)));
+    } catch (error) {
+      emit(GetDoctorDetialsError(error: error.toString()));
+    }
+  }
+    Future<void> getPatientDetails(String patientId) async {
+    try {
+      Either<String, PatientDetails> response =
+          await authRepo.getPatientDetails(patientId);
+      emit(response.fold((l) => GetPatientDetialsError(error: l),
+          (r) => GetPatientDetialsSuccess(doctorModel: r)));
+    } catch (error) {
+      emit(GetPatientDetialsError(error: error.toString()));
+    }
+  }
+  String extractPasswordUpdatedMessage(String responseText) {
+    final RegExp regex = RegExp(r'Password Updated Successfully');
+    final match = regex.firstMatch(responseText);
+    if (match != null) {
+      return match.group(0) ?? '';
+    }
+    return 'Password Updated Successfully';
   }
 
   String extractErrorMessage(String errorString) {

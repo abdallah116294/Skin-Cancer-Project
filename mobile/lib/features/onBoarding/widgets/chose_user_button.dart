@@ -32,7 +32,7 @@ class ChoseUserButton extends StatelessWidget {
               width: 120.w,
               height: 50.h,
               decoration: BoxDecoration(
-                  color: AppColor.buttonChoseuser,
+                  color:AppColor.primaryColor,
                   borderRadius: BorderRadius.circular(20)),
               child: Center(
                 child: Text(

@@ -3,8 +3,6 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:lottie/lottie.dart';
 import 'package:mobile/config/routes/app_routes.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
@@ -14,6 +12,7 @@ import 'package:mobile/core/utils/string_manager.dart';
 import 'package:mobile/core/widgets/circle_progress_widget.dart';
 import 'package:mobile/core/widgets/custom_button.dart';
 import 'package:mobile/core/widgets/custom_dailog.dart';
+import 'package:mobile/core/widgets/validatort.dart';
 import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
 import 'package:mobile/features/Auth/widgets/custom_text_feild.dart';
 import 'package:mobile/features/Auth/widgets/double_text.dart';
@@ -48,25 +47,45 @@ class _SingInScreenState extends State<SingInScreen> {
             if (state is LoginUserIsLoadingState) {
               log('loading');
             } else if (state is LoginUserIsSuccessSetate) {
-              if (state.userModel.roles[0] == "Doctor") {
-                CacheHelper.saveData(key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(key: 'doctor_role', value: state.userModel.roles[0]);
+              if (widget.roles['role1'] == state.userModel.roles[0] ||
+                  widget.roles['role2'] == state.userModel.roles[0]) {
+                CacheHelper.saveData(
+                    key: 'token', value: state.userModel.token);
+                if (state.userModel.roles[0] == 'Doctor') {
+                  CacheHelper.saveData(
+                      key: 'doctor_role', value: state.userModel.roles[0]);
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Welcome Doctor",
+                      actionName: "Go to Home",
+                      context: context,
+                      onTap: () {
+                        context.pushNamedAndRemoveUntil(
+                            Routes.bottomNavScreenRoutes,
+                            predicate: (Route<dynamic> route) => false);
+                      });
+                } else {
+                  CacheHelper.saveData(
+                      key: 'patient_role', value: state.userModel.roles[0]);
+                  DailogAlertFun.showMyDialog(
+                      daliogContent: "Welcome",
+                      actionName: " Go to Home",
+                      context: context,
+                      onTap: () {
+                        context.pushNamedAndRemoveUntil(
+                            Routes.bottomNavScreenRoutes,
+                            predicate: (Route<dynamic> route) => false);
+                      });
+                }
+              } else if (widget.roles['role1'] != state.userModel.roles[0] ||
+                  widget.roles["role2"] != state.userModel.roles[0]) {
                 DailogAlertFun.showMyDialog(
-                    daliogContent: "Welecome Doctor",
-                    actionName: "Go to Home",
+                  isSuccess: false,
+                    daliogContent: "You don't allow",
+                    actionName: " Go Back",
                     context: context,
                     onTap: () {
-                      context.pushNamed(Routes.bottomNavScreenRoutes);
-                    });
-              } else {
-                 CacheHelper.saveData(key: 'token', value: state.userModel.token);
-                CacheHelper.saveData(key: 'patient_role', value: state.userModel.roles[0]);
-                DailogAlertFun.showMyDialog(
-                    daliogContent: "Welecome",
-                    actionName: " Go to Home",
-                    context: context,
-                    onTap: () {
-                      context.pushNamed(Routes.bottomNavScreenRoutes);
+                      context.pushNamedAndRemoveUntil(Routes.choseUserRoutes,
+                          predicate: (Route<dynamic> route) => false);
                     });
               }
             } else if (state is LoginUserIsErrorState) {
@@ -78,12 +97,21 @@ class _SingInScreenState extends State<SingInScreen> {
               child: SingleChildScrollView(
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                      EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      verticalSpacing(30),
-                      Lottie.asset("assets/animation/login_animation.json"),
+                      verticalSpacing(40),
+                      Text(
+                        "Welcome Back",
+                        style: TextStyles.font24PrimaryW700,
+                      ),
+                      verticalSpacing(10),
+                      Text(
+                        "We're excited to have you back, can't wait to see what you've been up to since you last logged in.",
+                        style: TextStyles.font14BlackW600
+                            .copyWith(color: const Color(0xFF757575)),
+                      ),
                       verticalSpacing(30),
                       Form(
                         key: _formKey,
@@ -112,11 +140,8 @@ class _SingInScreenState extends State<SingInScreen> {
                               controller: passwordController,
                               inputFiled: "Enter your password",
                               isObscureText: isObscureText,
-                              validator: (String? valeue) {
-                                if (valeue!.isEmpty) {
-                                  return "Please enter password";
-                                }
-                                return null;
+                              validator: (String? value) {
+                                MyValidators.passwordValidator(value);
                               },
                               prefixIcon: Icons.lock,
                               textInputType: TextInputType.visiblePassword,
@@ -154,7 +179,7 @@ class _SingInScreenState extends State<SingInScreen> {
                                 ),
                               ),
                             ),
-                            verticalSpacing(10),
+                            verticalSpacing(15),
                             state is LoginUserIsLoadingState
                                 ? const CireProgressIndecatorWidget()
                                 : CustomButton(
@@ -164,9 +189,13 @@ class _SingInScreenState extends State<SingInScreen> {
                                     buttonName: StringManager.signIn,
                                     onTap: () {
                                       if (_formKey.currentState!.validate()) {
+                                        log(emailController.text);
+                                        log(passwordController.text);
                                         BlocProvider.of<AuthCubit>(context)
-                                            .userlogin(emailController.text,
-                                                passwordController.text);
+                                            .userlogin(
+                                                email: emailController.text,
+                                                password:
+                                                    passwordController.text);
                                       }
                                     },
                                     textColor: Colors.white,

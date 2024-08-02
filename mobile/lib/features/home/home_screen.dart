@@ -1,106 +1,274 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/core/cach_helper/cach_helper.dart';
 import 'package:mobile/core/helper/exetentions.dart';
 import 'package:mobile/core/helper/spacing.dart';
 import 'package:mobile/core/utils/text_styles.dart';
-import 'package:mobile/core/widgets/app_button.dart';
+import 'package:mobile/features/Auth/cubit/auth_cubit.dart';
+import 'package:mobile/features/clinic/cubit/clinic_cubit.dart';
+import 'package:mobile/features/explore/cubit/patient_cubit_cubit.dart';
 import 'package:mobile/features/home/widget/add_clinic_widget.dart';
-import 'package:mobile/features/home/widget/row_of_icon_text_arrow.dart';
-import 'package:mobile/features/home/widget/skin_cancer_section.dart';
+import 'package:mobile/features/home/widget/info_center.dart';
+import 'package:mobile/injection_container.dart' as di;
 
 import '../../config/routes/app_routes.dart';
 import '../../core/utils/app_color.dart';
 import 'widget/ai_section.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  bool isLoaded = true;
+
+  Future fetchData() async {
     var doctor_role = CacheHelper.getData(key: 'doctor_role');
+    var token = CacheHelper.getData(key: 'token');
+    Map<String, dynamic> data = Jwt.parseJwt(token);
+    String docId = data[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
+    final fetchDocDetails =  context.read<AuthCubit>();
+    final fetchPatientDetails =  context.read<AuthCubit>();
+
+
+    try {
+      Future.wait({fetchDocDetails.getDoctorDetials(docId)});
+      Future.wait({fetchPatientDetails.getPatientDetails(docId)});
+    } catch (e) {
+      print(e);
+
+    }finally{
+      setState(() {
+        isLoaded = false;
+      });
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (isLoaded) {
+      fetchData();
+    }
+
+    super.didChangeDependencies();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> infoList = [
+      InfoCenter(
+        imagePath: "assets/image/cancer.png",
+        title: "What is Skin Cancer?",
+        onTap: () {
+          context.pushNamed(Routes.whatSkinCanerScreenRoutes);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/cancer_facts.png",
+        title: "Facts and Statistics",
+        onTap: () {
+          context.pushNamed(Routes.factsAndStatisticScreen);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/risk_factors.png",
+        title: "Risk Factors",
+        onTap: () {
+          context.pushNamed(Routes.riskFactorsScreen);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/cancer_prevention.png",
+        title: "Prevention",
+        onTap: () {
+          context.pushNamed(Routes.preventionScreen);
+        },
+      ),
+      InfoCenter(
+        imagePath: "assets/image/early_detection.png",
+        title: "Early Detection",
+        onTap: () {
+          context.pushNamed(Routes.earlyDetectionScreen);
+        },
+      ),
+    ];
+    // log('home token' + getToken());
+    var doctor_role = CacheHelper.getData(key: 'doctor_role');
+    var token = CacheHelper.getData(key: 'token');
+    Map<String, dynamic> data = Jwt.parseJwt(token);
+    String docId = data[
+        "http://schemas.microsoft.com/ws/2008/06/identity/claims/primarysid"];
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                width: 390.w,
-                height: 130.h,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFD6D9F4),
+      body: RefreshIndicator(
+        color: AppColor.primaryColor,
+        backgroundColor: Colors.white,
+        onRefresh: () async {
+          if (doctor_role != null) {
+            di.sl<AuthCubit>().getDoctorDetials(docId);
+            di.sl<ClinicCubit>().getDocHasClinic(docId: docId).then((value) {
+              di.sl<PatientClinicCubit>().getAllClinics();
+            });
+          } else {
+            di.sl<AuthCubit>().getPatientDetails(docId);
+          }
+        },
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: 390.w,
+                  height: 120.h,
+                  child: doctor_role != null
+                      ? BlocProvider(
+                          create: (context) =>
+                              di.sl<AuthCubit>()..getDoctorDetials(docId),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              if (state is GetDoctorDetialsSuccess) {
+                                CacheHelper.saveData(
+                                    key: 'doctor_name',
+                                    value:
+                                        "${state.doctorModel.firstName!} ${state.doctorModel.lastName!}");
+                                return Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 40.h, left: 30.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          style: TextStyles.font24PrimaryW700
+                                              .copyWith(color: Colors.black)
+                                              .copyWith(
+                                                  fontSize: 22.sp,
+                                                  fontWeight: FontWeight.w600),
+                                          "Hi,${state.doctorModel.firstName}"),
+                                      verticalSpacing(5),
+                                      Text(
+                                        style: TextStyles.font20BlackW700
+                                            .copyWith(
+                                                color: const Color(0xFF616161),
+                                                fontSize: 12.sp,
+                                                fontWeight: FontWeight.w400),
+                                        "How are you today?",
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
+                        )
+                      : BlocProvider(
+                          create: (context) =>
+                              di.sl<AuthCubit>()..getPatientDetails(docId),
+                          child: BlocBuilder<AuthCubit, AuthState>(
+                            builder: (context, state) {
+                              if (state is GetPatientDetialsSuccess) {
+                                return Padding(
+                                  padding:
+                                      EdgeInsets.only(top: 40.h, left: 30.w),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                          style: TextStyles.font24PrimaryW700
+                                              .copyWith(color: Colors.black)
+                                              .copyWith(
+                                                  fontSize: 22.sp,
+                                                  fontWeight: FontWeight.w600),
+                                          "Hi,${state.doctorModel.firstName}"),
+                                      verticalSpacing(3),
+                                      Text(
+                                          style: TextStyles.font20BlackW700
+                                              .copyWith(
+                                                  color:
+                                                      const Color(0xFF616161),
+                                                  fontSize: 12.sp,
+                                                  fontWeight: FontWeight.w400),
+                                          "How are you today?"),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
+                          ),
+                        ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.only(top: 40.h, left: 30.w),
+                doctor_role != null
+                    ? verticalSpacing(10)
+                    : const SizedBox(
+                        height: 0.0,
+                      ),
+                doctor_role != null
+                    ? const AddClinicWidget()
+                    : verticalSpacing(0),
+                doctor_role != null ? verticalSpacing(15) : verticalSpacing(0),
+                const AISection(),
+                verticalSpacing(10),
+                verticalSpacing(10),
+                Padding(
+                  padding: EdgeInsets.only(left: 15.w),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                          style: TextStyles.font24PrimaryW700
-                              .copyWith(fontWeight: FontWeight.w600),
-                          "welcome"),
-                      Text(style: TextStyles.font20BlackW700, "Ahmed Khaled"),
+                      Row(
+                        children: [
+                          Icon(
+                              size: 44,
+                              Icons.info_outline_rounded,
+                              color: AppColor.primaryColor),
+                          horizontalSpacing(10),
+                          Text(
+                            "Learning Center",
+                            style: TextStyles.font15BlackW500,
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
-              ),
-              doctor_role!=null?verticalSpacing(20):const SizedBox(height: 0.0,),
-              doctor_role!=null?const AddClinicWidget():const  SizedBox(height: 0,),
-              verticalSpacing(20),
-              const AISection(),
-              verticalSpacing(20),
-              const SkinCancerSection(),
-              verticalSpacing(20),
-              Padding(
-                padding: EdgeInsets.only(left: 15.w),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Icon(
-                            size: 44,
-                            Icons.info_outline_rounded,
-                            color: AppColor.primaryColor),
-                        horizontalSpacing(10),
-                        Text(
-                          "Learning Center",
-                          style: TextStyles.font15BlackW500,
-                        )
-                      ],
-                    ),
-                    RowOfIconTextArrow(
-                      text: "Skin Cancer Facts and Statistics",
-                      onTap: () {
-                        context.pushNamed(Routes.factsAndStatisticScreen);
-                      },
-                    ),
-                    RowOfIconTextArrow(
-                      text: "Risk Factors",
-                      onTap: () {
-                        context.pushNamed(Routes.riskFactorsScreen);
-                      },
-                    ),
-                    RowOfIconTextArrow(
-                      text: "Prevention",
-                      onTap: () {
-                        context.pushNamed(Routes.preventionScreen);
-                      },
-                    ),
-                    RowOfIconTextArrow(
-                        text: "Early Detection",
-                        iconPath: "assets/image/alarm.png",
-                        onTap: () {
-                          context.pushNamed(Routes.earlyDetectionScreen);
-                        }),
-                  ],
-                ),
-              ),
-              verticalSpacing(20),
-            ],
+                verticalSpacing(20),
+                Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 14.w),
+                    child: SizedBox(
+                      height: 800.h,
+                      child: GridView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: infoList.length,
+                        itemBuilder: (context, index) {
+                          return infoList[index];
+                        },
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10,
+                                childAspectRatio: .78),
+                      ),
+                    ))
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
 }

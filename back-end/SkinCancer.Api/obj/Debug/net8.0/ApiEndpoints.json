@@ -159,6 +159,174 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "CreateClinicAsync",
+    "RelativePath": "api/admindashboard/createclinic",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "SkinCancer.Entities.ModelsDtos.AdminDtos.AdminClinicDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "DeleteClinicAsync",
+    "RelativePath": "api/admindashboard/deleteclinic/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "DeleteUserByIdAsync",
+    "RelativePath": "api/admindashboard/deleteuserbyid",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "GetAllClinicsAsync",
+    "RelativePath": "api/admindashboard/getallclinics",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "GetAllDoctorsAsync",
+    "RelativePath": "api/admindashboard/getalldoctors",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "GetAllUsersAsync",
+    "RelativePath": "api/admindashboard/getallusers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "GetClinicByIdAsync",
+    "RelativePath": "api/admindashboard/getclinicbyid{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "GetUserByIdAsync",
+    "RelativePath": "api/admindashboard/getuserbyid",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "GetUserRolesByIdAsync",
+    "RelativePath": "api/admindashboard/getuserrolesbyid",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "UpdateClinicAsync",
+    "RelativePath": "api/admindashboard/updateclinic/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "updatedClinic",
+        "Type": "SkinCancer.Entities.ModelsDtos.AdminDtos.AdminClinicDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.AdminDashboardController",
+    "Method": "UpdateUserAsync",
+    "RelativePath": "api/admindashboard/updateuser{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "user",
+        "Type": "SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos.RegisterModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
     "Method": "CreateClinicAsync",
     "RelativePath": "api/clinic/createclinic",
@@ -281,6 +449,37 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "GetClinicsByPriceRangeAsync",
+    "RelativePath": "api/clinic/getclinicsbypricerange",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "minPrice",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "maxPrice",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
+    "Method": "GetClinicsOrderedByRateAsync",
+    "RelativePath": "api/clinic/getclinicsorderedbyrate",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "SkinCancer.Api.Controllers.ClinicController",
