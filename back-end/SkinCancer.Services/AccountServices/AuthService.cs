@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using SkinCancer.Entities.Models;
 using System.Text;
@@ -12,6 +13,10 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using SkinCancer.Entities.ModelsDtos.AuthenticationUserDtos;
+using System.Security.Policy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 namespace SkinCancer.Services.AuthServices
 {
     public class AuthService : IAuthService
@@ -22,18 +27,28 @@ namespace SkinCancer.Services.AuthServices
         private readonly IMapper _mapper;
         private readonly IEmailSender emailSender;
         private readonly IDataProtector _protector;
-        public AuthService(UserManager<ApplicationUser> _userManager,
-                           RoleManager<IdentityRole> _roleManager,
-                           IConfiguration _configuration,
-                           IMapper _mapper , IEmailSender emailSender,
-                           IDataProtectionProvider dataProtection)
-        { 
-            this._userManager = _userManager;
-            this._roleManager = _roleManager;
-            this._configuration = _configuration;
-            this._mapper = _mapper;
+        private readonly IHttpContextAccessor _httpContext;
+        private readonly IUrlHelper _urlHelper;
+
+        public AuthService(UserManager<ApplicationUser> userManager,
+                           RoleManager<IdentityRole> roleManager,
+                           IConfiguration configuration,
+                           IMapper mapper,
+                           IEmailSender emailSender,
+                           IDataProtectionProvider dataProtection,
+                           IHttpContextAccessor httpContext,
+                           IUrlHelperFactory urlHelperFactory,
+                           IActionContextAccessor actionContextAccessor)
+        {
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _configuration = configuration;
+            _mapper = mapper;
             this.emailSender = emailSender;
             _protector = dataProtection.CreateProtector("75DD1BB4-17AF-4504-B4FF-96BD6DF6E935");
+            _httpContext = httpContext;
+
+            _urlHelper = urlHelperFactory.GetUrlHelper(actionContextAccessor.ActionContext);
         }
 
         // Done
@@ -335,7 +350,7 @@ namespace SkinCancer.Services.AuthServices
                 }
             }
 
-            return string.Empty; // Success
+            return "Succeeded"; // Success
         }
 
 
@@ -381,6 +396,33 @@ namespace SkinCancer.Services.AuthServices
 
             return jwtSecurityToken;
         }
-        
+
+        public async Task<string> GenerateConfirmEmailUrl(string email)
+        {
+                var user = await _userManager.FindByEmailAsync(email);
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                code = _protector.Protect(code);
+
+                var request = _httpContext.HttpContext.Request;
+
+            var callbackUrl = request.Scheme + "://" + request.Host +
+                  _urlHelper.Action("ConfirmEmail", "Account",
+                                    new { userId = user.Id, code = code });
+            return callbackUrl;
+        }
+
+        public async Task<string> GenerateResetPasswordUrl(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            var random = new Random();
+
+            var code = random.Next(0, 1000000).ToString("D6");
+
+            return code.ToString();
+        }         
     }
 }
+/*
+ 
+ */

@@ -10,6 +10,10 @@ namespace SkinCancer.Services.AuthServices.Interfaces
 
         public Task<ProcessResult> RegisterAsync(RegisterModel model);
 
+        public Task<string> GenerateConfirmEmailUrl(string  email);
+
+        public Task<string> GenerateResetPasswordUrl(string userId);
+
         public Task<PatientDetailsDto> GetPatientDetails(string patientId);
 
         public Task<DoctorDetailsDto> GetDoctorDetails(string doctorId);
