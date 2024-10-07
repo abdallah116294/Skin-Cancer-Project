@@ -105,7 +105,7 @@ Thank you for your interest in our project! ✨
 ---
 
 ### Getting Started
-To begin, clone the repository. Machine Learning notebooks and models can be found in the [Machine Learning](./Machine Learning) folder with instructions for running the models. You can also find the latest build of the app [here]().
+To begin, clone the repository. Machine Learning notebooks and models can be found in the [MachineLearning](./MachineLearning) folder with instructions for running the models. You can also find the latest build of the app [here]().
 
 ### License
 Licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
