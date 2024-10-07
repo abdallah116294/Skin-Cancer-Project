@@ -1,7 +1,3 @@
-Certainly! Below is the content for the `LICENSE.md` file, using the MIT License as mentioned in your README:
-
----
-
 # MIT License
 
 Copyright (c) 2024 FCAI-BSU-Skin Cancer Detection Team
