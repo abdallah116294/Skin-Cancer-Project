@@ -1,111 +1,143 @@
 # Skin Cancer Detection with Machine Learning (NeuraDerm App)
 
-## Introduction
+## Overview
 
-### Problem: Skin Cancer
-Skin cancer is the uncontrolled growth of abnormal skin cells, often caused by UV exposure. Early detection is crucial for effective treatment. The main types include:
+Skin cancer, characterized by the uncontrolled growth of abnormal skin cells due to UV exposure, poses a significant health risk. Early detection is essential for effective treatment. The primary types of skin cancer include:
+
 - **Basal Cell Carcinoma (BCC)**
 - **Squamous Cell Carcinoma (SCC)**
 - **Melanoma**
 
-### Solution
-We employ machine learning to enhance skin cancer diagnosis accuracy and speed, providing better healthcare accessibility, especially in resource-limited settings.
+The **NeuraDerm App** leverages machine learning to improve the accuracy and speed of skin cancer diagnosis, making healthcare more accessible, particularly in resource-limited environments.
 
-## Machine Learning Methodology
+## Machine Learning Approach
 
 ### Modeling Strategy
-We use a sequence of three deep learning models:
-1. **Model-1:** Validates if the image is a skin image.
-2. **Model-2:** Classifies dermascope images.
-3. **Model-3:** Classifies clinical images.
 
-#### Steps
-1. **Upload Image:** User uploads a skin image.
-2. **Validation:** Image is validated using Model-1.
-3. **Classification:** If valid, classified by Model-2 or Model-3.
-4. **Output:** Final predicted class includes:
+Our solution involves a robust sequence of three deep learning models:
+
+1. **Model 1:** Validates if the uploaded image is a skin image.
+2. **Model 2:** Classifies dermatoscopic images.
+3. **Model 3:** Classifies clinical images.
+
+### Workflow
+
+The detection process follows these steps:
+
+1. **Image Upload:** Users upload a skin image.
+2. **Validation:** The image is validated using **Model 1**.
+3. **Classification:** If validated, the image is classified by either **Model 2** or **Model 3**.
+4. **Output:** The system predicts the class, which may include:
    - Melanoma
    - Melanocytic Nevi
    - Basal Cell Carcinoma
-   - Other benign and malignant lesions.
+   - Other benign or malignant lesions
 
-Invalid images are classified as "Unknown."
+Images that do not meet validation criteria are classified as "Unknown."
 
-### Tools and Libraries
+### Tools and Technologies
+
+Our project utilizes the following libraries and tools:
+
 - **NumPy**
 - **TensorFlow**
 - **Pandas**
 - **Matplotlib**
 - **Pillow**
-- **Colab**
+- **Google Colab**
 - **Scikit-Learn**
 - **Kaggle**
 
-### Data Handling
-- Explored the HAM10000 dataset using Python and Matplotlib.
-- Addressed dataset imbalance via oversampling and data augmentation.
+### Data Management
+
+- Explored the **HAM10000** dataset with Python and Matplotlib.
+- Addressed data imbalance through techniques such as oversampling and data augmentation.
 
 ### Model Training
-Trained models for 30 epochs with accuracies:
-- **Model-1:** 99% training, 98% test.
-- **Model-2:** 97% training, 93% test.
-- **Model-3:** 99% training, 97% test.
+
+Each model was trained for 30 epochs, achieving the following accuracies:
+
+- **Model 1:** 99% training accuracy, 98% testing accuracy.
+- **Model 2:** 97% training accuracy, 93% testing accuracy.
+- **Model 3:** 99% training accuracy, 97% testing accuracy.
 
 ### Deployment
-Models were saved in TFlite format and an API was created using FastAPI, deployed on AWS EC2.
+
+Models were saved in TensorFlow Lite format, and an API was created using **FastAPI**, deployed on **AWS EC2** for seamless integration.
 
 ## Mobile Application
 
-### Overview
-The mobile app assists in skin cancer detection for patients and doctors by analyzing skin images for diagnostic insights.
+### Purpose
 
-### Features
-- **AI Image Testing:** Upload images for analysis.
-- **Clinic Information:** Access to specialized clinics.
-- **Appointment Booking:** Simplified clinic booking.
-- **QR Code Generation:** Unique QR codes for clinic interactions.
+The NeuraDerm mobile application empowers patients and healthcare providers by analyzing skin images to deliver valuable diagnostic insights.
+
+### Key Features
+
+- **AI Image Testing:** Users can upload images for instant analysis.
+- **Clinic Information:** Access to specialized dermatology clinics.
+- **Appointment Booking:** Streamlined process for scheduling appointments.
+- **QR Code Generation:** Unique QR codes for easy clinic interactions.
 
 ### Architecture
-The app follows Clean Architecture principles with:
-- **Feature Layer:** UI components.
-- **Data Layer:** Data retrieval management.
-- **Model Layer:** Data structures.
 
-## Backend
+The app adheres to **Clean Architecture** principles, structured into three main layers:
 
-### Development
-Built with .NET using:
-- **LINQ** for data querying.
-- **SQL Server** for storage.
-- **Entity Framework** for database interactions.
-- **JwtBearer** for authentication.
-- **Stripe** for payments.
+- **Feature Layer:** Responsible for user interface components.
+- **Data Layer:** Manages data retrieval and storage.
+- **Model Layer:** Defines data structures used throughout the app.
+
+## Backend Development
+
+### Framework
+
+The backend is built with **.NET** and includes:
+
+- **LINQ** for data querying
+- **SQL Server** for database storage
+- **Entity Framework** for data access
+- **JwtBearer** for secure authentication
+- **Stripe** for payment processing
 
 ### Design Patterns
-Utilized:
+
+We utilized various design patterns to ensure a robust architecture:
+
 - **N-Tier Architecture**
 - **Repository Pattern**
 - **Unit of Work Pattern**
 - **Dependency Injection**
 
-### Database Design
-Includes tables for users, roles, clinics, appointments, and detection data.
+### Database Structure
 
-### Project Structure
-- **SkinCancer.Api:** Main application entry.
-- **SkinCancer.Entities:** Data models.
-- **SkinCancer.Repositories:** Data access.
-- **SkinCancer.Services:** Service classes.
+The database encompasses tables for:
+
+- Users
+- Roles
+- Clinics
+- Appointments
+- Detection data
+
+### Project Organization
+
+The project is organized into several key components:
+
+- **SkinCancer.Api:** Main application entry point
+- **SkinCancer.Entities:** Data model definitions
+- **SkinCancer.Repositories:** Data access layers
+- **SkinCancer.Services:** Service classes for business logic
 
 ## Conclusion
-This project leverages Convolutional Neural Networks for skin cancer detection and features a Flutter mobile app with a .NET backend. Our work emphasizes the importance of early detection and the potential of AI in medical diagnostics.
 
-Thank you for your interest in our project! ✨
+The **NeuraDerm App** combines Convolutional Neural Networks with a user-friendly mobile interface and a robust .NET backend, emphasizing the critical role of early skin cancer detection and the transformative potential of AI in medical diagnostics.
+
+Thank you for your interest in the NeuraDerm project! ✨
 
 ---
 
-### Getting Started
-To begin, clone the repository. Machine Learning notebooks and models can be found in the [MachineLearning](./MachineLearning) folder with instructions for running the models. You can also find the latest build of the app [here]().
+## Getting Started
 
-### License
-Licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+To get started, clone the repository. You can find the machine learning notebooks and models in the [MachineLearning](./MachineLearning) directory, along with instructions for running the models. The latest build of the app is available [here](). Documentation and other assets are on the associated [GoogleDrive](https://drive.google.com/drive/folders/1FXMeqFnf-5xM6mwTU0ZJxCGCH6LpI54o?usp=sharing).
+
+## License
+
+This project is licensed under the MIT License. For more details, please refer to the [LICENSE.md](LICENSE.md) file.
