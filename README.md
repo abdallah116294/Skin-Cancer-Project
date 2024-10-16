@@ -136,7 +136,7 @@ Thank you for your interest in the NeuraDerm project! ✨
 
 ## Getting Started
 
-To get started, clone the repository. You can find the machine learning notebooks and models in the [MachineLearning](./MachineLearning) directory, along with instructions for running the models. The latest build of the app is available [here](). Documentation and other assets are on the associated [GoogleDrive](https://drive.google.com/drive/folders/1FXMeqFnf-5xM6mwTU0ZJxCGCH6LpI54o?usp=sharing).
+To get started, clone the repository. You can find the machine learning notebooks and models in the [MachineLearning](./MachineLearning) directory, along with instructions for running the models. The latest build of the app is available [here](https://www.amazon.com/dp/B0DBDN2TTL/ref=apps_sf_sta). Documentation and other assets are on the associated [GoogleDrive](https://drive.google.com/drive/folders/1FXMeqFnf-5xM6mwTU0ZJxCGCH6LpI54o?usp=sharing).
 
 ## License
 
